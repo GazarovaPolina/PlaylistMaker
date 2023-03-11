@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFFFFF"
+        app:title="Настройки"
+        app:titleTextColor="#1A1B22"
+        android:gravity="top"
+        app:titleMarginTop="12dp"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:contentInsetStartWithNavigation="64dp" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:text="Темная тема"
+        android:textSize="16sp"
+        android:paddingHorizontal="16dp"
+        android:textColor="#000000"
+        app:switchMinWidth="35dp"
+        app:trackTint="#E6E8EB"
+        app:thumbTint="#AEAFB4"/>
+
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:text="Поделиться приложением"
+        android:textSize="16sp"
+        android:paddingHorizontal="16dp"
+        android:textColor="#000000"
+        android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/ic_share"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:text="Написать в поддержку"
+        android:textSize="16sp"
+        android:paddingHorizontal="16dp"
+        android:textColor="#000000"
+        android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/ic_support"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:text="Пользовательское соглашение"
+        android:textSize="16sp"
+        android:paddingHorizontal="16dp"
+        android:textColor="#000000"
+        android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/ic_arrow_forward"/>
+
+
+</LinearLayout>
