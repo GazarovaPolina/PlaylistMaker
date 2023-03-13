@@ -68,5 +68,4 @@
         app:iconTint="@color/dark_blue"
         app:iconPadding="@dimen/small_padding"/>
 
-
 </LinearLayout>
