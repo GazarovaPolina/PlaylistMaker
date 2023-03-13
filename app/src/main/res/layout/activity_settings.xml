@@ -9,9 +9,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#FFFFFF"
-        app:title="Настройки"
-        app:titleTextColor="#1A1B22"
+        android:background="@color/white"
+        app:title="@string/settings"
+        app:titleTextColor="@color/dark_blue"
         android:gravity="top"
         app:titleMarginTop="12dp"
         app:titleTextAppearance="@style/Toolbar.TitleText"
@@ -20,48 +20,47 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:text="Темная тема"
-        android:textSize="16sp"
-        android:paddingHorizontal="16dp"
-        android:textColor="#000000"
+        android:layout_height="@dimen/medium_layout_height"
+        android:text="@string/dark_theme"
+        android:textSize="@dimen/small_text_size"
+        android:paddingHorizontal="@dimen/medium_indent"
+        android:textColor="@color/black"
         app:switchMinWidth="35dp"
-        app:trackTint="#E6E8EB"
-        app:thumbTint="#AEAFB4"/>
+        app:trackTint="@color/light_grey"
+        app:thumbTint="@color/dark_grey"/>
 
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:text="Поделиться приложением"
-        android:textSize="16sp"
-        android:paddingHorizontal="16dp"
-        android:textColor="#000000"
+        android:layout_height="@dimen/medium_layout_height"
+        android:text="@string/share_app"
+        android:textSize="@dimen/small_text_size"
+        android:paddingHorizontal="@dimen/medium_indent"
+        android:textColor="@color/black"
         android:gravity="center_vertical"
         app:drawableEndCompat="@drawable/ic_share"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:text="Написать в поддержку"
-        android:textSize="16sp"
-        android:paddingHorizontal="16dp"
-        android:textColor="#000000"
+        android:layout_height="@dimen/medium_layout_height"
+        android:text="@string/write_to_support"
+        android:textSize="@dimen/small_text_size"
+        android:paddingHorizontal="@dimen/medium_indent"
+        android:textColor="@color/black"
         android:gravity="center_vertical"
         app:drawableEndCompat="@drawable/ic_support"/>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:text="Пользовательское соглашение"
-        android:textSize="16sp"
-        android:paddingHorizontal="16dp"
-        android:textColor="#000000"
+        android:layout_height="@dimen/medium_layout_height"
+        android:text="@string/user_apreement"
+        android:textSize="@dimen/small_text_size"
+        android:paddingHorizontal="@dimen/medium_indent"
+        android:textColor="@color/black"
         android:gravity="center_vertical"
         app:drawableEndCompat="@drawable/ic_arrow_forward"/>
-
 
 </LinearLayout>
