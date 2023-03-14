@@ -16,19 +16,19 @@
         app:titleMarginTop="12dp"
         app:titleTextAppearance="@style/Toolbar.TitleText"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:contentInsetStartWithNavigation="64dp" />
+        app:contentInsetStartWithNavigation="64dp"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:layout_width="match_parent"
         android:layout_height="@dimen/medium_layout_height"
         android:text="@string/dark_theme"
         android:textSize="@dimen/small_text_size"
-        android:paddingHorizontal="@dimen/medium_indent"
+        android:paddingLeft="@dimen/medium_indent"
         android:textColor="@color/black"
-        app:switchMinWidth="35dp"
+        app:switchMinWidth="56dp"
+        android:paddingRight="8dp"
         app:trackTint="@color/light_grey"
         app:thumbTint="@color/dark_grey"/>
-
 
     <TextView
         android:id="@+id/textView1"
