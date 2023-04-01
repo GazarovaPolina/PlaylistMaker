@@ -1,66 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/LayoutBackgroundWhiteStyle">
 
-    <androidx.appcompat.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar style="@style/ToolbarStyle"
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/white"
         app:title="@string/settings"
-        app:titleTextColor="@color/dark_blue"
-        android:gravity="top"
-        app:titleMarginTop="12dp"
-        app:titleTextAppearance="@style/Toolbar.TitleText"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:contentInsetStartWithNavigation="64dp"/>
+        app:fontFamily="@font/ys_display_medium"/>
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_layout_height"
-        android:text="@string/dark_theme"
-        android:textSize="@dimen/small_text_size"
-        android:paddingLeft="@dimen/medium_indent"
-        android:textColor="@color/black"
-        app:switchMinWidth="56dp"
-        android:paddingRight="8dp"
-        app:trackTint="@color/light_grey"
-        app:thumbTint="@color/dark_grey"/>
+    <androidx.appcompat.widget.SwitchCompat style="@style/SwitchStyle"
+        android:text="@string/dark_theme"/>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_layout_height"
-        android:text="@string/share_app"
-        android:textSize="@dimen/small_text_size"
-        android:paddingHorizontal="@dimen/medium_indent"
-        android:textColor="@color/black"
-        android:gravity="center_vertical"
-        app:drawableEndCompat="@drawable/ic_share"/>
+    <TextView style="@style/textViewShareStyle"
+        android:id="@+id/textViewShare"
+        android:text="@string/share_app"/>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_layout_height"
-        android:text="@string/write_to_support"
-        android:textSize="@dimen/small_text_size"
-        android:paddingHorizontal="@dimen/medium_indent"
-        android:textColor="@color/black"
-        android:gravity="center_vertical"
-        app:drawableEndCompat="@drawable/ic_support"/>
+    <TextView style="@style/textViewSupportStyle"
+        android:id="@+id/textViewSupport"
+        android:text="@string/write_to_support"/>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_layout_height"
-        android:text="@string/user_apreement"
-        android:textSize="@dimen/small_text_size"
-        android:paddingHorizontal="@dimen/medium_indent"
-        android:textColor="@color/black"
-        android:gravity="center_vertical"
-        app:drawableEndCompat="@drawable/ic_arrow_forward"/>
+    <TextView style="@style/textViewAgreementStyle"
+        android:id="@+id/textViewAgreement"
+        android:text="@string/user_apreement"/>
 
 </LinearLayout>
