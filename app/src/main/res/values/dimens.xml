@@ -6,4 +6,5 @@
     <dimen name="medium_indent">16dp</dimen>
     <dimen name="small_padding">12dp</dimen>
     <dimen name="medium_layout_height">60dp</dimen>
+    <dimen name="medium_layout_margin">28dp</dimen>
 </resources>
