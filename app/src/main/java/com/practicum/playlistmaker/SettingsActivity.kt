@@ -14,10 +14,10 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbarSettings)
 
         toolbar.setNavigationOnClickListener {
-            finish();
+            finish()
         }
 
         val textViewShare = findViewById<TextView>(R.id.textViewShare)

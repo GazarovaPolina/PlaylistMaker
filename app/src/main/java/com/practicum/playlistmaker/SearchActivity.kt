@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -11,14 +12,29 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toolbar
 
 class SearchActivity : AppCompatActivity() {
+    companion object {
+        const val SEARCH_QUERY = "SEARCH_QUERY"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        val toolbarSearch = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSearch)
+
+        toolbarSearch.setNavigationOnClickListener {
+            finish()
+        }
+
         val searchEditText = findViewById<EditText>(R.id.editTextSearch)
         val clearButton = findViewById<ImageView>(R.id.iconClear)
+
+        if (savedInstanceState != null) {
+            searchEditText.setText(savedInstanceState.getString(SEARCH_QUERY))
+        }
 
         clearButton.setOnClickListener {
             searchEditText.setText("")
@@ -40,6 +56,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchEditText.addTextChangedListener(searchTextWatcher)
+
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -49,4 +66,11 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val searchEditText = findViewById<EditText>(R.id.editTextSearch)
+        outState.putString(SEARCH_QUERY, searchEditText.text.toString())
+    }
+
 }

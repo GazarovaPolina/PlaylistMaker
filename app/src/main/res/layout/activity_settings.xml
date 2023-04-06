@@ -4,7 +4,7 @@
     style="@style/LayoutBackgroundWhiteStyle">
 
     <androidx.appcompat.widget.Toolbar style="@style/ToolbarStyle"
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarSettings"
         app:title="@string/settings"
         app:fontFamily="@font/ys_display_medium"/>
 
