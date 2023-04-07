@@ -1,15 +1,18 @@
 package com.practicum.playlistmaker
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 
 
 class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -20,31 +23,47 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
+        val switchCompatMode = findViewById<SwitchCompat>(R.id.switchCompatLightOrDarkMode)
+
+        if (isNightModeOn()) {
+            switchCompatMode.isChecked = true
+        }
+
         val textViewShare = findViewById<TextView>(R.id.textViewShare)
         textViewShare.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = getString(R.string.IntentType)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.ShareLink))
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.StartActivityShareTitle)))
+            shareIntent.type = getString(R.string.intent_type)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.start_activity_share_title)))
         }
 
         val textViewSupport = findViewById<TextView>(R.id.textViewSupport)
         textViewSupport.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse(getString(R.string.MailTo))
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, R.string.SupportEmailSubject)
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.SupportEmailSubject))
-            emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.SupportEmailText))
-            startActivity(Intent.createChooser(emailIntent, getString(R.string.StartActivitySupportTitle)))
+            emailIntent.data = Uri.parse(getString(R.string.mail_to))
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, R.string.support_email_address)
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_email_subject))
+            emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_email_text))
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.start_activity_support_title)))
         }
 
         val textViewAgreement = findViewById<TextView>(R.id.textViewAgreement)
         textViewAgreement.setOnClickListener {
-            val url = Uri.parse(getString(R.string.userAgreementLink))
+            val url = Uri.parse(getString(R.string.user_agreement_link))
             val openLinkIntent = Intent(Intent.ACTION_VIEW, url)
             startActivity(openLinkIntent)
         }
 
+
+        switchCompatMode.setOnCheckedChangeListener { _, checkedId ->
+            AppCompatDelegate.setDefaultNightMode(if (checkedId) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
+    private fun isNightModeOn(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 
 }
+

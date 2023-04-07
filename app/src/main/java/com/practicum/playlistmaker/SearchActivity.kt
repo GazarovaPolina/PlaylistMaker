@@ -1,29 +1,24 @@
 package com.practicum.playlistmaker
 
 import android.app.Activity
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
+
 
 class SearchActivity : AppCompatActivity() {
-    companion object {
-        const val SEARCH_QUERY = "SEARCH_QUERY"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val toolbarSearch = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarSearch)
+        val toolbarSearch = findViewById<Toolbar>(R.id.toolbarSearch)
 
         toolbarSearch.setNavigationOnClickListener {
             finish()
@@ -72,5 +67,10 @@ class SearchActivity : AppCompatActivity() {
         val searchEditText = findViewById<EditText>(R.id.editTextSearch)
         outState.putString(SEARCH_QUERY, searchEditText.text.toString())
     }
+
+    companion object {
+        const val SEARCH_QUERY = "SEARCH_QUERY"
+    }
+
 
 }
