@@ -31,19 +31,21 @@ class SettingsActivity : AppCompatActivity() {
 
         val textViewShare = findViewById<TextView>(R.id.textViewShare)
         textViewShare.setOnClickListener {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = getString(R.string.intent_type)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = getString(R.string.intent_type)
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+            }
             startActivity(Intent.createChooser(shareIntent, getString(R.string.start_activity_share_title)))
         }
 
         val textViewSupport = findViewById<TextView>(R.id.textViewSupport)
         textViewSupport.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse(getString(R.string.mail_to))
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, R.string.support_email_address)
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_email_subject))
-            emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_email_text))
+            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse(getString(R.string.mail_to))
+                putExtra(Intent.EXTRA_EMAIL, R.string.support_email_address)
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_email_subject))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.support_email_text))
+            }
             startActivity(Intent.createChooser(emailIntent, getString(R.string.start_activity_support_title)))
         }
 
