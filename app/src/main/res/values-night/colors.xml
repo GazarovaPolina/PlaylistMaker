@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="track_name">@color/white</color>
+    <color name="artist_name">@color/white</color>
+    <color name="dot">@color/white</color>
+    <color name="track_time">@color/white</color>
+    <color name="track_right_image">@color/white</color>
     <color name="hint">@color/dark_blue</color>
 </resources>

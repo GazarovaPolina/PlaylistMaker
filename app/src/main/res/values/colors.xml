@@ -13,6 +13,11 @@
     <color name="dark_grey">#AEAFB4</color>
     <color name="blue_night_style">#284581</color>
 
+    <color name="track_name">@color/black</color>
+    <color name="artist_name">@color/dark_grey</color>
+    <color name="dot">@color/dark_grey</color>
+    <color name="track_time">@color/dark_grey</color>
+    <color name="track_right_image">@color/dark_grey</color>
     <color name="hint">@color/dark_grey</color>
 </resources>
 
