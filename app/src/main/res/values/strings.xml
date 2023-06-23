@@ -17,4 +17,7 @@
     <string name="start_activity_share_title">Share</string>
     <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="intent_type">text/plain</string>
+    <string name="track_name">Название композиции</string>
+    <string name="artist_name">Имя исполнителя</string>
+    <string name="track_time">Продолжительность трека</string>
 </resources>

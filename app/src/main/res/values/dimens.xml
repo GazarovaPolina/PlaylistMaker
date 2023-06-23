@@ -2,9 +2,17 @@
 <resources>
     <dimen name="large_text_size">22sp</dimen>
     <dimen name="small_text_size">16sp</dimen>
+    <dimen name="smallest_text_size">11sp</dimen>
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="medium_indent">16dp</dimen>
     <dimen name="small_padding">12dp</dimen>
+    <dimen name="smallest_padding">8dp</dimen>
     <dimen name="medium_layout_height">60dp</dimen>
     <dimen name="medium_layout_margin">28dp</dimen>
+    <dimen name="small_layout_size">12dp</dimen>
+    <dimen name="track_image_corner_radius">8dp</dimen>
+    <dimen name="track_image_size">45dp</dimen>
+    <dimen name="track_layout_height">62dp</dimen>
+    <dimen name="track_right_image_size">24dp</dimen>
+
 </resources>
