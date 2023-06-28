@@ -19,5 +19,8 @@
     <string name="intent_type">text/plain</string>
     <string name="track_name">Название композиции</string>
     <string name="artist_name">Имя исполнителя</string>
-    <string name="track_time">Продолжительность трека</string>
+    <string name="track_time">5:02</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="bad_connection">Проблемы со связью</string>
+    <string name="download_failed">Загрузка не удалась. Проверьте подключение к интернету</string>
 </resources>

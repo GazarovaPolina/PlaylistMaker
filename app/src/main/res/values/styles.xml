@@ -25,7 +25,7 @@
         <item name="titleTextColor">@color/dark_blue</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_height">56dp</item>
         <item name="android:gravity">top</item>
         <item name="titleMarginTop">14dp</item>
         <item name="titleTextAppearance">@style/Toolbar.TitleText</item>
@@ -77,6 +77,5 @@
         <item name="iconPadding">@dimen/small_padding</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
-
 
 </resources>

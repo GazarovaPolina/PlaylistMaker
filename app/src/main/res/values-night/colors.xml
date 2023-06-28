@@ -6,4 +6,10 @@
     <color name="track_time">@color/white</color>
     <color name="track_right_image">@color/white</color>
     <color name="hint">@color/dark_blue</color>
+    <color name="ic_nothing_found">@color/white</color>
+    <color name="nothing_found_message">@color/white</color>
+    <color name="download_failed_message">@color/white</color>
+    <color name="update_search_page_btn_background">@color/white</color>
+    <color name="update_search_page_btn_text">@color/dark_blue</color>
+    <color name="ic_bad_connection">@color/white</color>
 </resources>
