@@ -35,7 +35,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/medium_layout_height</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
         <item name="android:paddingLeft">@dimen/medium_indent</item>
         <item name="android:paddingRight">@dimen/small_padding</item>
         <item name="android:gravity">center_vertical</item>
@@ -67,7 +67,7 @@
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/dark_blue</item>
-        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:textSize">@dimen/extra_large_text_size</item>
         <item name="android:textAllCaps">false</item>
         <item name="cornerRadius">@dimen/corner_radius</item>
         <item name="android:layout_marginBottom">@dimen/medium_indent</item>
@@ -75,6 +75,41 @@
         <item name="iconTint">@color/dark_blue</item>
         <item name="iconPadding">@dimen/small_padding</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="editTextSearchStyle">
+        <item name="android:layout_marginTop">@dimen/smallest_margin</item>
+        <item name="android:layout_marginBottom">@dimen/smallest_margin</item>
+        <item name="android:background">@drawable/rounded_edittext</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:hint">@string/search</item>
+        <item name="android:inputType">textNoSuggestions|textVisiblePassword</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingStart">@dimen/edit_text_search_paddingStart</item>
+        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+    </style>
+
+    <style name="placeholderMessageStyle">
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/nothing_found_message</item>
+        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="btnUpdateStyle">
+        <item name="android:layout_marginTop">@dimen/btn_update_marginTop</item>
+        <item name="android:backgroundTint">@color/update_search_page_btn_background</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:text">@string/update</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/update_search_page_btn_text</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="cornerRadius">@dimen/btn_update_corner_radius</item>
+        <item name="android:visibility">gone</item>
     </style>
 
 </resources>
