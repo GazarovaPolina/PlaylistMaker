@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="large_text_size">22sp</dimen>
-    <dimen name="small_text_size">16sp</dimen>
-    <dimen name="smallest_text_size">11sp</dimen>
+    <dimen name="extra_large_text_size">22sp</dimen>
+    <dimen name="large_text_size">19sp</dimen>
+    <dimen name="medium_text_size">16sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="extra_small_text_size">11sp</dimen>
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="medium_indent">16dp</dimen>
+    <dimen name="medium_padding">24dp</dimen>
     <dimen name="small_padding">12dp</dimen>
     <dimen name="smallest_padding">8dp</dimen>
+    <dimen name="smallest_margin">8dp</dimen>
+    <dimen name="medium_margin">16dp</dimen>
     <dimen name="medium_layout_height">60dp</dimen>
     <dimen name="medium_layout_margin">28dp</dimen>
     <dimen name="small_layout_size">12dp</dimen>
@@ -14,5 +19,9 @@
     <dimen name="track_image_size">45dp</dimen>
     <dimen name="track_layout_height">62dp</dimen>
     <dimen name="track_right_image_size">24dp</dimen>
+    <dimen name="btn_update_corner_radius">54dp</dimen>
+    <dimen name="btn_update_marginTop">24dp</dimen>
+    <dimen name="edit_text_search_layout_height">36dp</dimen>
+    <dimen name="edit_text_search_paddingStart">36dp</dimen>
 
 </resources>

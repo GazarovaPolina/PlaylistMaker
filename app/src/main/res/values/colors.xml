@@ -19,5 +19,11 @@
     <color name="track_time">@color/dark_grey</color>
     <color name="track_right_image">@color/dark_grey</color>
     <color name="hint">@color/dark_grey</color>
+    <color name="ic_nothing_found">@color/dark_blue</color>
+    <color name="nothing_found_message">@color/dark_blue</color>
+    <color name="download_failed_message">@color/dark_blue</color>
+    <color name="update_search_page_btn_background">@color/dark_blue</color>
+    <color name="update_search_page_btn_text">@color/white</color>
+    <color name="ic_bad_connection">@color/dark_blue</color>
 </resources>
 
