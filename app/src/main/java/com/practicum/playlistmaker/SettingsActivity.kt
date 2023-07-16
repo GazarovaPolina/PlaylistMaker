@@ -23,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        val switchCompatMode = findViewById<SwitchCompat>(R.id.switchCompatLightOrDarkMode)
+        val switchCompatMode = findViewById<SwitchCompat>(R.id.themeSwitcher)
 
         if (isNightModeOn()) {
             switchCompatMode.isChecked = true
@@ -66,6 +66,4 @@ class SettingsActivity : AppCompatActivity() {
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
-
 }
-
