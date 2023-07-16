@@ -1,25 +1,19 @@
 package com.practicum.playlistmaker
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,12 +23,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
-    private var query: String? = null
+    private lateinit var binding: ActivitySearchBinding
 
-    private lateinit var searchEditText: EditText
-    private lateinit var placeholderImage: ImageView
-    private lateinit var placeholderMessage: TextView
-    private lateinit var btnUpdate: Button
+    private var query: String? = null
 
     private val iTunesSearchBaseUrl = "https://itunes.apple.com"
 
@@ -43,42 +34,50 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val IMDbService = retrofit.create(iTunesSearchApi::class.java)
+    private val imdbService = retrofit.create(iTunesSearchApi::class.java)
 
-    private lateinit var tracksList: RecyclerView
+    private var tracks = ArrayList<Track>()
 
-    private val tracks = ArrayList<Track>()
-
-    private var adapter = TrackAdapter()
+    private var adapter = TrackAdapter(tracks)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val toolbarSearch = findViewById<Toolbar>(R.id.toolbarSearch)
+        setToolbarIconOnClickListener()
 
-        toolbarSearch.setNavigationOnClickListener {
+        setIconClearOnClickListener()
+
+        addSearchQueryChangedListener()
+
+        executeSearchQuery()
+    }
+
+    private fun setToolbarIconOnClickListener() {
+        binding.toolbarSearch.setNavigationOnClickListener {
             finish()
         }
+    }
 
-        searchEditText = findViewById(R.id.editTextSearch)
-        val clearButton = findViewById<ImageView>(R.id.iconClear)
-
-        clearButton.setOnClickListener {
-            searchEditText.setText("")
+    private fun setIconClearOnClickListener() {
+        binding.iconClear.setOnClickListener {
+            binding.editTextSearch.setText("")
             val inputMethodManager =
                 getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
         }
+    }
 
+    private fun addSearchQueryChangedListener() {
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
                 Unit
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+                binding.iconClear.visibility = clearButtonVisibility(s)
                 query = s?.toString()
-                if (clearButton.visibility == View.GONE) {
+                if (binding.iconClear.visibility == View.GONE) {
                     clearTracksList()
                 }
             }
@@ -86,33 +85,32 @@ class SearchActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) = Unit
         }
 
-        searchEditText.addTextChangedListener(searchTextWatcher)
+        binding.editTextSearch.addTextChangedListener(searchTextWatcher)
+    }
 
-        tracksList = findViewById(R.id.recyclerView)
+    private fun executeSearchQuery() {
         adapter.tracks = tracks
 
-        tracksList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        tracksList.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.adapter = adapter
 
-        placeholderImage = findViewById(R.id.placeholderImage)
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        btnUpdate = findViewById(R.id.btn_update)
 
-        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+        binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 search()
             }
             false
         }
 
-        btnUpdate.setOnClickListener {
+        binding.btnUpdate.setOnClickListener {
             search()
         }
     }
 
+
     private fun search() {
-        if (searchEditText.text.isNotEmpty()) {
-            IMDbService.search(searchEditText.text.toString())
+        if (binding.editTextSearch.text.isNotEmpty()) {
+            imdbService.search(binding.editTextSearch.text.toString())
                 .enqueue(object : Callback<TracksResponse> {
                     override fun onResponse(
                         call: Call<TracksResponse>,
@@ -143,7 +141,7 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
 
         val query = savedInstanceState.getString(SEARCH_QUERY)
-        searchEditText.setText(query)
+        binding.editTextSearch.setText(query)
         this.query = query
     }
 
@@ -166,21 +164,21 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val SEARCH_QUERY = "SEARCH_QUERY"
+        private val SEARCH_QUERY = "SEARCH_QUERY"
     }
 
     private fun updateOnError(errorType: ErrorType?) {
-        placeholderImage.isVisible = errorType != null
-        placeholderMessage.isVisible = errorType != null
-        btnUpdate.isVisible = errorType == ErrorType.NETWORK_ERROR
+        binding.placeholderImage.isVisible = errorType != null
+        binding.placeholderMessage.isVisible = errorType != null
+        binding.btnUpdate.isVisible = errorType == ErrorType.NETWORK_ERROR
 
         errorType ?: return
 
         tracks.clear()
         adapter.notifyDataSetChanged()
 
-        placeholderImage.setImageResource(errorType.iconResId)
-        placeholderMessage.setText(errorType.textResId)
+        binding.placeholderImage.setImageResource(errorType.iconResId)
+        binding.placeholderMessage.setText(errorType.textResId)
     }
 }
 

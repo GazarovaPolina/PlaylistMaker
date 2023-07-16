@@ -24,9 +24,10 @@
         <item name="titleTextColor">@color/white</item>
         <item name="navigationIcon">@drawable/ic_arrow_back_dark_mode</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_height">56dp</item>
         <item name="android:gravity">top</item>
         <item name="titleMarginTop">14dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
         <item name="titleTextAppearance">@style/Toolbar.TitleText</item>
         <item name="contentInsetStartWithNavigation">64dp</item>
     </style>
@@ -47,6 +48,13 @@
         <item name="android:paddingRight">12dp</item>
         <item name="trackTint">@color/blue_night_style</item>
         <item name="thumbTint">@color/blue</item>
+    </style>
+
+    <style name="themeSwitcher" parent="TextStyle">
+        <item name="trackTint">@color/blue_night_style</item>
+        <item name="thumbTint">@color/blue</item>
+        <item name="switchMinWidth">54dp</item>
+        <item name="android:paddingRight">12dp</item>
     </style>
 
     <style name="textViewShareStyle" parent="TextStyle">

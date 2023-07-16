@@ -6,12 +6,12 @@
     <androidx.appcompat.widget.Toolbar style="@style/ToolbarStyle"
         android:id="@+id/toolbarSettings"
         app:title="@string/settings"
-        app:fontFamily="@font/ys_display_medium"/>
+        app:fontFamily="@font/ys_display_medium" />
 
-    <androidx.appcompat.widget.SwitchCompat style="@style/SwitchStyle"
-        android:id="@+id/switchCompatLightOrDarkMode"
-        android:text="@string/dark_theme"
-        android:checked="false"/>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
+        style="@style/themeSwitcher"
+        android:text="Темная тема"/>
 
     <TextView style="@style/textViewShareStyle"
         android:id="@+id/textViewShare"

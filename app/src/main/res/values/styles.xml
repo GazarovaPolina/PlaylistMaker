@@ -28,6 +28,7 @@
         <item name="android:layout_height">56dp</item>
         <item name="android:gravity">top</item>
         <item name="titleMarginTop">14dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
         <item name="titleTextAppearance">@style/Toolbar.TitleText</item>
         <item name="contentInsetStartWithNavigation">64dp</item>
     </style>
@@ -48,6 +49,13 @@
         <item name="android:paddingRight">8dp</item>
         <item name="trackTint">@color/light_grey</item>
         <item name="thumbTint">@color/dark_grey</item>
+    </style>
+
+    <style name="themeSwitcher" parent="TextStyle">
+        <item name="trackTint">@color/light_grey</item>
+        <item name="thumbTint">@color/dark_grey</item>
+        <item name="switchMinWidth">54dp</item>
+        <item name="android:paddingRight">8dp</item>
     </style>
 
     <style name="textViewShareStyle" parent="TextStyle">
