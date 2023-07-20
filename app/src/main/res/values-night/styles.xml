@@ -107,8 +107,7 @@
         <item name="android:textSize">@dimen/large_text_size</item>
     </style>
 
-    <style name="btnUpdateStyle">
-        <item name="android:layout_marginTop">@dimen/btn_update_marginTop</item>
+    <style name="activitySearchBtnStyle">
         <item name="android:backgroundTint">@color/update_search_page_btn_background</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:text">@string/update</item>

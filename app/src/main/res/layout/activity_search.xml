@@ -49,22 +49,59 @@
 
     </FrameLayout>
 
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/searchHistoryGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="searchHistoryMessage, recyclerView, btnClearHistory"
+        android:visibility="gone"/>
+
+
+    <TextView
+        android:id="@+id/searchHistoryMessage"
+        style="@style/placeholderMessageStyle"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="@dimen/large_margin"
+        android:gravity="center"
+        android:text="@string/search_history_message"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/medium_margin"
+        android:layout_weight="0.5"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/btnClearHistory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search" />
+        app:layout_constraintTop_toBottomOf="@id/searchHistoryMessage" />
 
+
+    <Button
+        android:id="@+id/btnClearHistory"
+        style="@style/activitySearchBtnStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clear_history"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
 
     <ImageView
         android:id="@+id/placeholderImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/placeholderMessage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/medium_margin"
         android:paddingHorizontal="@dimen/medium_padding"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/btn_update"
@@ -91,10 +129,11 @@
 
     <Button
         android:id="@+id/btn_update"
-        style="@style/btnUpdateStyle"
+        style="@style/activitySearchBtnStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:text="@string/update"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
