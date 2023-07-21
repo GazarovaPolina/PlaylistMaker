@@ -6,14 +6,12 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -78,6 +76,9 @@ class SearchActivity : AppCompatActivity() {
     private fun setIconClearOnClickListener() {
         binding.iconClear.setOnClickListener {
             binding.editTextSearch.setText("")
+            binding.placeholderMessage.visibility = View.GONE
+            binding.placeholderImage.visibility = View.GONE
+            binding.btnUpdate.visibility = View.GONE
             val inputMethodManager =
                 getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
@@ -104,11 +105,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun executeSearchQuery() {
-        /*adapter.tracks = tracks
-
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.adapter = adapter*/
 
 
         binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
@@ -230,21 +226,6 @@ class SearchActivity : AppCompatActivity() {
             searchHistoryTracks.add(0, it)
             write(sharedPrefs, searchHistoryTracks)
 
-            /*adapter.tracks = tracks
-
-            binding.recyclerView.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            binding.recyclerView.adapter = adapter
-
-
-
-
-            historyAdapter.tracks = historyTracks
-            var histTracks = ArrayList<Track>()
-            histTracks.addAll(searchHistoryTracks)
-            binding.recyclerView.adapter = histTracks*/
-
-
         }
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -253,7 +234,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (binding.editTextSearch.hasFocus() && p0?.isEmpty() == true && read(sharedPrefs).isNotEmpty()) {
-                    adapterTracks(sharedPrefs)
+                    fillTracksList(sharedPrefs)
                     binding.searchHistoryGroup.visibility = View.VISIBLE
                 } else {
                     historyTracks.clear()
@@ -269,38 +250,21 @@ class SearchActivity : AppCompatActivity() {
         binding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
 
             if (hasFocus && binding.editTextSearch.text.isEmpty() && read(sharedPrefs).isNotEmpty()) {
-                adapterTracks(sharedPrefs)
+                fillTracksList(sharedPrefs)
                 binding.searchHistoryGroup.visibility = View.VISIBLE
             } else {
                 binding.searchHistoryGroup.visibility = View.GONE
             }
         }
 
-
-
-       /* listener = OnSharedPreferenceChangeListener { sharedPrefs, key ->
-            if (key == SEARCH_HISTORY_KEY) {
-                val track = sharedPrefs?.getString(SEARCH_HISTORY_KEY, null)
-                if (track != null) {
-                    historyAdapter.tracks.add(0, createTrackFromJson(track))
-                    historyAdapter.notifyItemInserted(0)
-                }
-                historyTracks.addAll(read(sharedPrefs))
-            }
-        }
-
-        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)*/
-
-
     }
 
-    private fun adapterTracks(sharedPrefs: SharedPreferences) {
+    private fun fillTracksList(sharedPrefs: SharedPreferences) {
         historyAdapter.tracks = historyTracks
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = historyAdapter
         historyTracks.addAll(read(sharedPrefs))
-        //historyAdapter.notifyDataSetChanged()
     }
 
     private fun read(sharedPrefs: SharedPreferences): Array<Track> {
@@ -314,11 +278,6 @@ class SearchActivity : AppCompatActivity() {
         sharedPrefs.edit()
             .putString(SEARCH_HISTORY_KEY, json)
             .apply()
-        Log.d("aaa", json)
-    }
-
-    private fun createTrackFromJson(json: String): Track {
-        return Gson().fromJson(json, Track::class.java)
     }
 }
 

@@ -54,8 +54,8 @@
         android:id="@+id/searchHistoryGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="searchHistoryMessage, recyclerView, btnClearHistory"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:constraint_referenced_ids="searchHistoryMessage, recyclerView, btnClearHistory" />
 
 
     <TextView
@@ -64,14 +64,12 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="@dimen/large_margin"
-        android:gravity="center"
         android:text="@string/search_history_message"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search" />
+        app:layout_constraintTop_toBottomOf="@+id/search"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -83,7 +81,8 @@
         app:layout_constraintBottom_toTopOf="@id/btnClearHistory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchHistoryMessage" />
+        app:layout_constraintTop_toBottomOf="@id/searchHistoryMessage"
+        android:visibility="gone"/>
 
 
     <Button
@@ -92,11 +91,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/clear_history"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@id/recyclerView"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/placeholderImage"
