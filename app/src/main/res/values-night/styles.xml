@@ -7,7 +7,7 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="LayoutBackgroundWhiteStyle" parent="LayoutStyle">
+    <style name="LayoutBackgroundWhiteStyle">
         <item name="android:background">@color/dark_blue</item>
     </style>
 

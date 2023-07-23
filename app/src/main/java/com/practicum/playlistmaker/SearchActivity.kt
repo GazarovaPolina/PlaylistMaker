@@ -63,8 +63,7 @@ class SearchActivity : AppCompatActivity() {
         executeSearchQuery()
 
         val sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
-        searchHistory(sharedPrefs)
-        //sharedPrefs.edit().remove(SEARCH_HISTORY_KEY).commit()
+       searchHistory(sharedPrefs)
     }
 
     private fun setToolbarIconOnClickListener() {
@@ -235,11 +234,15 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (binding.editTextSearch.hasFocus() && p0?.isEmpty() == true && read(sharedPrefs).isNotEmpty()) {
                     fillTracksList(sharedPrefs)
-                    binding.searchHistoryGroup.visibility = View.VISIBLE
+                    binding.searchHistoryMessage.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.VISIBLE
+                    binding.btnClearHistory.visibility = View.VISIBLE
                 } else {
                     historyTracks.clear()
                     historyAdapter.notifyDataSetChanged()
-                    binding.searchHistoryGroup.visibility = View.GONE
+                    binding.searchHistoryMessage.visibility = View.GONE
+                    binding.recyclerView.visibility = View.GONE
+                    binding.btnClearHistory.visibility = View.GONE
                 }
             }
 
@@ -251,10 +254,23 @@ class SearchActivity : AppCompatActivity() {
 
             if (hasFocus && binding.editTextSearch.text.isEmpty() && read(sharedPrefs).isNotEmpty()) {
                 fillTracksList(sharedPrefs)
-                binding.searchHistoryGroup.visibility = View.VISIBLE
+                binding.searchHistoryMessage.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.btnClearHistory.visibility = View.VISIBLE
             } else {
-                binding.searchHistoryGroup.visibility = View.GONE
+                binding.searchHistoryMessage.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+                binding.btnClearHistory.visibility = View.GONE
             }
+        }
+
+
+        binding.btnClearHistory.setOnClickListener {
+            sharedPrefs.edit().remove(SEARCH_HISTORY_KEY).commit()
+            fillTracksList(sharedPrefs)
+            binding.searchHistoryMessage.visibility = View.GONE
+            binding.recyclerView.visibility = View.GONE
+            binding.btnClearHistory.visibility = View.GONE
         }
 
     }

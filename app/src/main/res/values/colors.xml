@@ -25,5 +25,6 @@
     <color name="update_search_page_btn_background">@color/dark_blue</color>
     <color name="update_search_page_btn_text">@color/white</color>
     <color name="ic_bad_connection">@color/dark_blue</color>
+    <color name="layout_background">@color/white</color>
 </resources>
 
