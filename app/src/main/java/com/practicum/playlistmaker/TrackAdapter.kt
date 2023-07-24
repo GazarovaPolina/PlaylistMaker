@@ -1,8 +1,6 @@
 package com.practicum.playlistmaker
 
-import android.util.Log
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -15,8 +13,6 @@ class TrackAdapter(var tracks: ArrayList<Track>) : RecyclerView.Adapter<TrackVie
         holder.bind(tracks[position])
 
         holder.itemView.setOnClickListener {
-            //Toast.makeText(context, "message", Toast.LENGTH_SHORT).show()
-           // Log.d("aaaaaaaa", "wwwwww")
             onItemClick?.invoke(tracks[position])
         }
     }

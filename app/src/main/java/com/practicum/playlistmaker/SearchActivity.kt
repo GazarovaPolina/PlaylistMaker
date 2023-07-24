@@ -2,7 +2,6 @@ package com.practicum.playlistmaker
 
 import android.app.Activity
 import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,8 +26,6 @@ const val SEARCH_HISTORY_KEY = "search_history_key"
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-
-    private lateinit var listener: OnSharedPreferenceChangeListener
 
     private var historyTracks = ArrayList<Track>()
 
@@ -110,9 +107,9 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 adapter.tracks = tracks
 
-                binding.recyclerView.layoutManager =
+                binding.recyclerViewTracks.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-                binding.recyclerView.adapter = adapter
+                binding.recyclerViewTracks.adapter = adapter
                 search()
             }
             false
@@ -137,7 +134,7 @@ class SearchActivity : AppCompatActivity() {
                             if (response.body()?.results?.isNotEmpty() == true) {
                                 tracks.addAll(response.body()?.results!!)
                                 adapter.notifyDataSetChanged()
-                                binding.recyclerView.visibility = View.VISIBLE
+                                binding.recyclerViewTracks.visibility = View.VISIBLE
                             }
                             if (tracks.isEmpty()) ErrorType.NO_DATA else null
                         } else {
@@ -203,7 +200,7 @@ class SearchActivity : AppCompatActivity() {
 
         adapter.onItemClick = {
 
-            var searchHistoryTracks = ArrayList<Track>()
+            val searchHistoryTracks = ArrayList<Track>()
 
             if (sharedPrefs.contains(SEARCH_HISTORY_KEY)) {
 
@@ -224,7 +221,6 @@ class SearchActivity : AppCompatActivity() {
 
             searchHistoryTracks.add(0, it)
             write(sharedPrefs, searchHistoryTracks)
-
         }
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -234,15 +230,11 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (binding.editTextSearch.hasFocus() && p0?.isEmpty() == true && read(sharedPrefs).isNotEmpty()) {
                     fillTracksList(sharedPrefs)
-                    binding.searchHistoryMessage.visibility = View.VISIBLE
-                    binding.recyclerView.visibility = View.VISIBLE
-                    binding.btnClearHistory.visibility = View.VISIBLE
+                    showSearchHistory()
                 } else {
                     historyTracks.clear()
                     historyAdapter.notifyDataSetChanged()
-                    binding.searchHistoryMessage.visibility = View.GONE
-                    binding.recyclerView.visibility = View.GONE
-                    binding.btnClearHistory.visibility = View.GONE
+                    hideSearchHistory()
                 }
             }
 
@@ -250,36 +242,29 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        binding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
+        binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
 
             if (hasFocus && binding.editTextSearch.text.isEmpty() && read(sharedPrefs).isNotEmpty()) {
                 fillTracksList(sharedPrefs)
-                binding.searchHistoryMessage.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.VISIBLE
-                binding.btnClearHistory.visibility = View.VISIBLE
+                showSearchHistory()
             } else {
-                binding.searchHistoryMessage.visibility = View.GONE
-                binding.recyclerView.visibility = View.GONE
-                binding.btnClearHistory.visibility = View.GONE
+                hideSearchHistory()
             }
         }
 
 
         binding.btnClearHistory.setOnClickListener {
-            sharedPrefs.edit().remove(SEARCH_HISTORY_KEY).commit()
+            sharedPrefs.edit().remove(SEARCH_HISTORY_KEY).apply()
             fillTracksList(sharedPrefs)
-            binding.searchHistoryMessage.visibility = View.GONE
-            binding.recyclerView.visibility = View.GONE
-            binding.btnClearHistory.visibility = View.GONE
+            hideSearchHistory()
         }
-
     }
 
     private fun fillTracksList(sharedPrefs: SharedPreferences) {
         historyAdapter.tracks = historyTracks
-        binding.recyclerView.layoutManager =
+        binding.recyclerViewTracks.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.adapter = historyAdapter
+        binding.recyclerViewTracks.adapter = historyAdapter
         historyTracks.addAll(read(sharedPrefs))
     }
 
@@ -295,8 +280,19 @@ class SearchActivity : AppCompatActivity() {
             .putString(SEARCH_HISTORY_KEY, json)
             .apply()
     }
-}
 
+    private fun hideSearchHistory() {
+        binding.searchHistoryMessage.visibility = View.GONE
+        binding.recyclerViewTracks.visibility = View.GONE
+        binding.btnClearHistory.visibility = View.GONE
+    }
+
+    private fun showSearchHistory() {
+        binding.searchHistoryMessage.visibility = View.VISIBLE
+        binding.recyclerViewTracks.visibility = View.VISIBLE
+        binding.btnClearHistory.visibility = View.VISIBLE
+    }
+}
 
 enum class ErrorType(@StringRes val textResId: Int, @DrawableRes val iconResId: Int) {
     NO_DATA(R.string.nothing_found, R.drawable.ic_placeholder_nothing_found),
