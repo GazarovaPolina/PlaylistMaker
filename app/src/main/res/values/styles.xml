@@ -7,7 +7,7 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="LayoutBackgroundWhiteStyle" parent="LayoutStyle">
+    <style name="LayoutBackgroundWhiteStyle">
         <item name="android:background">@color/white</item>
     </style>
 
@@ -101,24 +101,20 @@
     </style>
 
     <style name="placeholderMessageStyle">
-        <item name="android:layout_marginTop">@dimen/medium_margin</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/nothing_found_message</item>
         <item name="android:textSize">@dimen/large_text_size</item>
-        <item name="android:visibility">gone</item>
     </style>
 
-    <style name="btnUpdateStyle">
-        <item name="android:layout_marginTop">@dimen/btn_update_marginTop</item>
+    <style name="activitySearchBtnStyle">
         <item name="android:backgroundTint">@color/update_search_page_btn_background</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:text">@string/update</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/update_search_page_btn_text</item>
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="cornerRadius">@dimen/btn_update_corner_radius</item>
-        <item name="android:visibility">gone</item>
+        <item name="android:layout_marginTop">@dimen/large_margin</item>
     </style>
 
 </resources>

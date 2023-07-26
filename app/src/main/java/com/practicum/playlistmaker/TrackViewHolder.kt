@@ -22,6 +22,7 @@ class TrackViewHolder(parent: ViewGroup) :
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val trackImage: ImageView = itemView.findViewById(R.id.trackImage)
 
+
     fun bind(model: Track) {
 
         Glide.with(itemView.context)
@@ -36,4 +37,6 @@ class TrackViewHolder(parent: ViewGroup) :
         Log.d("artistName", artistName.text.toString()+".")
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
     }
+
+
 }
