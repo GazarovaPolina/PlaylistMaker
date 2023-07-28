@@ -25,4 +25,14 @@
     <string name="update">Обновить</string>
     <string name="clear_history">Очистить историю</string>
     <string name="search_history_message">Вы искали</string>
+    <string name="track_image_content_description">Обложка трека</string>
+    <string name="play_btn_content_description">Кнопка контроля воспроизведения</string>
+    <string name="add_to_playlist_btn_content_desc">Кнопка добавления в плейлист</string>
+    <string name="add_to_favorites_btn_content_desc">Кнопка добавления в избранное</string>
+    <string name="duration_label">Длительность</string>
+    <string name="collection_label">Альбом</string>
+    <string name="release_date_label">Год</string>
+    <string name="genre_label">Жанр</string>
+    <string name="country_label">Страна</string>
+    <string name="track_playback_progress">0:30</string>
 </resources>

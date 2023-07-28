@@ -24,5 +24,6 @@
     <dimen name="btn_update_marginTop">24dp</dimen>
     <dimen name="edit_text_search_layout_height">36dp</dimen>
     <dimen name="edit_text_search_paddingStart">36dp</dimen>
+    <dimen name="track_additional_info_size">13sp</dimen>
 
 </resources>

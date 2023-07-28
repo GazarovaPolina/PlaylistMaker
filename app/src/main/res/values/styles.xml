@@ -117,4 +117,19 @@
         <item name="android:layout_marginTop">@dimen/large_margin</item>
     </style>
 
+    <style name="ToolbarAudioPlayer">
+        <item name="navigationIcon">@drawable/ic_arrow_back</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:gravity">top</item>
+        <item name="contentInsetStartWithNavigation">64dp</item>
+    </style>
+
+    <style name="TrackAdditionalInfoStyle">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/track_additional_info_size</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
 </resources>
