@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -221,6 +222,8 @@ class SearchActivity : AppCompatActivity() {
 
             searchHistoryTracks.add(0, it)
             write(sharedPrefs, searchHistoryTracks)
+
+            displayAudioPlayer(it)
         }
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -260,12 +263,29 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun displayAudioPlayer(track: Track) {
+        val intent = Intent(this, AudioPlayerActivity::class.java)
+        intent.putExtra("trackName", track.trackName)
+        intent.putExtra("artistName", track.artistName)
+        intent.putExtra("trackTime", track.trackTime)
+        intent.putExtra("artworkUrl100", track.artworkUrl100)
+        intent.putExtra("collectionName", track.collectionName)
+        intent.putExtra("releaseDate", track.releaseDate)
+        intent.putExtra("primaryGenreName", track.primaryGenreName)
+        intent.putExtra("country", track.country)
+        startActivity(intent)
+    }
+
     private fun fillTracksList(sharedPrefs: SharedPreferences) {
         historyAdapter.tracks = historyTracks
         binding.recyclerViewTracks.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewTracks.adapter = historyAdapter
         historyTracks.addAll(read(sharedPrefs))
+        historyAdapter.onItemClick = {
+            displayAudioPlayer(it)
+        }
     }
 
     private fun read(sharedPrefs: SharedPreferences): Array<Track> {

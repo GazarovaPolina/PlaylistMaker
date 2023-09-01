@@ -26,5 +26,12 @@
     <color name="update_search_page_btn_text">@color/white</color>
     <color name="ic_bad_connection">@color/dark_blue</color>
     <color name="layout_background">@color/white</color>
+    <color name="audio_player_track_name">@color/dark_blue</color>
+    <color name="audio_player_artist_name">@color/dark_blue</color>
+    <color name="add_to_favorites_btn">@color/black</color>
+    <color name="add_to_playlist_btn">@color/black</color>
+    <color name="play_btn">@color/black</color>
+    <color name="track_playback_progress">@color/dark_blue</color>
+    <color name="track_additional_info">@color/dark_blue</color>
 </resources>
 

@@ -117,4 +117,12 @@
         <item name="cornerRadius">@dimen/btn_update_corner_radius</item>
     </style>
 
+    <style name="ToolbarAudioPlayer">
+        <item name="navigationIcon">@drawable/ic_arrow_back_dark_mode</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:gravity">top</item>
+        <item name="contentInsetStartWithNavigation">64dp</item>
+    </style>
+
 </resources>
