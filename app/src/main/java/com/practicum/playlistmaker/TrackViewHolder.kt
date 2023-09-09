@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -33,8 +32,7 @@ class TrackViewHolder(parent: ViewGroup) :
             .into(trackImage)
 
         trackName.text = model.trackName
-        artistName.text = model.artistName.trim()
-        Log.d("artistName", artistName.text.toString()+".")
+        artistName.text = model.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
     }
 

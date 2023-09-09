@@ -299,6 +299,7 @@ class SearchActivity : AppCompatActivity() {
             intent.putExtra("releaseDate", track.releaseDate)
             intent.putExtra("primaryGenreName", track.primaryGenreName)
             intent.putExtra("country", track.country)
+            intent.putExtra("previewUrl", track.previewUrl)
             startActivity(intent)
         }
     }
