@@ -77,7 +77,7 @@
             tools:text="The Beatles" />
 
         <ImageButton
-            android:id="@+id/playBtn"
+            android:id="@+id/playPauseBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -93,10 +93,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_add_to_playlist"
             android:contentDescription="@string/add_to_playlist_btn_content_desc"
-            app:layout_constraintBottom_toBottomOf="@id/playBtn"
-            app:layout_constraintEnd_toStartOf="@id/playBtn"
+            app:layout_constraintBottom_toBottomOf="@id/playPauseBtn"
+            app:layout_constraintEnd_toStartOf="@id/playPauseBtn"
             app:layout_constraintStart_toStartOf="@id/trackLeftGuideline"
-            app:layout_constraintTop_toTopOf="@id/playBtn" />
+            app:layout_constraintTop_toTopOf="@id/playPauseBtn" />
 
         <ImageButton
             android:id="@+id/addToFavoritesBtn"
@@ -104,10 +104,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_add_to_favorites"
             android:contentDescription="@string/add_to_favorites_btn_content_desc"
-            app:layout_constraintBottom_toBottomOf="@id/playBtn"
+            app:layout_constraintBottom_toBottomOf="@id/playPauseBtn"
             app:layout_constraintEnd_toEndOf="@id/trackRightGuideline"
-            app:layout_constraintStart_toEndOf="@id/playBtn"
-            app:layout_constraintTop_toTopOf="@id/playBtn" />
+            app:layout_constraintStart_toEndOf="@id/playPauseBtn"
+            app:layout_constraintTop_toTopOf="@id/playPauseBtn" />
 
         <TextView
             android:id="@+id/trackPlaybackProgress"
@@ -120,7 +120,7 @@
             android:textSize="@dimen/small_text_size"
             app:layout_constraintEnd_toEndOf="@id/trackRightGuideline"
             app:layout_constraintStart_toStartOf="@id/trackLeftGuideline"
-            app:layout_constraintTop_toBottomOf="@id/playBtn" />
+            app:layout_constraintTop_toBottomOf="@id/playPauseBtn" />
 
         <TextView
             android:id="@+id/durationLabel"

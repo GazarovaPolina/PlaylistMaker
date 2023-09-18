@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -61,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
         executeSearchQuery()
 
         val sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
-       searchHistory(sharedPrefs)
+        searchHistory(sharedPrefs)
     }
 
     private fun setToolbarIconOnClickListener() {
@@ -101,35 +103,49 @@ class SearchActivity : AppCompatActivity() {
         binding.editTextSearch.addTextChangedListener(searchTextWatcher)
     }
 
+    private val searchRunnable = Runnable { search() }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
     private fun executeSearchQuery() {
-
-
         binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                adapter.tracks = tracks
-
-                binding.recyclerViewTracks.layoutManager =
-                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-                binding.recyclerViewTracks.adapter = adapter
-                search()
-            }
+            configureSearchTracksAdapter()
+            search()
+             }
             false
         }
-
         binding.btnUpdate.setOnClickListener {
             search()
         }
     }
 
+    private fun configureSearchTracksAdapter() {
+        adapter.tracks = tracks
+        binding.recyclerViewTracks.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewTracks.adapter = adapter
+    }
 
     private fun search() {
         if (binding.editTextSearch.text.isNotEmpty()) {
+
+            binding.searchProgressBar.visibility = View.VISIBLE
+            binding.btnUpdate.visibility = View.GONE
+            binding.placeholderImage.visibility = View.GONE
+            binding.placeholderMessage.visibility = View.GONE
+
             imdbService.search(binding.editTextSearch.text.toString())
                 .enqueue(object : Callback<TracksResponse> {
                     override fun onResponse(
                         call: Call<TracksResponse>,
                         response: Response<TracksResponse>
                     ) {
+                        binding.searchProgressBar.visibility = View.GONE
+
                         val errorType = if (response.code() == 200) {
                             tracks.clear()
                             if (response.body()?.results?.isNotEmpty() == true) {
@@ -146,6 +162,7 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                        binding.searchProgressBar.visibility = View.GONE
                         updateOnError(ErrorType.NETWORK_ERROR)
                     }
                 })
@@ -179,7 +196,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val SEARCH_QUERY = "SEARCH_QUERY"
+        private const val SEARCH_QUERY = "SEARCH_QUERY"
+        private const val SEARCH_RES_CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
     private fun updateOnError(errorType: ErrorType?) {
@@ -227,10 +246,15 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                configureSearchTracksAdapter()
+                searchDebounce()
+
                 if (binding.editTextSearch.hasFocus() && p0?.isEmpty() == true && read(sharedPrefs).isNotEmpty()) {
                     fillTracksList(sharedPrefs)
                     showSearchHistory()
@@ -265,16 +289,11 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun displayAudioPlayer(track: Track) {
-        val intent = Intent(this, AudioPlayerActivity::class.java)
-        intent.putExtra("trackName", track.trackName)
-        intent.putExtra("artistName", track.artistName)
-        intent.putExtra("trackTime", track.trackTime)
-        intent.putExtra("artworkUrl100", track.artworkUrl100)
-        intent.putExtra("collectionName", track.collectionName)
-        intent.putExtra("releaseDate", track.releaseDate)
-        intent.putExtra("primaryGenreName", track.primaryGenreName)
-        intent.putExtra("country", track.country)
-        startActivity(intent)
+        if (searchResClickDebounce()) {
+            val intent = Intent(this, AudioPlayerActivity::class.java)
+            intent.putExtra("track", track)
+            startActivity(intent)
+        }
     }
 
     private fun fillTracksList(sharedPrefs: SharedPreferences) {
@@ -312,6 +331,20 @@ class SearchActivity : AppCompatActivity() {
         binding.recyclerViewTracks.visibility = View.VISIBLE
         binding.btnClearHistory.visibility = View.VISIBLE
     }
+
+    private var isSearchResClickAllowed = true
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private fun searchResClickDebounce(): Boolean {
+        val current = isSearchResClickAllowed
+        if (isSearchResClickAllowed) {
+            isSearchResClickAllowed = false
+            handler.postDelayed({ isSearchResClickAllowed = true }, SEARCH_RES_CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
 }
 
 enum class ErrorType(@StringRes val textResId: Int, @DrawableRes val iconResId: Int) {

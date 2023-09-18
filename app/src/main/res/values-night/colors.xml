@@ -20,5 +20,6 @@
     <color name="play_btn">@color/white</color>
     <color name="track_playback_progress">@color/white</color>
     <color name="track_additional_info">@color/white</color>
+    <color name="pause_btn">@color/white</color>
 
 </resources>
