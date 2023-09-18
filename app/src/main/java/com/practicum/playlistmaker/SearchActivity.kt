@@ -291,15 +291,7 @@ class SearchActivity : AppCompatActivity() {
     private fun displayAudioPlayer(track: Track) {
         if (searchResClickDebounce()) {
             val intent = Intent(this, AudioPlayerActivity::class.java)
-            intent.putExtra("trackName", track.trackName)
-            intent.putExtra("artistName", track.artistName)
-            intent.putExtra("trackTime", track.trackTime)
-            intent.putExtra("artworkUrl100", track.artworkUrl100)
-            intent.putExtra("collectionName", track.collectionName)
-            intent.putExtra("releaseDate", track.releaseDate)
-            intent.putExtra("primaryGenreName", track.primaryGenreName)
-            intent.putExtra("country", track.country)
-            intent.putExtra("previewUrl", track.previewUrl)
+            intent.putExtra("track", track)
             startActivity(intent)
         }
     }

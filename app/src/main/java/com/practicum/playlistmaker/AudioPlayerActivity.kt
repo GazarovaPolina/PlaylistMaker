@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
@@ -16,7 +17,10 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
 
     companion object {
-        private const val DELAY = 500L
+        private const val DELAY_MILLIS = 10L
+        private const val TIME_FORMAT = "mm:ss"
+        private const val TRACK = "track"
+        private const val IMAGE_QUALITY = "512x512bb.jpg"
     }
 
     private var playerState = MediaPlayerState.STATE_DEFAULT
@@ -31,14 +35,14 @@ class AudioPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mainThreadHandler = Handler(Looper.getMainLooper())
-        trackPreviewUrl = intent.extras?.getString("previewUrl") ?: ""
-
+        val track = IntentCompat.getParcelableExtra(intent, TRACK, Track::class.java)
+        trackPreviewUrl = track?.previewUrl!!
 
         binding.toolbarAudioPlayer.setNavigationOnClickListener {
             finish()
         }
 
-        displayTrackInfo()
+        displayTrackInfo(track)
 
         preparePlayer()
 
@@ -61,21 +65,19 @@ class AudioPlayerActivity : AppCompatActivity() {
         mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
     }
 
-    private fun displayTrackInfo() {
-        binding.trackName.text = intent.extras?.getString("trackName") ?: "-"
-        binding.artistName.text = intent.extras?.getString("artistName") ?: "-"
+    private fun displayTrackInfo(track: Track) {
+        binding.trackName.text = track?.trackName.toString()
+        binding.artistName.text = track?.artistName.toString()
         binding.trackDuration.text = SimpleDateFormat(
-            "mm:ss",
+            TIME_FORMAT,
             Locale.getDefault()
-        ).format(intent.extras?.getLong("trackTime")) ?: "-"
-        binding.trackCollection.text = intent.extras?.getString("collectionName") ?: "-"
-        binding.trackReleaseDate.text =
-            intent.extras?.getString("releaseDate")?.subSequence(0, 4) ?: "-"
-        binding.trackGenre.text = intent.extras?.getString("primaryGenreName") ?: "-"
-        binding.trackCountry.text = intent.extras?.getString("country") ?: "-"
+        ).format(track?.trackTime)
+        binding.trackCollection.text = track?.collectionName.toString()
+        binding.trackReleaseDate.text = track?.releaseDate?.subSequence(0, 4).toString()
+        binding.trackGenre.text = track?.primaryGenreName.toString()
+        binding.trackCountry.text = track?.country.toString()
 
-        val trackImageUrl =
-            intent.extras?.getString("artworkUrl100")?.replaceAfterLast('/', "512x512bb.jpg")
+        val trackImageUrl = track?.artworkUrl100?.replaceAfterLast('/', IMAGE_QUALITY).toString()
 
         Glide.with(applicationContext)
             .load(trackImageUrl)
@@ -131,14 +133,14 @@ class AudioPlayerActivity : AppCompatActivity() {
                 when (playerState) {
                     MediaPlayerState.STATE_PLAYING -> {
                         binding.trackPlaybackProgress.text = SimpleDateFormat(
-                            "mm:ss",
+                            TIME_FORMAT,
                             Locale.getDefault()
                         ).format(mediaPlayer.currentPosition)
-                        mainThreadHandler?.postDelayed(this, DELAY)
+                        mainThreadHandler?.postDelayed(this, DELAY_MILLIS)
                     }
 
                     MediaPlayerState.STATE_PREPARED, MediaPlayerState.STATE_PAUSED -> {
-                        mainThreadHandler?.postDelayed(this, DELAY)
+                        mainThreadHandler?.postDelayed(this, DELAY_MILLIS)
                     }
 
                     else -> {}
