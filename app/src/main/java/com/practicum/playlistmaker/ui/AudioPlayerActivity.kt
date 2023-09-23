@@ -1,6 +1,5 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.practicum.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -25,8 +27,9 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private var playerState = MediaPlayerState.STATE_DEFAULT
 
+    private var mediaPlayer = Creator.getMediaPlayerInteractor()
     private var mainThreadHandler: Handler? = null
-    private var mediaPlayer = MediaPlayer()
+    //private var mediaPlayer = MediaPlayer()
     private lateinit var trackPreviewUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +50,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         preparePlayer()
 
         binding.playPauseBtn.setOnClickListener {
-            playbackControl()
+            playPauseControl()
             mainThreadHandler?.post(createUpdateTimerTask())
         }
 
@@ -66,18 +69,18 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun displayTrackInfo(track: Track) {
-        binding.trackName.text = track?.trackName.toString()
-        binding.artistName.text = track?.artistName.toString()
+        binding.trackName.text = track.trackName.toString()
+        binding.artistName.text = track.artistName.toString()
         binding.trackDuration.text = SimpleDateFormat(
             TIME_FORMAT,
             Locale.getDefault()
-        ).format(track?.trackTime)
-        binding.trackCollection.text = track?.collectionName.toString()
-        binding.trackReleaseDate.text = track?.releaseDate?.subSequence(0, 4).toString()
-        binding.trackGenre.text = track?.primaryGenreName.toString()
-        binding.trackCountry.text = track?.country.toString()
+        ).format(track.trackTime)
+        binding.trackCollection.text = track.collectionName.toString()
+        binding.trackReleaseDate.text = track.releaseDate?.subSequence(0, 4).toString()
+        binding.trackGenre.text = track.primaryGenreName.toString()
+        binding.trackCountry.text = track.country.toString()
 
-        val trackImageUrl = track?.artworkUrl100?.replaceAfterLast('/', IMAGE_QUALITY).toString()
+        val trackImageUrl = track.artworkUrl100?.replaceAfterLast('/', IMAGE_QUALITY).toString()
 
         Glide.with(applicationContext)
             .load(trackImageUrl)
@@ -88,20 +91,19 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        mediaPlayer.setDataSource(trackPreviewUrl)
-        mediaPlayer.prepareAsync()
+        mediaPlayer.prepareMediaPlayer(trackPreviewUrl)
         mediaPlayer.setOnPreparedListener {
             playerState = MediaPlayerState.STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
             binding.playPauseBtn.setBackgroundResource(R.drawable.ic_play)
             playerState = MediaPlayerState.STATE_PREPARED
-            binding.trackPlaybackProgress.text = "00:00"
+            binding.trackPlaybackProgress.text = getString(R.string.track_playback_progress)
             mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
         }
     }
 
-    private fun playbackControl() {
+    private fun playPauseControl() {
         when (playerState) {
             MediaPlayerState.STATE_PLAYING -> {
                 pausePlayer()
@@ -116,13 +118,13 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+        mediaPlayer.pauseMediaPlayer()
         binding.playPauseBtn.setBackgroundResource(R.drawable.ic_play)
         playerState = MediaPlayerState.STATE_PAUSED
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
+        mediaPlayer.startMediaPlayer()
         binding.playPauseBtn.setBackgroundResource(R.drawable.ic_pause)
         playerState = MediaPlayerState.STATE_PLAYING
     }
@@ -135,7 +137,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                         binding.trackPlaybackProgress.text = SimpleDateFormat(
                             TIME_FORMAT,
                             Locale.getDefault()
-                        ).format(mediaPlayer.currentPosition)
+                        ).format(mediaPlayer.currentPosition())
                         mainThreadHandler?.postDelayed(this, DELAY_MILLIS)
                     }
 
@@ -151,9 +153,9 @@ class AudioPlayerActivity : AppCompatActivity() {
 
 }
 
-enum class MediaPlayerState(val state: Int) {
-    STATE_DEFAULT(0),
-    STATE_PREPARED(1),
-    STATE_PLAYING(2),
-    STATE_PAUSED(3)
+enum class MediaPlayerState {
+    STATE_DEFAULT,
+    STATE_PREPARED,
+    STATE_PLAYING,
+    STATE_PAUSED
 }

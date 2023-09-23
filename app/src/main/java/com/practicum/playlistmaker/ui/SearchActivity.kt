@@ -17,7 +17,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.practicum.playlistmaker.data.dto.TracksSearchResponse
+import com.practicum.playlistmaker.data.network.ITunesSearchApi
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.ui.TrackAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +48,7 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val imdbService = retrofit.create(iTunesSearchApi::class.java)
+    private val imdbService = retrofit.create(ITunesSearchApi::class.java)
 
     private var tracks = ArrayList<Track>()
 
@@ -139,10 +144,10 @@ class SearchActivity : AppCompatActivity() {
             binding.placeholderMessage.visibility = View.GONE
 
             imdbService.search(binding.editTextSearch.text.toString())
-                .enqueue(object : Callback<TracksResponse> {
+                .enqueue(object : Callback<TracksSearchResponse> {
                     override fun onResponse(
-                        call: Call<TracksResponse>,
-                        response: Response<TracksResponse>
+                        call: Call<TracksSearchResponse>,
+                        response: Response<TracksSearchResponse>
                     ) {
                         binding.searchProgressBar.visibility = View.GONE
 
@@ -161,7 +166,7 @@ class SearchActivity : AppCompatActivity() {
                         updateOnError(errorType)
                     }
 
-                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<TracksSearchResponse>, t: Throwable) {
                         binding.searchProgressBar.visibility = View.GONE
                         updateOnError(ErrorType.NETWORK_ERROR)
                     }
