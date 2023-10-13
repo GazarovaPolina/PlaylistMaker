@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
+import com.practicum.playlistmaker.ui.switchTheme
 
 const val APP_PREFERENCES = "app_preferences"
 const val THEME_KEY = "theme_key"

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
+import com.practicum.playlistmaker.APP_PREFERENCES
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.THEME_KEY
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 
