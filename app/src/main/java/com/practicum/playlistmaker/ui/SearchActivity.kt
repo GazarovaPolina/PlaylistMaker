@@ -21,6 +21,7 @@ import com.practicum.playlistmaker.data.dto.TracksSearchResponse
 import com.practicum.playlistmaker.data.network.ITunesSearchApi
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.settings.data.SettingsRepositoryImpl.Companion.APP_PREFERENCES
 import com.practicum.playlistmaker.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.ui.TrackAdapter
 import retrofit2.Call
@@ -31,7 +32,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 const val SEARCH_HISTORY_KEY = "search_history_key"
 
+
+
 class SearchActivity : AppCompatActivity() {
+
+
 
     private lateinit var binding: ActivitySearchBinding
 

@@ -9,37 +9,38 @@ import com.practicum.playlistmaker.databinding.ActivityMainBinding
 import com.practicum.playlistmaker.main.MainViewModel
 import com.practicum.playlistmaker.main.domain.ScreenState
 import com.practicum.playlistmaker.ui.MediaLibActivity
-import com.practicum.playlistmaker.ui.SettingsActivity
+import com.practicum.playlistmaker.settings.ui.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
+    private var viewModel: MainViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        val viewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             this,
             MainViewModel.getViewModelFactory()
         )[MainViewModel::class.java]
 
-        viewModel.screenState.observe(this) {
+        viewModel?.screenState?.observe(this) {
             showScreen(it)
         }
 
 
-        binding!!.btnSearch.setOnClickListener {
-            viewModel.onSearchBtnClicked()
+        binding?.btnSearch?.setOnClickListener {
+            viewModel?.onSearchBtnClicked()
         }
 
-        binding!!.btnMediaLib.setOnClickListener {
-            viewModel.onMediaLibBtnClicked()
+        binding?.btnMediaLib?.setOnClickListener {
+            viewModel?.onMediaLibBtnClicked()
         }
 
-        binding!!.btnSettings.setOnClickListener {
-            viewModel.onSettingsBtnClicked()
+        binding?.btnSettings?.setOnClickListener {
+            viewModel?.onSettingsBtnClicked()
         }
     }
 
