@@ -1,16 +1,20 @@
-package com.practicum.playlistmaker.domain.api
+package com.practicum.playlistmaker.player.domain
 
 interface MediaPlayerRepository {
 
-    fun prepareMediaPlayer(trackUrl: String)
+    var playerState: MediaPlayerState
+
+    fun prepareMediaPlayer()
 
     fun startMediaPlayer()
 
     fun pauseMediaPlayer()
 
+    fun stopMediaPlayer()
+
     fun release()
 
-    fun currentPosition(): Int
+    fun currentPosition(): String
 
     fun setOnPreparedListener(listener: (() -> Unit)?)
 

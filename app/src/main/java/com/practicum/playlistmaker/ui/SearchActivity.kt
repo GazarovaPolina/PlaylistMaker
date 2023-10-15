@@ -22,7 +22,7 @@ import com.practicum.playlistmaker.data.network.ITunesSearchApi
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.settings.data.SettingsRepositoryImpl.Companion.APP_PREFERENCES
-import com.practicum.playlistmaker.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.ui.TrackAdapter
 import retrofit2.Call
 import retrofit2.Callback

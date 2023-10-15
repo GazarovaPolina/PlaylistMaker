@@ -2,8 +2,8 @@ package com.practicum.playlistmaker
 
 import android.app.Application
 import android.content.Context
-import com.practicum.playlistmaker.data.MediaPlayerRepositoryImpl
-import com.practicum.playlistmaker.domain.api.MediaPlayerInteractor
+import com.practicum.playlistmaker.player.data.MediaPlayerRepositoryImpl
+import com.practicum.playlistmaker.player.domain.impl.MediaPlayerInteractorImpl
 import com.practicum.playlistmaker.settings.data.SettingsRepositoryImpl
 import com.practicum.playlistmaker.settings.domain.SettingsInteractor
 import com.practicum.playlistmaker.settings.domain.SettingsRepository
@@ -38,7 +38,8 @@ object Creator {
     }
 
 
-    fun getMediaPlayerInteractor(): MediaPlayerInteractor {
-        return MediaPlayerInteractor(MediaPlayerRepositoryImpl())
+    fun provideMediaPlayerInteractor(trackPreviewUrl: String): MediaPlayerInteractorImpl {
+        return MediaPlayerInteractorImpl(MediaPlayerRepositoryImpl(trackPreviewUrl = trackPreviewUrl))
     }
+
 }
