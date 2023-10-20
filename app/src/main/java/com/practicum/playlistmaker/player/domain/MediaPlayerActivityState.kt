@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.player.domain
 
-import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.search.domain.models.Track
 
 sealed class MediaPlayerActivityState {
 

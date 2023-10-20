@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.SearchActivity
+import com.practicum.playlistmaker.search.ui.SearchActivity
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
 import com.practicum.playlistmaker.main.MainViewModel
 import com.practicum.playlistmaker.main.domain.ScreenState
