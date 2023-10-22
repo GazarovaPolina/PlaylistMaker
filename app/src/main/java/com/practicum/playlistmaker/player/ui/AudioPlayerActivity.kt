@@ -10,7 +10,6 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.player.domain.MediaPlayerActivityState
-import com.practicum.playlistmaker.player.domain.MediaPlayerViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 

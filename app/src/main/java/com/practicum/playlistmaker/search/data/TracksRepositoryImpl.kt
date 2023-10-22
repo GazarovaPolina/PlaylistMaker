@@ -5,6 +5,7 @@ import com.practicum.playlistmaker.search.data.dto.TracksSearchRequest
 import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import com.practicum.playlistmaker.search.domain.models.Track
+import java.io.IOException
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
 
@@ -28,11 +29,8 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
                     )
                 })
             }
-            -1 -> {
-                return SearchResult.Failure("Проблемы со связью. Загрузка не удалась. Проверьте подключение к интернету")
-            }
             else -> {
-                return SearchResult.Failure("Что-то пошло не так")
+                 return SearchResult.Failure()
             }
         }
     }

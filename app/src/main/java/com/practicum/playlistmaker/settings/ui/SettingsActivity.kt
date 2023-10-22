@@ -1,11 +1,9 @@
 package com.practicum.playlistmaker.settings.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
-import com.practicum.playlistmaker.settings.SettingsViewModel
 
 
 class SettingsActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.player.domain
+package com.practicum.playlistmaker.player.ui
 
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.player.domain.MediaPlayerActivityState
+import com.practicum.playlistmaker.player.domain.MediaPlayerInteractor
+import com.practicum.playlistmaker.player.domain.MediaPlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class MediaPlayerViewModel(

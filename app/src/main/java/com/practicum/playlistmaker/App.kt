@@ -13,7 +13,6 @@ class App : Application() {
         val settingsInteractor = Creator.provideSettingsInteractor()
         darkTheme = settingsInteractor.getThemeSettings().darkTheme
 
-        //switchTheme(darkTheme)
         AppThemeSwitcher.switchTheme(darkTheme)
     }
 }

@@ -1,10 +1,11 @@
 package com.practicum.playlistmaker.search.ui
 
+import androidx.annotation.StringRes
 import com.practicum.playlistmaker.search.domain.models.Track
 
-interface SearchState {
+sealed interface SearchState {
 
-    class  LoadState: SearchState
+    data object LoadState : SearchState
 
     class ContentState(
         val tracks: List<Track>
@@ -14,12 +15,8 @@ interface SearchState {
         val tracks: Array<Track>?
     ): SearchState
 
-    class EmptyState(
-        val errorMsg: String
-    ) : SearchState
-
     class ErrorState(
-        val errorMsg: String
+       @StringRes val errorMsgResId: Int
     ): SearchState
 
     class UpdateState(

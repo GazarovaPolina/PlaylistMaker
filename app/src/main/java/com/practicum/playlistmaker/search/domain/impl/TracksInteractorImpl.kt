@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.search.domain.impl
 
-import com.practicum.playlistmaker.SearchResult
+import android.os.Handler
+import android.os.Looper
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import java.util.concurrent.Executors
@@ -9,16 +10,14 @@ class TrackInteractorImpl(private val repository: TracksRepository) : TracksInte
 
     private val executor = Executors.newCachedThreadPool()
 
-    override fun searchTracks(expression: String, consumer: TracksInteractor.TracksConsumer) {
-        executor.execute {
-            when (val resource = repository.searchTracks(expression)) {
-                is SearchResult.Success -> {
-                    consumer.consume(resource.result, null)
-                }
+    private val handler: Handler = Handler(Looper.getMainLooper())
 
-                is SearchResult.Failure -> {
-                    consumer.consume(null, resource.errorMsg)
-                }
+    override fun searchTracks(expression: String, consumer: TracksInteractor.TracksConsumer) {
+
+        executor.execute {
+            val resource = repository.searchTracks(expression)
+            handler.post {
+                consumer.consume(resource)
             }
         }
     }

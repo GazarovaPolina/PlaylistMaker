@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -142,9 +143,6 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                // configureSearchTracksAdapter()
-                // searchDebounce()
-
                 binding.iconClear.visibility = clearButtonVisibility(s)
 
                 query = s?.toString()
@@ -189,8 +187,7 @@ class SearchActivity : AppCompatActivity() {
         when (state) {
             is SearchState.LoadState -> displaySearchProgressBar()
             is SearchState.ContentState -> displayTracksList(state.tracks)
-            is SearchState.ErrorState -> displayBadConnectionError(state.errorMsg)
-            is SearchState.EmptyState -> displayNothingFoundMessage(state.errorMsg)
+            is SearchState.ErrorState -> displayBadConnectionError(state.errorMsgResId)
             is SearchState.HistoryState -> loadHistory(state.tracks?.toCollection(ArrayList()))
             is SearchState.UpdateState -> updateHistory(state.tracks?.toCollection(ArrayList()))
         }
@@ -205,6 +202,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun displayTracksList(foundTracks: List<Track>) {
+        if (foundTracks.isEmpty()) {
+            displayNothingFoundMessage()
+            return
+        }
         binding.searchProgressBar.isVisible = false
         tracks.clear()
         tracks.addAll(foundTracks)
@@ -214,10 +215,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun displayBadConnectionError(errorMsg: String) {
+    private fun displayBadConnectionError(@StringRes  errorMsgResId: Int) {
         binding.searchProgressBar.isVisible = false
         binding.placeholderImage.setImageResource(R.drawable.ic_bad_connection)
-        binding.placeholderMessage.text = errorMsg
+        binding.placeholderMessage.text = getString(errorMsgResId)
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
         binding.btnUpdate.isVisible = true
@@ -226,10 +227,10 @@ class SearchActivity : AppCompatActivity() {
         updateTracksList(tracks)
     }
 
-    private fun displayNothingFoundMessage(errorMsg: String) {
+    private fun displayNothingFoundMessage() {
         binding.searchProgressBar.isVisible = false
         binding.placeholderImage.setImageResource(R.drawable.ic_placeholder_nothing_found)
-        binding.placeholderMessage.text = errorMsg
+        binding.placeholderMessage.text = getString(R.string.nothing_found)
         binding.placeholderImage.isVisible = true
         binding.placeholderMessage.isVisible = true
         binding.btnUpdate.isVisible = false
