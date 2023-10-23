@@ -24,7 +24,7 @@ import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 
 object Creator {
 
-    lateinit var app: Application
+    private lateinit var app: Application
 
     fun initApp(application: Application) {
         this.app = application

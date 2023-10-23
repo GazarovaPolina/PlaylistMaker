@@ -26,8 +26,9 @@ class SearchActivity : AppCompatActivity() {
     private var query: String? = null
     private var searchResultAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
-    private var tracks = ArrayList<Track>()
-    private var historyTracks = ArrayList<Track>()
+
+    // private var tracks = ArrayList<Track>()
+    //private var historyTracks = ArrayList<Track>()
     private var isSearchResultClickEnable = true
 
     private val handler = Handler(Looper.getMainLooper())
@@ -49,7 +50,7 @@ class SearchActivity : AppCompatActivity() {
 
         setIconClearOnClickListener()
 
-       binding.btnUpdate.setOnClickListener {
+        binding.btnUpdate.setOnClickListener {
             viewModel.searchDebounce(query ?: "")
         }
 
@@ -72,19 +73,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setIconClearOnClickListener() {
         binding.iconClear.setOnClickListener {
-
-            tracks.clear()
-            updateTracksList(tracks)
-            viewModel.getTracksFromHistory()
-            searchResultAdapter.notifyDataSetChanged()
-
-            binding.editTextSearch.setText("")
-            binding.placeholderMessage.isVisible = false
-            binding.placeholderImage.isVisible = false
-            binding.btnUpdate.isVisible = false
-            val inputMethodManager =
-                getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+            viewModel.onItemClearSearchQueryClick()
         }
     }
 
@@ -96,15 +85,14 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setBtnClearHistoryOnClickListener() {
         binding.btnClearHistory.setOnClickListener {
-            viewModel.clear()
-            hideSearchHistory()
+            viewModel.clearSearchHistory()
         }
     }
 
     private fun setOnSearchResultItemClick() {
         searchResultAdapter.onItemClick = {
             if (searchResClickDebounce()) {
-                viewModel.addTrackToHistory(it)
+                viewModel.onSearchResultItemClick(it)
                 displayAudioPlayer(it)
             }
         }
@@ -113,8 +101,7 @@ class SearchActivity : AppCompatActivity() {
     private fun setOnHistoryTrackClick() {
         historyAdapter.onItemClick = {
             if (searchResClickDebounce()) {
-                viewModel.addTrackToHistory(it)
-                viewModel.getTracksFromHistory()
+                viewModel.onHistoryTrackClick(it)
                 displayAudioPlayer(it)
             }
         }
@@ -142,19 +129,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                binding.iconClear.visibility = clearButtonVisibility(s)
-
                 query = s?.toString()
                 viewModel.searchDebounce(query ?: "")
-
-                if (binding.editTextSearch.hasFocus() && s?.isEmpty() == true) {
-                    showSearchHistory()
-                } else {
-                    historyTracks.clear()
-                    historyAdapter.notifyDataSetChanged()
-                    hideSearchHistory()
-                }
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -162,34 +138,17 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-
-
-    private fun showSearchHistory() {
-        binding.searchHistoryMessage.isVisible = true
-        binding.recyclerViewTracks.isVisible = true
-        binding.btnClearHistory.isVisible = true
-    }
-
-    private fun hideSearchHistory() {
-        binding.searchHistoryMessage.isVisible = false
-        binding.recyclerViewTracks.isVisible = false
-        binding.btnClearHistory.isVisible = false
-    }
 
     private fun executeAction(state: SearchState) {
+        binding.iconClear.isVisible = state is SearchState.ContentState || state is SearchState.LoadState || state is SearchState.ErrorState
+        binding.btnUpdate.isVisible = state is SearchState.ErrorState
+        binding.recyclerViewTracks.isVisible = state is SearchState.HistoryState && state.tracks.isNotEmpty()
+
         when (state) {
             is SearchState.LoadState -> displaySearchProgressBar()
             is SearchState.ContentState -> displayTracksList(state.tracks)
             is SearchState.ErrorState -> displayBadConnectionError(state.errorMsgResId)
-            is SearchState.HistoryState -> loadHistory(state.tracks?.toCollection(ArrayList()))
-            is SearchState.UpdateState -> updateHistory(state.tracks?.toCollection(ArrayList()))
+            is SearchState.HistoryState -> loadHistory(state.tracks)
         }
     }
 
@@ -207,15 +166,13 @@ class SearchActivity : AppCompatActivity() {
             return
         }
         binding.searchProgressBar.isVisible = false
-        tracks.clear()
-        tracks.addAll(foundTracks)
         binding.recyclerViewTracks.adapter = searchResultAdapter
-        updateTracksList(tracks)
+        updateTracksList(foundTracks)
         binding.recyclerViewTracks.isVisible = true
     }
 
 
-    private fun displayBadConnectionError(@StringRes  errorMsgResId: Int) {
+    private fun displayBadConnectionError(@StringRes errorMsgResId: Int) {
         binding.searchProgressBar.isVisible = false
         binding.placeholderImage.setImageResource(R.drawable.ic_bad_connection)
         binding.placeholderMessage.text = getString(errorMsgResId)
@@ -223,8 +180,6 @@ class SearchActivity : AppCompatActivity() {
         binding.placeholderMessage.isVisible = true
         binding.btnUpdate.isVisible = true
         binding.recyclerViewTracks.isVisible = false
-        tracks.clear()
-        updateTracksList(tracks)
     }
 
     private fun displayNothingFoundMessage() {
@@ -235,35 +190,24 @@ class SearchActivity : AppCompatActivity() {
         binding.placeholderMessage.isVisible = true
         binding.btnUpdate.isVisible = false
         binding.recyclerViewTracks.isVisible = false
-        tracks.clear()
-        updateTracksList(tracks)
     }
 
-    private fun loadHistory(historyTracks: ArrayList<Track>?) {
+    private fun loadHistory(historyTracks: List<Track>?) {
         binding.placeholderImage.isVisible = false
         binding.placeholderMessage.isVisible = false
         binding.btnUpdate.isVisible = false
+        binding.editTextSearch.setText("")
         if (historyTracks.isNullOrEmpty()) {
-            binding.recyclerViewTracks.isVisible=false
+            binding.recyclerViewTracks.isVisible = false
             binding.searchHistoryMessage.isVisible = false
             binding.btnClearHistory.isVisible = false
         } else {
-            this.historyTracks = historyTracks
             historyAdapter.tracks = historyTracks.toCollection(ArrayList())
             binding.recyclerViewTracks.adapter = historyAdapter
             historyAdapter.notifyDataSetChanged()
-            binding.recyclerViewTracks.isVisible =true
+            binding.recyclerViewTracks.isVisible = true
             binding.searchHistoryMessage.isVisible = true
             binding.btnClearHistory.isVisible = true
-        }
-    }
-
-    private fun updateHistory(historyTracks: ArrayList<Track>?) {
-        if (historyTracks != null) {
-            this.historyTracks = historyTracks
-            historyAdapter.tracks = historyTracks.toCollection(ArrayList())
-            binding.recyclerViewTracks.adapter = historyAdapter
-            historyAdapter.notifyDataSetChanged()
         }
     }
 
@@ -285,24 +229,3 @@ class SearchActivity : AppCompatActivity() {
         private const val SEARCH_RES_CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

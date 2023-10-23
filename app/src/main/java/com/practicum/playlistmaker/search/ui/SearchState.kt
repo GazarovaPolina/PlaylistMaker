@@ -12,14 +12,10 @@ sealed interface SearchState {
     ) : SearchState
 
     class HistoryState(
-        val tracks: Array<Track>?
+        val tracks: List<Track>
     ): SearchState
 
     class ErrorState(
        @StringRes val errorMsgResId: Int
-    ): SearchState
-
-    class UpdateState(
-        val tracks: Array<Track>?
     ): SearchState
 }

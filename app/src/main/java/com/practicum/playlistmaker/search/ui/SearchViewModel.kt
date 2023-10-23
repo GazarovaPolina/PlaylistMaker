@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,29 +24,55 @@ class SearchViewModel(
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
+    private var historyTracks = ArrayList<Track>()
+    private val handler: Handler = Handler(Looper.getMainLooper())
+
     init {
         makeState(SearchState.HistoryState(historySearchInteractor.getTracksFromHistory()))
     }
+
+    fun onItemClearSearchQueryClick() {
+        updateStateWithTracksFromHistory()
+    }
+
+    fun onSearchResultItemClick(track: Track) {
+        addTrackToHistory(track)
+    }
+
+    fun onHistoryTrackClick(track: Track) {
+        addTrackToHistory(track)
+        updateStateWithTracksFromHistory()
+    }
+
+    fun onTextChanged() {
+        historyTracks.clear()
+    }
+
 
     private fun makeState(state: SearchState) {
         stateLiveData.postValue(state)
     }
 
-    fun getTracksFromHistory() {
+    private fun updateStateWithTracksFromHistory() {
         makeState(SearchState.HistoryState(historySearchInteractor.getTracksFromHistory()))
     }
 
-    fun addTrackToHistory(track: Track) {
+    private fun addTrackToHistory(track: Track) {
         historySearchInteractor.addTrackToHistory(track)
     }
 
-    fun clear() {
+    fun clearSearchHistory() {
         historySearchInteractor.clearSearchHistory()
+        updateStateWithTracksFromHistory()
     }
 
     fun searchDebounce(changedText: String) {
         this.lastSearchText = changedText
-        searchDebounce.searchDebounce { searchRequest(changedText) }
+        if (changedText.isEmpty()) {
+            updateStateWithTracksFromHistory()
+        } else {
+            searchDebounce.searchDebounce { searchRequest(changedText) }
+        }
     }
 
     private var lastSearchText: String? = null
@@ -63,9 +89,11 @@ class SearchViewModel(
                 newSearchText,
                 object : TracksInteractor.TracksConsumer {
                     override fun consume(foundTracks: SearchResult<List<Track>>) {
-                        when (foundTracks) {
-                            is SearchResult.Failure -> makeState(SearchState.ErrorState(R.string.bad_connection))
-                            is SearchResult.Success -> makeState(SearchState.ContentState(foundTracks.result))
+                        handler.post {
+                            when (foundTracks) {
+                                is SearchResult.Failure -> makeState(SearchState.ErrorState(R.string.bad_connection))
+                                is SearchResult.Success -> makeState(SearchState.ContentState(foundTracks.result))
+                            }
                         }
                     }
                 })

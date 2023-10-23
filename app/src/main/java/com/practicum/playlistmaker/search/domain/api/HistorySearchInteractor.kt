@@ -6,7 +6,7 @@ interface HistorySearchInteractor {
 
     fun addTrackToHistory(track: Track)
 
-    fun getTracksFromHistory(): Array<Track>
+    fun getTracksFromHistory(): List<Track>
 
     fun clearSearchHistory()
 }

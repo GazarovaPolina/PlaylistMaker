@@ -43,9 +43,9 @@ class HistorySearchRepositoryImpl(app: Application): HistorySearchRepository {
         write(sharedPrefs, searchHistoryTracks)
     }
 
-    override fun getTracksFromHistory(): Array<Track> {
-        val json = sharedPrefs.getString(SEARCH_HISTORY_KEY, null) ?: return emptyArray()
-        return Gson().fromJson(json, Array<Track>::class.java)
+    override fun getTracksFromHistory(): List<Track> {
+        val json = sharedPrefs.getString(SEARCH_HISTORY_KEY, null) ?: return emptyList()
+        return Gson().fromJson(json, Array<Track>::class.java).toList()
     }
 
     override fun clearSearchHistory() {

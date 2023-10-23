@@ -9,7 +9,7 @@ class HistorySearchInteractorImpl(private val historySearchRepository: HistorySe
         historySearchRepository.addTrackToHistory(track)
     }
 
-    override fun getTracksFromHistory(): Array<Track> {
+    override fun getTracksFromHistory(): List<Track> {
         return historySearchRepository.getTracksFromHistory()
     }
 
