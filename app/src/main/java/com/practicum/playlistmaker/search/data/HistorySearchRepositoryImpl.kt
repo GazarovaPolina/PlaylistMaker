@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.search.domain.HistorySearchRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 
-const val SEARCH_HISTORY_KEY = "search_history_key"
+
 class HistorySearchRepositoryImpl(app: Application): HistorySearchRepository {
 
     private val sharedPrefs: SharedPreferences = app.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
@@ -62,5 +62,6 @@ class HistorySearchRepositoryImpl(app: Application): HistorySearchRepository {
 
     companion object {
         const val APP_PREFERENCES = "app_preferences"
+        const val SEARCH_HISTORY_KEY = "search_history_key"
     }
 }

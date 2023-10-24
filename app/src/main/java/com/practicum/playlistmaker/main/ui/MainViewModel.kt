@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.main.MainViewEvents
-import com.practicum.playlistmaker.main.domain.ScreenState
 
 class MainViewModel : ViewModel() {
 

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.main.domain
+package com.practicum.playlistmaker.main.ui
 
 sealed interface ScreenState{
 

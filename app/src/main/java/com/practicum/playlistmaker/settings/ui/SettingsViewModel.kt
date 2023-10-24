@@ -29,7 +29,6 @@ class SettingsViewModel(
     fun onThemeSwitcherClicked(isChecked: Boolean) {
         themeSwitcherCondition.value = isChecked
         settingsInteractor.setThemeSettings(AppTheme(darkTheme = isChecked))
-        //switchTheme(isChecked)
         AppThemeSwitcher.switchTheme(isChecked)
     }
 

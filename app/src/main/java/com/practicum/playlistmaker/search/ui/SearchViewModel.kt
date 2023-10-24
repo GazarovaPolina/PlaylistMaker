@@ -10,7 +10,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.SearchResult
+import com.practicum.playlistmaker.search.domain.SearchResult
 import com.practicum.playlistmaker.search.domain.api.HistorySearchInteractor
 import com.practicum.playlistmaker.search.domain.api.SearchDebounce
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
