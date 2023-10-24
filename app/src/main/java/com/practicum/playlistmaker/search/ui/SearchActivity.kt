@@ -111,7 +111,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun displayAudioPlayer(track: Track) {
         val intent = Intent(this, AudioPlayerActivity::class.java)
-        intent.putExtra("track", track)
+        intent.putExtra(TRACK, track)
         startActivity(intent)
     }
 
@@ -196,6 +196,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val TRACK = "track"
         private const val SEARCH_QUERY = "SEARCH_QUERY"
         private const val SEARCH_RES_CLICK_DEBOUNCE_DELAY = 1000L
     }
