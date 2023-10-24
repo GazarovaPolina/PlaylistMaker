@@ -10,10 +10,10 @@ import com.practicum.playlistmaker.AppThemeSwitcher
 import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.settings.domain.AppTheme
 import com.practicum.playlistmaker.settings.domain.SettingsInteractor
-import com.practicum.playlistmaker.sharing.domain.SharingInteractor
+import com.practicum.playlistmaker.sharing.domain.ExternalActions
 
 class SettingsViewModel(
-    private val sharingInteractor: SharingInteractor,
+    private val externalActions: ExternalActions,
     private val settingsInteractor: SettingsInteractor
 ) : ViewModel() {
 
@@ -33,22 +33,22 @@ class SettingsViewModel(
     }
 
     fun onWriteToSupportClicked() {
-        sharingInteractor.writeToSupport()
+        externalActions.writeToSupport()
     }
 
     fun onShareAppLinkClicked() {
-        sharingInteractor.shareAppLink()
+        externalActions.shareAppLink()
     }
 
     fun onAgreementClicked() {
-        sharingInteractor.openAgreement()
+        externalActions.openAgreement()
     }
 
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 SettingsViewModel(
-                    sharingInteractor = Creator.provideSharingInteractor(),
+                    externalActions = Creator.getExternalActions(),
                     settingsInteractor = Creator.provideSettingsInteractor()
                 )
             }

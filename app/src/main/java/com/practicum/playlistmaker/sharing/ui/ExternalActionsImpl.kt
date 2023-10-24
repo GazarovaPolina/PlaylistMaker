@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.sharing.data
+package com.practicum.playlistmaker.sharing.ui
 
 import android.content.Context
 import android.content.Intent
