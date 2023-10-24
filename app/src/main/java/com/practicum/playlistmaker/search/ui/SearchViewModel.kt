@@ -44,11 +44,6 @@ class SearchViewModel(
         updateStateWithTracksFromHistory()
     }
 
-    fun onTextChanged() {
-        historyTracks.clear()
-    }
-
-
     private fun makeState(state: SearchState) {
         stateLiveData.postValue(state)
     }
@@ -96,9 +91,9 @@ class SearchViewModel(
                             }
                         }
                     }
-                })
+                }
+            )
         }
-
     }
 
     companion object {

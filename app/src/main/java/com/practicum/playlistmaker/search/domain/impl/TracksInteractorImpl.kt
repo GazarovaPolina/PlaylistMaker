@@ -10,15 +10,9 @@ class TrackInteractorImpl(private val repository: TracksRepository) : TracksInte
 
     private val executor = Executors.newCachedThreadPool()
 
-    //private val handler: Handler = Handler(Looper.getMainLooper())
-
     override fun searchTracks(expression: String, consumer: TracksInteractor.TracksConsumer) {
-
         executor.execute {
             val resource = repository.searchTracks(expression)
-           /* handler.post {
-                consumer.consume(resource)
-            }*/
             consumer.consume(resource)
         }
     }

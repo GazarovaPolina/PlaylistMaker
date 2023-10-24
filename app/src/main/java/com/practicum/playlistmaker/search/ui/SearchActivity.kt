@@ -1,14 +1,11 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -20,15 +17,11 @@ import com.practicum.playlistmaker.search.domain.models.Track
 
 
 class SearchActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivitySearchBinding
 
     private var query: String? = null
     private var searchResultAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
-
-    // private var tracks = ArrayList<Track>()
-    //private var historyTracks = ArrayList<Track>()
     private var isSearchResultClickEnable = true
 
     private val handler = Handler(Looper.getMainLooper())
@@ -124,16 +117,16 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setSearchQueryChangedListener() {
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                query = s?.toString()
-                viewModel.searchDebounce(query ?: "")
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
+            override fun afterTextChanged(editable: Editable?) {
+                val queryString = editable?.toString()
+                if (query != queryString) {
+                    query = queryString
+                    viewModel.searchDebounce(queryString ?: "")
+                }
             }
         })
     }
@@ -142,22 +135,21 @@ class SearchActivity : AppCompatActivity() {
     private fun executeAction(state: SearchState) {
         binding.iconClear.isVisible = state is SearchState.ContentState || state is SearchState.LoadState || state is SearchState.ErrorState
         binding.btnUpdate.isVisible = state is SearchState.ErrorState
-        binding.recyclerViewTracks.isVisible = state is SearchState.HistoryState && state.tracks.isNotEmpty()
+        binding.recyclerViewTracks.isVisible =
+            state is SearchState.HistoryState && state.tracks.isNotEmpty() || state is SearchState.ContentState && state.tracks.isNotEmpty()
+        binding.btnClearHistory.isVisible = state is SearchState.HistoryState
+        binding.searchHistoryMessage.isVisible = state is SearchState.HistoryState && state.tracks.isNotEmpty()
+        binding.searchProgressBar.isVisible = state is SearchState.LoadState
+        binding.placeholderImage.isVisible = state is SearchState.ErrorState || state is SearchState.ContentState && state.tracks.isEmpty()
+        binding.placeholderMessage.isVisible = state is SearchState.ErrorState || state is SearchState.ContentState && state.tracks.isEmpty()
+        binding.btnClearHistory.isVisible = state is SearchState.HistoryState && !state.tracks.isNullOrEmpty()
 
         when (state) {
-            is SearchState.LoadState -> displaySearchProgressBar()
             is SearchState.ContentState -> displayTracksList(state.tracks)
             is SearchState.ErrorState -> displayBadConnectionError(state.errorMsgResId)
             is SearchState.HistoryState -> loadHistory(state.tracks)
+            else -> {}
         }
-    }
-
-    private fun displaySearchProgressBar() {
-        binding.searchProgressBar.isVisible = true
-        binding.recyclerViewTracks.isVisible = false
-        binding.placeholderImage.isVisible = false
-        binding.placeholderMessage.isVisible = false
-        binding.btnUpdate.isVisible = false
     }
 
     private fun displayTracksList(foundTracks: List<Track>) {
@@ -165,49 +157,28 @@ class SearchActivity : AppCompatActivity() {
             displayNothingFoundMessage()
             return
         }
-        binding.searchProgressBar.isVisible = false
         binding.recyclerViewTracks.adapter = searchResultAdapter
         updateTracksList(foundTracks)
-        binding.recyclerViewTracks.isVisible = true
     }
 
 
     private fun displayBadConnectionError(@StringRes errorMsgResId: Int) {
-        binding.searchProgressBar.isVisible = false
         binding.placeholderImage.setImageResource(R.drawable.ic_bad_connection)
         binding.placeholderMessage.text = getString(errorMsgResId)
-        binding.placeholderImage.isVisible = true
-        binding.placeholderMessage.isVisible = true
-        binding.btnUpdate.isVisible = true
-        binding.recyclerViewTracks.isVisible = false
     }
 
     private fun displayNothingFoundMessage() {
-        binding.searchProgressBar.isVisible = false
         binding.placeholderImage.setImageResource(R.drawable.ic_placeholder_nothing_found)
         binding.placeholderMessage.text = getString(R.string.nothing_found)
-        binding.placeholderImage.isVisible = true
-        binding.placeholderMessage.isVisible = true
-        binding.btnUpdate.isVisible = false
-        binding.recyclerViewTracks.isVisible = false
     }
 
     private fun loadHistory(historyTracks: List<Track>?) {
-        binding.placeholderImage.isVisible = false
-        binding.placeholderMessage.isVisible = false
-        binding.btnUpdate.isVisible = false
         binding.editTextSearch.setText("")
         if (historyTracks.isNullOrEmpty()) {
-            binding.recyclerViewTracks.isVisible = false
-            binding.searchHistoryMessage.isVisible = false
-            binding.btnClearHistory.isVisible = false
         } else {
             historyAdapter.tracks = historyTracks.toCollection(ArrayList())
             binding.recyclerViewTracks.adapter = historyAdapter
             historyAdapter.notifyDataSetChanged()
-            binding.recyclerViewTracks.isVisible = true
-            binding.searchHistoryMessage.isVisible = true
-            binding.btnClearHistory.isVisible = true
         }
     }
 
