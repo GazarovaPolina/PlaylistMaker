@@ -44,7 +44,7 @@ class SettingsViewModel(
         externalActions.openAgreement()
     }
 
-    companion object {
+    /*companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 SettingsViewModel(
@@ -53,5 +53,5 @@ class SettingsViewModel(
                 )
             }
         }
-    }
+    }*/
 }

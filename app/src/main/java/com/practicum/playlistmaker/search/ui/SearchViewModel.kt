@@ -5,10 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.domain.SearchResult
 import com.practicum.playlistmaker.search.domain.api.HistorySearchInteractor
@@ -93,18 +89,6 @@ class SearchViewModel(
                     }
                 }
             )
-        }
-    }
-
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    historySearchInteractor = Creator.provideSearchHistory(),
-                    searchDebounce = Creator.getSearchDebounce(),
-                    tracksInteractor = Creator.provideTracksInteractor(),
-                )
-            }
         }
     }
 }

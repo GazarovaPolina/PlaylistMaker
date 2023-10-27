@@ -1,7 +1,5 @@
 package com.practicum.playlistmaker.search.domain.impl
 
-import android.os.Handler
-import android.os.Looper
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import java.util.concurrent.Executors

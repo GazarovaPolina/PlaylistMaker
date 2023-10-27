@@ -7,8 +7,8 @@ import com.practicum.playlistmaker.player.domain.MediaPlayerState
 class MediaPlayerInteractorImpl(
     private val mediaPlayer: MediaPlayerRepository): MediaPlayerInteractor {
 
-    override fun prepareMediaPlayer() {
-        mediaPlayer.prepareMediaPlayer()
+    override fun prepareMediaPlayer(trackPreviewUrl: String) {
+        mediaPlayer.prepareMediaPlayer(trackPreviewUrl)
     }
 
     override fun startMediaPlayer() {

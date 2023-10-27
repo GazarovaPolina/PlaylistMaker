@@ -5,8 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.player.domain.MediaPlayerActivityState
 import com.practicum.playlistmaker.player.domain.MediaPlayerInteractor
 import com.practicum.playlistmaker.player.domain.MediaPlayerState
@@ -14,12 +12,13 @@ import com.practicum.playlistmaker.search.domain.models.Track
 
 class MediaPlayerViewModel(
     private val mediaPlayer: MediaPlayerInteractor,
-    track: Track
+    private val track: Track
 ) : ViewModel() {
 
     private val mediaPlayerState = MutableLiveData<MediaPlayerActivityState>()
     val playerState: LiveData<MediaPlayerActivityState> = mediaPlayerState
     private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
+
 
     init {
         mediaPlayerState.postValue(MediaPlayerActivityState.playerPreparedState(track))
@@ -30,7 +29,7 @@ class MediaPlayerViewModel(
     }
 
     fun preparePlayer() {
-        mediaPlayer.prepareMediaPlayer()
+        track.previewUrl?.let { mediaPlayer.prepareMediaPlayer(it) }
     }
 
     private fun startPlayer() {
@@ -102,21 +101,5 @@ class MediaPlayerViewModel(
 
     companion object {
         private const val DELAY_MILLIS = 10L
-
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return track.previewUrl?.let { Creator.provideMediaPlayerInteractor(trackPreviewUrl = it) }
-                        ?.let {
-                            MediaPlayerViewModel(
-                                track = track,
-                                mediaPlayer = it
-                            )
-                        } as T
-                }
-            }
-
     }
 }

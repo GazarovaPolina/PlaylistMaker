@@ -4,7 +4,7 @@ interface MediaPlayerRepository {
 
     var playerState: MediaPlayerState
 
-    fun prepareMediaPlayer()
+    fun prepareMediaPlayer(trackPreviewUrl: String)
 
     fun startMediaPlayer()
 

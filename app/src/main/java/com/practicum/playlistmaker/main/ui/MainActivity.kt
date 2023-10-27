@@ -8,37 +8,34 @@ import com.practicum.playlistmaker.search.ui.SearchActivity
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
 import com.practicum.playlistmaker.ui.MediaLibActivity
 import com.practicum.playlistmaker.settings.ui.SettingsActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
-    private var viewModel: MainViewModel? = null
+    //private var viewModel: MainViewModel? = null
+    private val viewModel: MainViewModel by viewModel()
+    //val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        viewModel = ViewModelProvider(
-            this,
-            MainViewModel.getViewModelFactory()
-        )[MainViewModel::class.java]
-
-        viewModel?.screenState?.observe(this) {
+        viewModel.screenState.observe(this) {
             showScreen(it)
         }
 
-
         binding?.btnSearch?.setOnClickListener {
-            viewModel?.onSearchBtnClicked()
+            viewModel.onSearchBtnClicked()
         }
 
         binding?.btnMediaLib?.setOnClickListener {
-            viewModel?.onMediaLibBtnClicked()
+            viewModel.onMediaLibBtnClicked()
         }
 
         binding?.btnSettings?.setOnClickListener {
-            viewModel?.onSettingsBtnClicked()
+            viewModel.onSettingsBtnClicked()
         }
     }
 

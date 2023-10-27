@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.practicum.playlistmaker.di.viewModelModule
 import com.practicum.playlistmaker.main.MainViewEvents
+import org.koin.java.KoinJavaComponent.inject
 
 class MainViewModel : ViewModel() {
 
