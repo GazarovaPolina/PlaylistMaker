@@ -3,10 +3,8 @@ package com.practicum.playlistmaker.di
 import android.content.Context
 import com.google.gson.Gson
 import com.practicum.playlistmaker.search.data.NetworkClient
-import com.practicum.playlistmaker.search.data.SearchDebounceImpl
 import com.practicum.playlistmaker.search.data.network.ITunesSearchApi
 import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.search.domain.api.SearchDebounce
 import com.practicum.playlistmaker.sharing.domain.ExternalActions
 import com.practicum.playlistmaker.sharing.ui.ExternalActionsImpl
 import org.koin.android.ext.koin.androidContext
@@ -33,10 +31,6 @@ val dataModule = module {
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
-    }
-
-    single<SearchDebounce> {
-        SearchDebounceImpl()
     }
 
     single<ExternalActions> {

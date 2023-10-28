@@ -2,25 +2,23 @@ package com.practicum.playlistmaker.search.ui
 
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.domain.SearchResult
 import com.practicum.playlistmaker.search.domain.api.HistorySearchInteractor
-import com.practicum.playlistmaker.search.domain.api.SearchDebounce
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
-    private val searchDebounce: SearchDebounce,
     val historySearchInteractor: HistorySearchInteractor,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
-    private var historyTracks = ArrayList<Track>()
     private val handler: Handler = Handler(Looper.getMainLooper())
 
     init {
@@ -62,7 +60,7 @@ class SearchViewModel(
         if (changedText.isEmpty()) {
             updateStateWithTracksFromHistory()
         } else {
-            searchDebounce.searchDebounce { searchRequest(changedText) }
+            searchDebounce { searchRequest(changedText) }
         }
     }
 
@@ -70,7 +68,7 @@ class SearchViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        searchDebounce.clear()
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
     }
 
     private fun searchRequest(newSearchText: String) {
@@ -90,5 +88,21 @@ class SearchViewModel(
                 }
             )
         }
+    }
+
+    fun searchDebounce(request: () -> Unit) {
+        val searchRunnable = Runnable { request() }
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
+        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+        handler.postAtTime(
+            searchRunnable,
+            SEARCH_REQUEST,
+            postTime,
+        )
+    }
+
+    companion object {
+        private val SEARCH_REQUEST = Any()
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
