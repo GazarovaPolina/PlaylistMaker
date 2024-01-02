@@ -3,13 +3,14 @@ package com.practicum.playlistmaker.player.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
-import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.player.domain.MediaPlayerActivityState
+import com.practicum.playlistmaker.search.domain.models.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -17,19 +18,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
 
-    private lateinit var viewModel: MediaPlayerViewModel
+   val track by lazy { IntentCompat.getParcelableExtra(intent, TRACK, Track::class.java)!! }
+
+    val viewModel: MediaPlayerViewModel by viewModel { parametersOf(track) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val track = IntentCompat.getParcelableExtra(intent, TRACK, Track::class.java)
-
-        viewModel = ViewModelProvider(
-            this,
-            MediaPlayerViewModel.getViewModelFactory(track = track!!)
-        )[MediaPlayerViewModel::class.java]
 
         viewModel.playerState.observe(this) {
             render(it)
@@ -78,7 +74,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-       // viewModel.preparePlayer()
+        // viewModel.preparePlayer()
         binding.playPauseBtn.setBackgroundResource(R.drawable.ic_play)
         binding.trackPlaybackProgress.text = getString(R.string.track_playback_progress)
     }

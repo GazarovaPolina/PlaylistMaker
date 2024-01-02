@@ -1,7 +1,5 @@
 package com.practicum.playlistmaker.search.data
 
-import android.app.Application
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
@@ -9,9 +7,7 @@ import com.practicum.playlistmaker.search.domain.HistorySearchRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 
 
-class HistorySearchRepositoryImpl(app: Application): HistorySearchRepository {
-
-    private val sharedPrefs: SharedPreferences = app.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+class HistorySearchRepositoryImpl(private val sharedPrefs: SharedPreferences, private val gson: Gson) : HistorySearchRepository {
 
     override fun addTrackToHistory(track: Track) {
         val searchHistoryTracks = ArrayList<Track>()
@@ -31,9 +27,8 @@ class HistorySearchRepositoryImpl(app: Application): HistorySearchRepository {
 
                 if (searchHistoryTracks.count() > 9) searchHistoryTracks.removeLast()
             }
-        }
-        else {
-            val json = Gson().toJson(searchHistoryTracks)
+        } else {
+            val json = gson.toJson(searchHistoryTracks)
             sharedPrefs.edit {
                 putString(SEARCH_HISTORY_KEY, json)
             }
@@ -61,7 +56,7 @@ class HistorySearchRepositoryImpl(app: Application): HistorySearchRepository {
     }
 
     companion object {
-        const val APP_PREFERENCES = "app_preferences"
+        //const val APP_PREFERENCES = "app_preferences"
         const val SEARCH_HISTORY_KEY = "search_history_key"
     }
 }

@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.player.domain
 
 interface MediaPlayerInteractor {
 
-    fun prepareMediaPlayer()
+    fun prepareMediaPlayer(trackPreviewUrl: String)
 
     fun startMediaPlayer()
 

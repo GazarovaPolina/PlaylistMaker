@@ -14,6 +14,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchActivity : AppCompatActivity() {
@@ -25,17 +26,14 @@ class SearchActivity : AppCompatActivity() {
     private var isSearchResultClickEnable = true
 
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var viewModel: SearchViewModel
+    // private lateinit var viewModel: SearchViewModel
+
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
 
         setToolbarIconOnClickListener()
 

@@ -7,10 +7,10 @@ import androidx.core.content.edit
 import com.practicum.playlistmaker.settings.domain.AppTheme
 import com.practicum.playlistmaker.settings.domain.SettingsRepository
 
-class SettingsRepositoryImpl(app: Application) : SettingsRepository {
+class SettingsRepositoryImpl(private val sharedPrefs: SharedPreferences) : SettingsRepository {
 
-    private val sharedPrefs: SharedPreferences =
-        app.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+    //private val sharedPrefs: SharedPreferences =
+        //app.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
 
     override fun getThemeSettings(): AppTheme = AppTheme(sharedPrefs.getBoolean(THEME_KEY, false))
 

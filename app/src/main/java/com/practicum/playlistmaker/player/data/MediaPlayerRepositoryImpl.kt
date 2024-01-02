@@ -6,13 +6,13 @@ import com.practicum.playlistmaker.player.domain.MediaPlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MediaPlayerRepositoryImpl(private val trackPreviewUrl: String) : MediaPlayerRepository {
+class MediaPlayerRepositoryImpl() : MediaPlayerRepository {
 
     private var mediaPlayer = MediaPlayer()
 
     override var playerState = MediaPlayerState.STATE_DEFAULT
 
-    override fun prepareMediaPlayer() {
+    override fun prepareMediaPlayer(trackPreviewUrl: String) {
         mediaPlayer.setDataSource(trackPreviewUrl)
         mediaPlayer.prepareAsync()
         setOnPreparedListener {
