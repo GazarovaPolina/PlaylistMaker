@@ -11,10 +11,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
-
-    private var darkTheme = false
-
-
     override fun onCreate() {
         super.onCreate()
 
@@ -25,8 +21,7 @@ class App : Application() {
 
         val settingsInteractor: SettingsInteractor by inject()
 
-        darkTheme = settingsInteractor.getThemeSettings().darkTheme
-
+        val darkTheme = settingsInteractor.getThemeSettings().darkTheme
         AppThemeSwitcher.switchTheme(darkTheme)
     }
 }

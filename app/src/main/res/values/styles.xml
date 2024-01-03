@@ -78,7 +78,7 @@
         <item name="android:textColor">@color/dark_blue</item>
         <item name="android:textSize">@dimen/extra_large_text_size</item>
         <item name="android:textAllCaps">false</item>
-        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="cornerRadius">@dimen/corner_radius_small</item>
         <item name="android:layout_marginBottom">@dimen/medium_indent</item>
         <item name="iconGravity">textStart</item>
         <item name="iconTint">@color/dark_blue</item>
@@ -130,5 +130,47 @@
         <item name="android:paddingTop">9dp</item>
         <item name="android:paddingBottom">8dp</item>
     </style>
+
+    <style name="tabLayoutText">
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textColor"> @color/dark_blue</item>
+    </style>
+
+    <style name="ToolbarMediaLibStyle">
+        <item name="titleTextColor">@color/dark_blue</item>
+        <item name="navigationIcon">@drawable/ic_arrow_back</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:gravity">top</item>
+        <item name="titleMarginTop">14dp</item>
+        <item name="titleTextAppearance">@style/Toolbar.TitleText</item>
+        <item name="contentInsetStartWithNavigation">64dp</item>
+        <item name="fontFamily">"@font/ys_display_medium</item>
+    </style>
+
+    <style name="MediaLibTabLayoutStyle">
+        <item name="backgroundTint">@color/white</item>
+        <item name="tabIndicatorColor">@color/dark_blue</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabTextAppearance">@style/tabLayoutText</item>
+        <item name="tabSelectedTextColor">@color/dark_blue</item>
+        <item name="tabBackground">@color/white</item>
+        <item name="tabTextColor">@color/dark_blue</item>
+    </style>
+
+    <style name="mediaLibNewPlaylistButtonStyle">
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:backgroundTint">@color/dark_blue_white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:text">@string/new_playlist</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/white_dark_blue</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="cornerRadius">@dimen/corner_radius_big</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
 
 </resources>

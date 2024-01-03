@@ -21,5 +21,6 @@
     <color name="track_playback_progress">@color/white</color>
     <color name="track_additional_info">@color/white</color>
     <color name="pause_btn">@color/white</color>
-
+    <color name="dark_blue_white">@color/white</color>
+    <color name="white_dark_blue">@color/dark_blue</color>
 </resources>

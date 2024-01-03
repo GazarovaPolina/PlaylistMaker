@@ -17,14 +17,13 @@ class MediaPlayerViewModel(
 
     private val mediaPlayerState = MutableLiveData<MediaPlayerActivityState>()
     val playerState: LiveData<MediaPlayerActivityState> = mediaPlayerState
-    private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
+    private val mainThreadHandler: Handler = Handler(Looper.getMainLooper())
 
 
     init {
         mediaPlayerState.postValue(MediaPlayerActivityState.playerPreparedState(track))
         mediaPlayer.setOnCompletionListener {
             mediaPlayerState.postValue(MediaPlayerActivityState.playerPreparedState(track))
-            mainThreadHandler?.removeCallbacksAndMessages(null)
         }
     }
 
@@ -46,7 +45,7 @@ class MediaPlayerViewModel(
 
     fun playerStop() {
         mediaPlayer.stopMediaPlayer()
-        mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
+        mainThreadHandler.removeCallbacks(createUpdateTimerTask())
     }
 
     fun playPauseControl() {
@@ -62,20 +61,20 @@ class MediaPlayerViewModel(
             else -> {}
         }
 
-        mainThreadHandler?.post(
+        mainThreadHandler.post(
             createUpdateTimerTask()
         )
     }
 
     fun onDestroy() {
         mediaPlayer.release()
-        mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
+        mainThreadHandler.removeCallbacks(createUpdateTimerTask())
     }
 
     override fun onCleared() {
         super.onCleared()
         mediaPlayer.release()
-        mainThreadHandler?.removeCallbacksAndMessages(null)
+        mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
     private fun createUpdateTimerTask(): Runnable {
@@ -84,13 +83,13 @@ class MediaPlayerViewModel(
                 when (mediaPlayer.getPlayerState()) {
                     MediaPlayerState.STATE_PLAYING -> {
                         val time = mediaPlayer.currentPosition()
-                        mainThreadHandler?.postDelayed(this, DELAY_MILLIS)
+                        mainThreadHandler.postDelayed(this, DELAY_MILLIS)
                         mediaPlayerState.value =
                             MediaPlayerActivityState.playerPlayState(time)
                     }
 
                     MediaPlayerState.STATE_PREPARED, MediaPlayerState.STATE_PAUSED -> {
-                        mainThreadHandler?.removeCallbacks(this)
+                        mainThreadHandler.removeCallbacks(this)
                     }
 
                     else -> {}

@@ -18,9 +18,9 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
 
-   val track by lazy { IntentCompat.getParcelableExtra(intent, TRACK, Track::class.java)!! }
+   private val track by lazy { IntentCompat.getParcelableExtra(intent, TRACK, Track::class.java)!! }
 
-    val viewModel: MediaPlayerViewModel by viewModel { parametersOf(track) }
+    private val viewModel: MediaPlayerViewModel by viewModel { parametersOf(track) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +74,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        // viewModel.preparePlayer()
         binding.playPauseBtn.setBackgroundResource(R.drawable.ic_play)
         binding.trackPlaybackProgress.text = getString(R.string.track_playback_progress)
     }
