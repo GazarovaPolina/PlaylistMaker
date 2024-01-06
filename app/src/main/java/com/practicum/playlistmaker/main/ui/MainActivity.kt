@@ -3,19 +3,16 @@ package com.practicum.playlistmaker.main.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.search.ui.SearchActivity
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
-import com.practicum.playlistmaker.ui.MediaLibActivity
+import com.practicum.playlistmaker.search.ui.SearchActivity
 import com.practicum.playlistmaker.settings.ui.SettingsActivity
+import com.practicum.playlistmaker.mediaLibrary.ui.MediaLibActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
-    //private var viewModel: MainViewModel? = null
     private val viewModel: MainViewModel by viewModel()
-    //val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -5,7 +5,8 @@
     <dimen name="medium_text_size">16sp</dimen>
     <dimen name="small_text_size">14sp</dimen>
     <dimen name="extra_small_text_size">11sp</dimen>
-    <dimen name="corner_radius">16dp</dimen>
+    <dimen name="corner_radius_small">16dp</dimen>
+    <dimen name="corner_radius_big">54dp</dimen>
     <dimen name="medium_indent">16dp</dimen>
     <dimen name="medium_padding">24dp</dimen>
     <dimen name="small_padding">12dp</dimen>
@@ -25,5 +26,6 @@
     <dimen name="edit_text_search_layout_height">36dp</dimen>
     <dimen name="edit_text_search_paddingStart">36dp</dimen>
     <dimen name="track_additional_info_size">13sp</dimen>
+    <dimen name="top_margin">46dp</dimen>
 
 </resources>

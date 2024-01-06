@@ -6,20 +6,27 @@ import com.practicum.playlistmaker.player.domain.MediaPlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MediaPlayerRepositoryImpl() : MediaPlayerRepository {
+class MediaPlayerRepositoryImpl : MediaPlayerRepository {
 
     private var mediaPlayer = MediaPlayer()
 
     override var playerState = MediaPlayerState.STATE_DEFAULT
 
+    private var onPreparedListener: (() -> Unit)? = null
+    private var onCompletionListener: (() -> Unit)? = null
+
     override fun prepareMediaPlayer(trackPreviewUrl: String) {
         mediaPlayer.setDataSource(trackPreviewUrl)
         mediaPlayer.prepareAsync()
-        setOnPreparedListener {
+
+        mediaPlayer.setOnPreparedListener {
             playerState = MediaPlayerState.STATE_PREPARED
+            onPreparedListener?.invoke()
         }
-        setOnCompletionListener {
+
+        mediaPlayer.setOnCompletionListener {
             playerState = MediaPlayerState.STATE_PREPARED
+            onCompletionListener?.invoke()
         }
     }
 
@@ -49,10 +56,10 @@ class MediaPlayerRepositoryImpl() : MediaPlayerRepository {
     }
 
     override fun setOnPreparedListener(listener: (() -> Unit)?) {
-        mediaPlayer.setOnPreparedListener{ listener?.invoke()}
+        onPreparedListener = listener
     }
 
     override fun setOnCompletionListener(listener: (() -> Unit)?) {
-        mediaPlayer.setOnCompletionListener { listener?.invoke() }
+        onCompletionListener = listener
     }
 }

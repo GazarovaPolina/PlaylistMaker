@@ -34,5 +34,7 @@
     <color name="track_playback_progress">@color/dark_blue</color>
     <color name="track_additional_info">@color/dark_blue</color>
     <color name="pause_btn">@color/dark_blue</color>
+    <color name="dark_blue_white">@color/dark_blue</color>
+    <color name="white_dark_blue">@color/white</color>
 </resources>
 

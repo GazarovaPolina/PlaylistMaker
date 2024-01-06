@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.settings.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -10,8 +9,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SettingsActivity : AppCompatActivity() {
 
     private var binding: ActivitySettingsBinding? = null
-
-    //private lateinit var viewModel: SettingsViewModel
 
     private val viewModel: SettingsViewModel by viewModel()
 
@@ -23,11 +20,6 @@ class SettingsActivity : AppCompatActivity() {
         binding?.toolbarSettings?.setNavigationOnClickListener {
             finish()
         }
-
-        /*viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getViewModelFactory()
-        )[SettingsViewModel::class.java]*/
 
         viewModel.themeSwitcherState.observe(this) { isChecked ->
             binding?.themeSwitcher?.isChecked = isChecked

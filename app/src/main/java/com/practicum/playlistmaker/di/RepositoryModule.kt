@@ -25,6 +25,6 @@ val repositoryModule = module {
     }
 
     single<SettingsRepository> {
-        SettingsRepositoryImpl(get())
+        SettingsRepositoryImpl(get(), get())
     }
 }
