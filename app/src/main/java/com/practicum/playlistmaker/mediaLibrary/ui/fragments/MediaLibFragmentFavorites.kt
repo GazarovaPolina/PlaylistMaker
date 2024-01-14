@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.FragmentMediaLibFavoritesBinding
-import com.practicum.playlistmaker.mediaLibrary.ui.MediaLibFavoritesViewModel
+import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.MediaLibFavoritesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaLibFragmentFavorites : Fragment() {
