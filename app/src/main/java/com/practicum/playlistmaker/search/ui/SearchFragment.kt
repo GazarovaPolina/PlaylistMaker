@@ -20,7 +20,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment: Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private var query: String? = null
     private var searchResultAdapter = TrackAdapter()
@@ -32,7 +33,7 @@ class SearchFragment: Fragment() {
     private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -176,22 +177,13 @@ class SearchFragment: Fragment() {
         }
     }
 
-   /* override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val query = savedInstanceState.getString(SEARCH_QUERY)
-        binding.editTextSearch.setText(query)
-        this.query = query
-    }*/
-
-    /*override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_QUERY, query)
-    }*/
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 
     companion object {
         private const val TRACK = "track"
-        //private const val SEARCH_QUERY = "SEARCH_QUERY"
         private const val SEARCH_RES_CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

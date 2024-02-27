@@ -11,18 +11,24 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaLibFragmentFavorites : Fragment() {
 
-    private lateinit var binding: FragmentMediaLibFavoritesBinding
+    private var _binding: FragmentMediaLibFavoritesBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: MediaLibFavoritesViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMediaLibFavoritesBinding.inflate(inflater, container, false)
+        _binding = FragmentMediaLibFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mediaLibFavoritesPlaceholderMessage.text = requireArguments().getString(PLACEHOLDER_TEXT).toString()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     companion object {
