@@ -10,22 +10,19 @@ import com.practicum.playlistmaker.mediaLibrary.ui.fragments.MediaLibFragmentFav
 import com.practicum.playlistmaker.mediaLibrary.ui.fragments.MediaLibFragmentPlaylists
 
 class MediaLibViewPagerAdapter(context: Context, fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
-
     private val favoritesMessage: String
     private val playlistsMessage: String
+
     init {
-       favoritesMessage = context.getString(R.string.media_lib_favorites_placeholder_text)
+        favoritesMessage = context.getString(R.string.media_lib_favorites_placeholder_text)
         playlistsMessage = context.getString(R.string.media_lib_playlists_placeholder_text)
     }
-    override fun getItemCount(): Int {
-        return 2
-    }
 
-    override fun createFragment(position: Int): Fragment {
-        return if (position == 0)   {
-            MediaLibFragmentFavorites.newInstance(favoritesMessage)
-        } else {
-            MediaLibFragmentPlaylists.newInstance(playlistsMessage)
-        }
+    override fun getItemCount(): Int = 2
+
+    override fun createFragment(position: Int): Fragment = if (position == 0) {
+        MediaLibFragmentFavorites.newInstance(favoritesMessage)
+    } else {
+        MediaLibFragmentPlaylists.newInstance(playlistsMessage)
     }
 }

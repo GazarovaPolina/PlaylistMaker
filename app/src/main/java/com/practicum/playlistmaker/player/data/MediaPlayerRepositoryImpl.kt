@@ -7,8 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class MediaPlayerRepositoryImpl : MediaPlayerRepository {
-
-    private var mediaPlayer = MediaPlayer()
+    private lateinit var mediaPlayer: MediaPlayer
 
     override var playerState = MediaPlayerState.STATE_DEFAULT
 
@@ -16,6 +15,7 @@ class MediaPlayerRepositoryImpl : MediaPlayerRepository {
     private var onCompletionListener: (() -> Unit)? = null
 
     override fun prepareMediaPlayer(trackPreviewUrl: String) {
+        mediaPlayer = MediaPlayer()
         mediaPlayer.setDataSource(trackPreviewUrl)
         mediaPlayer.prepareAsync()
 

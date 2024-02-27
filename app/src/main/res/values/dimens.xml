@@ -27,5 +27,6 @@
     <dimen name="edit_text_search_paddingStart">36dp</dimen>
     <dimen name="track_additional_info_size">13sp</dimen>
     <dimen name="top_margin">46dp</dimen>
+    <dimen name="text_size_bottom_nav_view">12sp</dimen>
 
 </resources>

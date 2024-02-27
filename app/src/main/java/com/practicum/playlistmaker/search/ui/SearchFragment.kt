@@ -6,19 +6,21 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class SearchFragment: Fragment() {
 
-class SearchActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
 
     private var query: String? = null
     private var searchResultAdapter = TrackAdapter()
@@ -26,16 +28,16 @@ class SearchActivity : AppCompatActivity() {
     private var isSearchResultClickEnable = true
 
     private val handler = Handler(Looper.getMainLooper())
-    // private lateinit var viewModel: SearchViewModel
 
     private val viewModel: SearchViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        setToolbarIconOnClickListener()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setBtnClearHistoryOnClickListener()
 
@@ -51,14 +53,8 @@ class SearchActivity : AppCompatActivity() {
 
         setSearchQueryChangedListener()
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             executeAction(it)
-        }
-    }
-
-    private fun setToolbarIconOnClickListener() {
-        binding.toolbarSearch.setNavigationOnClickListener {
-            finish()
         }
     }
 
@@ -108,7 +104,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun displayAudioPlayer(track: Track) {
-        val intent = Intent(this, AudioPlayerActivity::class.java)
+        val intent = Intent(requireContext(), AudioPlayerActivity::class.java)
         intent.putExtra(TRACK, track)
         startActivity(intent)
     }
@@ -180,22 +176,22 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+   /* override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
         val query = savedInstanceState.getString(SEARCH_QUERY)
         binding.editTextSearch.setText(query)
         this.query = query
-    }
+    }*/
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    /*override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_QUERY, query)
-    }
+    }*/
 
     companion object {
         private const val TRACK = "track"
-        private const val SEARCH_QUERY = "SEARCH_QUERY"
+        //private const val SEARCH_QUERY = "SEARCH_QUERY"
         private const val SEARCH_RES_CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

@@ -19,28 +19,27 @@ class MediaPlayerViewModel(
     val playerState: LiveData<MediaPlayerActivityState> = mediaPlayerState
     private val mainThreadHandler: Handler = Handler(Looper.getMainLooper())
 
-
     init {
-        mediaPlayerState.postValue(MediaPlayerActivityState.playerPreparedState(track))
         mediaPlayer.setOnCompletionListener {
-            mediaPlayerState.postValue(MediaPlayerActivityState.playerPreparedState(track))
+            mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPreparedState(track))
         }
     }
 
     fun preparePlayer() {
+        mediaPlayerState.value = MediaPlayerActivityState.PlayerPreparedState(track)
         track.previewUrl?.let { mediaPlayer.prepareMediaPlayer(it) }
     }
 
     private fun startPlayer() {
         mediaPlayer.startMediaPlayer()
         mediaPlayerState.postValue(mediaPlayer.let {
-            MediaPlayerActivityState.playerPlayState(it.currentPosition())
+            MediaPlayerActivityState.PlayerPlayState(it.currentPosition())
         })
     }
 
     fun pausePlayer() {
         mediaPlayer.pauseMediaPlayer()
-        mediaPlayerState.postValue(MediaPlayerActivityState.playerPauseState)
+        mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPauseState)
     }
 
     fun playerStop() {
@@ -68,12 +67,6 @@ class MediaPlayerViewModel(
 
     fun onDestroy() {
         mediaPlayer.release()
-        mainThreadHandler.removeCallbacks(createUpdateTimerTask())
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        mediaPlayer.release()
         mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
@@ -85,7 +78,7 @@ class MediaPlayerViewModel(
                         val time = mediaPlayer.currentPosition()
                         mainThreadHandler.postDelayed(this, DELAY_MILLIS)
                         mediaPlayerState.value =
-                            MediaPlayerActivityState.playerPlayState(time)
+                            MediaPlayerActivityState.PlayerPlayState(time)
                     }
 
                     MediaPlayerState.STATE_PREPARED, MediaPlayerState.STATE_PAUSED -> {

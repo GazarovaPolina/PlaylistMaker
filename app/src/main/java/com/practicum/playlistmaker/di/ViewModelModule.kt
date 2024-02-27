@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker.di
 
 import com.practicum.playlistmaker.main.ui.MainViewModel
-import com.practicum.playlistmaker.mediaLibrary.ui.MediaLibFavoritesViewModel
-import com.practicum.playlistmaker.mediaLibrary.ui.MediaLibPlaylistsViewModel
+import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.MediaLibFavoritesViewModel
+import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.MediaLibPlaylistsViewModel
 import com.practicum.playlistmaker.player.ui.MediaPlayerViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.SearchViewModel

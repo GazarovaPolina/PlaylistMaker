@@ -18,7 +18,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
 
-   private val track by lazy { IntentCompat.getParcelableExtra(intent, TRACK, Track::class.java)!! }
+    private val track by lazy { IntentCompat.getParcelableExtra(intent, TRACK, Track::class.java)!! }
 
     private val viewModel: MediaPlayerViewModel by viewModel { parametersOf(track) }
 
@@ -43,12 +43,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.playPauseBtn.setOnClickListener {
             viewModel.playPauseControl()
         }
-    }
-
-    companion object {
-        private const val TIME_FORMAT = "mm:ss"
-        private const val TRACK = "track"
-        private const val IMAGE_QUALITY = "512x512bb.jpg"
     }
 
     private fun displayTrackInfo(track: Track) {
@@ -99,10 +93,16 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun render(state: MediaPlayerActivityState) {
         when (state) {
-            is MediaPlayerActivityState.playerPreparedState -> preparePlayer()
-            is MediaPlayerActivityState.playerPlayState -> setPauseBtn(state.playTime)
-            is MediaPlayerActivityState.playerPauseState -> setPlayBtn()
+            is MediaPlayerActivityState.PlayerPreparedState -> preparePlayer()
+            is MediaPlayerActivityState.PlayerPlayState -> setPauseBtn(state.playTime)
+            is MediaPlayerActivityState.PlayerPauseState -> setPlayBtn()
         }
+    }
+
+    companion object {
+        private const val TIME_FORMAT = "mm:ss"
+        private const val TRACK = "track"
+        private const val IMAGE_QUALITY = "512x512bb.jpg"
     }
 }
 
