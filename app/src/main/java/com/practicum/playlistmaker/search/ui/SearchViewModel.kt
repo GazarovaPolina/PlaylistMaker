@@ -6,11 +6,15 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.domain.SearchResult
 import com.practicum.playlistmaker.search.domain.api.HistorySearchInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
@@ -19,7 +23,11 @@ class SearchViewModel(
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
-    private val handler: Handler = Handler(Looper.getMainLooper())
+    //private val handler: Handler = Handler(Looper.getMainLooper())
+
+    private var lastSearchText: String? = null
+
+    private var searchJob: Job? = null
 
     init {
         makeState(SearchState.HistoryState(historySearchInteractor.getTracksFromHistory()))
@@ -56,20 +64,27 @@ class SearchViewModel(
     }
 
     fun searchDebounce(changedText: String) {
-        this.lastSearchText = changedText
+        if (this.lastSearchText == changedText) {
+            return
+        }
         if (changedText.isEmpty()) {
             updateStateWithTracksFromHistory()
         } else {
-            searchDebounce { searchRequest(changedText) }
+            this.lastSearchText = changedText
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                searchRequest(changedText)
+            }
+            //searchDebounce { searchRequest(changedText) }
         }
     }
 
-    private var lastSearchText: String? = null
 
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
-    }
+//    override fun onCleared() {
+//        super.onCleared()
+//        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
+//    }
 
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
@@ -78,7 +93,15 @@ class SearchViewModel(
                 newSearchText,
                 object : TracksInteractor.TracksConsumer {
                     override fun consume(foundTracks: SearchResult<List<Track>>) {
-                        handler.post {
+
+//                        handler.post {
+//                            when (foundTracks) {
+//                                is SearchResult.Failure -> makeState(SearchState.ErrorState(R.string.bad_connection))
+//                                is SearchResult.Success -> makeState(SearchState.ContentState(foundTracks.result))
+//                            }
+//                        }
+
+                        searchJob = viewModelScope.launch {
                             when (foundTracks) {
                                 is SearchResult.Failure -> makeState(SearchState.ErrorState(R.string.bad_connection))
                                 is SearchResult.Success -> makeState(SearchState.ContentState(foundTracks.result))
@@ -90,16 +113,17 @@ class SearchViewModel(
         }
     }
 
-    fun searchDebounce(request: () -> Unit) {
-        val searchRunnable = Runnable { request() }
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST,
-            postTime,
-        )
-    }
+//    fun searchDebounce(request: () -> Unit) {
+//        val searchRunnable = Runnable { request() }
+//        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
+//        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+//        handler.postAtTime(
+//            searchRunnable,
+//            SEARCH_REQUEST,
+//            postTime,
+//        )
+//    }
+
 
     companion object {
         private val SEARCH_REQUEST = Any()

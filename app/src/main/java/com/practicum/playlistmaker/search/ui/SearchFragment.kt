@@ -12,10 +12,13 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment: Fragment() {
@@ -28,7 +31,7 @@ class SearchFragment: Fragment() {
     private val historyAdapter = TrackAdapter()
     private var isSearchResultClickEnable = true
 
-    private val handler = Handler(Looper.getMainLooper())
+        //private val handler = Handler(Looper.getMainLooper())
 
     private val viewModel: SearchViewModel by viewModel()
 
@@ -99,7 +102,11 @@ class SearchFragment: Fragment() {
         val current = isSearchResultClickEnable
         if (isSearchResultClickEnable) {
             isSearchResultClickEnable = false
-            handler.postDelayed({ isSearchResultClickEnable = true }, SEARCH_RES_CLICK_DEBOUNCE_DELAY)
+            //handler.postDelayed({ isSearchResultClickEnable = true }, SEARCH_RES_CLICK_DEBOUNCE_DELAY)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(SEARCH_RES_CLICK_DEBOUNCE_DELAY)
+                isSearchResultClickEnable = true
+            }
         }
         return current
     }
