@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
@@ -70,6 +71,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun preparePlayer() {
         binding.playPauseBtn.setBackgroundResource(R.drawable.ic_play)
         binding.trackPlaybackProgress.text = getString(R.string.track_playback_progress)
+        Log.d("sss", "aaaa")
     }
 
     override fun onPause() {
