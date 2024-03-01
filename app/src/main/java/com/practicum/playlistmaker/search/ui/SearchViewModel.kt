@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.search.domain.SearchResult
 import com.practicum.playlistmaker.search.domain.api.HistorySearchInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -19,8 +18,6 @@ class SearchViewModel(
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
-
-    //private val handler: Handler = Handler(Looper.getMainLooper())
 
     private var lastSearchText: String? = null
 
@@ -61,9 +58,7 @@ class SearchViewModel(
     }
 
     fun searchDebounce(changedText: String) {
-        if (this.lastSearchText == changedText) {
-            return
-        }
+
         if (changedText.isEmpty()) {
             updateStateWithTracksFromHistory()
         } else {
@@ -73,57 +68,37 @@ class SearchViewModel(
                 delay(SEARCH_DEBOUNCE_DELAY)
                 searchRequest(changedText)
             }
-            //searchDebounce { searchRequest(changedText) }
         }
     }
 
-
-//    override fun onCleared() {
-//        super.onCleared()
-//        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
-//    }
 
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             makeState(SearchState.LoadState)
-            tracksInteractor.searchTracks(
-                newSearchText,
-                object : TracksInteractor.TracksConsumer {
-                    override fun consume(foundTracks: SearchResult<List<Track>>) {
 
-//                        handler.post {
-//                            when (foundTracks) {
-//                                is SearchResult.Failure -> makeState(SearchState.ErrorState(R.string.bad_connection))
-//                                is SearchResult.Success -> makeState(SearchState.ContentState(foundTracks.result))
-//                            }
-//                        }
+            viewModelScope.launch {
 
-                        searchJob = viewModelScope.launch {
-                            when (foundTracks) {
-                                is SearchResult.Failure -> makeState(SearchState.ErrorState(R.string.bad_connection))
-                                is SearchResult.Success -> makeState(SearchState.ContentState(foundTracks.result))
-                            }
-                        }
-                    }
+                tracksInteractor.searchTracks(
+                    newSearchText
+                ).collect { pair ->
+                    processResult(pair.first, pair.second)
                 }
-            )
+            }
         }
     }
 
-//    fun searchDebounce(request: () -> Unit) {
-//        val searchRunnable = Runnable { request() }
-//        handler.removeCallbacksAndMessages(SEARCH_REQUEST)
-//        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-//        handler.postAtTime(
-//            searchRunnable,
-//            SEARCH_REQUEST,
-//            postTime,
-//        )
-//    }
+    fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+
+        if (foundTracks != null) {
+            makeState(SearchState.ContentState(foundTracks))
+        }
+        if (errorMessage != null) {
+            makeState(SearchState.ErrorState(R.string.bad_connection))
+        }
+    }
 
 
     companion object {
-        private val SEARCH_REQUEST = Any()
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

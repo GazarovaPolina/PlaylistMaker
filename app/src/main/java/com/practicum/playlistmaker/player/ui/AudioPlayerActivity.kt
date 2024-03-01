@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
@@ -70,8 +69,6 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
         binding.playPauseBtn.setBackgroundResource(R.drawable.ic_play)
-        binding.trackPlaybackProgress.text = getString(R.string.track_playback_progress)
-        Log.d("sss", "aaaa")
     }
 
     override fun onPause() {
@@ -84,9 +81,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.onDestroy()
     }
 
-    private fun setPauseBtn(playBackProgress: String) {
+    private fun setPauseBtn() {
         binding.playPauseBtn.setBackgroundResource(R.drawable.ic_pause)
-        binding.trackPlaybackProgress.text = playBackProgress
     }
 
     private fun setPlayBtn() {
@@ -94,9 +90,10 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun render(state: MediaPlayerActivityState) {
+        binding.trackPlaybackProgress.text = state.playTime ?: getString(R.string.track_playback_progress)
         when (state) {
             is MediaPlayerActivityState.PlayerPreparedState -> preparePlayer()
-            is MediaPlayerActivityState.PlayerPlayState -> setPauseBtn(state.playTime)
+            is MediaPlayerActivityState.PlayerPlayState -> setPauseBtn()
             is MediaPlayerActivityState.PlayerPauseState -> setPlayBtn()
         }
     }

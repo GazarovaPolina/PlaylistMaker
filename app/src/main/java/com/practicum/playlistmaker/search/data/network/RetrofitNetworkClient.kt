@@ -5,25 +5,31 @@ import android.net.ConnectivityManager
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.dto.Response
 import com.practicum.playlistmaker.search.data.dto.TracksSearchRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class RetrofitNetworkClient(private val iTunesService: ITunesSearchApi, private val context: Context) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
 
         if (!isInternetConnect()) {
             return Response().apply { resultCode = -1 }
         }
 
-        return if (dto is TracksSearchRequest) {
-            val resp = iTunesService.search(dto.expression).execute()
+        if (dto !is TracksSearchRequest) {
+            return Response().apply { resultCode = 400 }
+        }
 
-            val body = resp.body() ?: Response()
+        return withContext(Dispatchers.IO) {
 
-            body.apply {
-                resultCode = resp.code()
+            try {
+                val resp = iTunesService.search(dto.expression)
+
+                resp.apply { resultCode = 200 }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = 500 }
             }
-        } else {
-            Response().apply { resultCode = 400 }
         }
     }
 

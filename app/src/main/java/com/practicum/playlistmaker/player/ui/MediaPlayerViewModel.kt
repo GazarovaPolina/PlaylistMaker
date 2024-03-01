@@ -19,14 +19,14 @@ class MediaPlayerViewModel(
 
     private val mediaPlayerState = MutableLiveData<MediaPlayerActivityState>()
     val playerState: LiveData<MediaPlayerActivityState> = mediaPlayerState
-    //private val mainThreadHandler: Handler = Handler(Looper.getMainLooper())
 
     private var timerJob: Job? = null
 
+
     init {
         mediaPlayer.setOnCompletionListener {
-            mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPreparedState(track))
             timerJob?.cancel()
+            mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPreparedState(track))
         }
     }
 
@@ -45,12 +45,11 @@ class MediaPlayerViewModel(
     fun pausePlayer() {
         mediaPlayer.pauseMediaPlayer()
         timerJob?.cancel()
-        mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPauseState)
+        mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPauseState(mediaPlayer.currentPosition()))
     }
 
     fun playerStop() {
         mediaPlayer.stopMediaPlayer()
-        //mainThreadHandler.removeCallbacks(createUpdateTimerTask())
     }
 
     fun playPauseControl() {
@@ -66,42 +65,11 @@ class MediaPlayerViewModel(
 
             else -> {}
         }
-
-//        mainThreadHandler.post(
-//            createUpdateTimerTask()
-//        )
-//        timerJob = viewModelScope.launch {
-//            createUpdateTimerTask()
-//        }
-
-
     }
 
     fun onDestroy() {
         mediaPlayer.release()
-        //mainThreadHandler.removeCallbacksAndMessages(null)
     }
-
-//    private fun createUpdateTimerTask(): Runnable {
-//        return object : Runnable {
-//            override fun run() {
-//                when (mediaPlayer.getPlayerState()) {
-//                    MediaPlayerState.STATE_PLAYING -> {
-//                        val time = mediaPlayer.currentPosition()
-//                        mainThreadHandler.postDelayed(this, DELAY_MILLIS)
-//                        mediaPlayerState.value =
-//                            MediaPlayerActivityState.PlayerPlayState(time)
-//                    }
-//
-//                    MediaPlayerState.STATE_PREPARED, MediaPlayerState.STATE_PAUSED -> {
-//                        mainThreadHandler.removeCallbacks(this)
-//                    }
-//
-//                    else -> {}
-//                }
-//            }
-//        }
-//    }
 
     private fun createUpdateTimer() {
         timerJob = viewModelScope.launch {
@@ -110,12 +78,6 @@ class MediaPlayerViewModel(
                 delay(300)
                 mediaPlayerState.value = MediaPlayerActivityState.PlayerPlayState(time)
             }
-
         }
-
     }
-
-//    companion object {
-//        private const val DELAY_MILLIS = 10L
-//    }
 }
