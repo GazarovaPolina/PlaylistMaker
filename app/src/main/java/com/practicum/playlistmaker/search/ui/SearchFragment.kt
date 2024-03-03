@@ -30,8 +30,6 @@ class SearchFragment: Fragment() {
     private val historyAdapter = TrackAdapter()
     private var isSearchResultClickEnable = true
 
-        //private val handler = Handler(Looper.getMainLooper())
-
     private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,7 +46,6 @@ class SearchFragment: Fragment() {
 
         binding.btnUpdate.setOnClickListener {
             viewModel.searchDebounce(query ?: "")
-            Log.d("btnUpdate", "work")
         }
 
         setOnSearchResultItemClick()
@@ -102,7 +99,6 @@ class SearchFragment: Fragment() {
         val current = isSearchResultClickEnable
         if (isSearchResultClickEnable) {
             isSearchResultClickEnable = false
-            //handler.postDelayed({ isSearchResultClickEnable = true }, SEARCH_RES_CLICK_DEBOUNCE_DELAY)
             viewLifecycleOwner.lifecycleScope.launch {
                 delay(SEARCH_RES_CLICK_DEBOUNCE_DELAY)
                 isSearchResultClickEnable = true

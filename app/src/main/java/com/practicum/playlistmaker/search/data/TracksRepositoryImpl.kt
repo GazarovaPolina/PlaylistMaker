@@ -12,7 +12,6 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
 
     override fun searchTracks(expression: String): Flow<SearchResult<List<Track>>> = flow {
 
-        val serverErrorMessage = "Server error"
         val response = networkClient.doRequest(TracksSearchRequest(expression))
 
         when (response.resultCode) {
@@ -37,8 +36,12 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
             }
 
             else -> {
-                emit(SearchResult.Failure(serverErrorMessage))
+                emit(SearchResult.Failure(ServerErrorMessage.SERVER_ERROR.message))
             }
         }
     }
+}
+
+enum class ServerErrorMessage(val message: String) {
+    SERVER_ERROR("Error message")
 }

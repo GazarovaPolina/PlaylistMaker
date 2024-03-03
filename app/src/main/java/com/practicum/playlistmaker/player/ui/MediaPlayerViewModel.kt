@@ -19,6 +19,7 @@ class MediaPlayerViewModel(
 
     private val mediaPlayerState = MutableLiveData<MediaPlayerActivityState>()
     val playerState: LiveData<MediaPlayerActivityState> = mediaPlayerState
+    private val updateTimerDelayTimeMillis = 300L
 
     private var timerJob: Job? = null
 
@@ -75,8 +76,8 @@ class MediaPlayerViewModel(
         timerJob = viewModelScope.launch {
             while (mediaPlayer.getPlayerState() == MediaPlayerState.STATE_PLAYING) {
                 val time = mediaPlayer.currentPosition()
-                delay(300)
                 mediaPlayerState.value = MediaPlayerActivityState.PlayerPlayState(time)
+                delay(updateTimerDelayTimeMillis)
             }
         }
     }
