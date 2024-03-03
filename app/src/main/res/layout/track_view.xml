@@ -6,7 +6,8 @@
     android:layout_height="@dimen/track_layout_height"
     android:orientation="horizontal"
     android:paddingHorizontal="@dimen/small_padding"
-    android:paddingVertical="@dimen/smallest_padding">
+    android:paddingVertical="@dimen/smallest_padding"
+    android:background="@color/white_dark_blue">
 
     <ImageView
         android:id="@+id/trackImage"

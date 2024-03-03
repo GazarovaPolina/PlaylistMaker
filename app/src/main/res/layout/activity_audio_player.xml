@@ -96,7 +96,8 @@
             app:layout_constraintBottom_toBottomOf="@id/playPauseBtn"
             app:layout_constraintEnd_toStartOf="@id/playPauseBtn"
             app:layout_constraintStart_toStartOf="@id/trackLeftGuideline"
-            app:layout_constraintTop_toTopOf="@id/playPauseBtn" />
+            app:layout_constraintTop_toTopOf="@id/playPauseBtn"
+            android:layout_marginEnd="@dimen/extra_large_margin"/>
 
         <ImageButton
             android:id="@+id/addToFavoritesBtn"
@@ -107,7 +108,8 @@
             app:layout_constraintBottom_toBottomOf="@id/playPauseBtn"
             app:layout_constraintEnd_toEndOf="@id/trackRightGuideline"
             app:layout_constraintStart_toEndOf="@id/playPauseBtn"
-            app:layout_constraintTop_toTopOf="@id/playPauseBtn" />
+            app:layout_constraintTop_toTopOf="@id/playPauseBtn"
+            android:layout_marginStart="@dimen/extra_large_margin"/>
 
         <TextView
             android:id="@+id/trackPlaybackProgress"

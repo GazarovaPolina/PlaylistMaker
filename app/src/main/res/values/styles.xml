@@ -135,7 +135,7 @@
     </style>
 
     <style name="MediaLibTabLayoutStyle">
-        <item name="backgroundTint">@color/white</item>
+        <item name="android:background">@color/white_dark_blue</item>
         <item name="tabIndicatorColor">@color/dark_blue</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabTextAppearance">@style/tabLayoutText</item>
