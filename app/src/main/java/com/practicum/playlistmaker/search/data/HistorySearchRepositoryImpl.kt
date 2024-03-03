@@ -56,7 +56,6 @@ class HistorySearchRepositoryImpl(private val sharedPrefs: SharedPreferences, pr
     }
 
     companion object {
-        //const val APP_PREFERENCES = "app_preferences"
         const val SEARCH_HISTORY_KEY = "search_history_key"
     }
 }

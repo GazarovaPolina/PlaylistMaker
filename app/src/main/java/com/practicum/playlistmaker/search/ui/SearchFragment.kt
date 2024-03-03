@@ -2,37 +2,38 @@ package com.practicum.playlistmaker.search.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment: Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private var query: String? = null
     private var searchResultAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
     private var isSearchResultClickEnable = true
 
-    private val handler = Handler(Looper.getMainLooper())
-
     private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -98,7 +99,10 @@ class SearchFragment: Fragment() {
         val current = isSearchResultClickEnable
         if (isSearchResultClickEnable) {
             isSearchResultClickEnable = false
-            handler.postDelayed({ isSearchResultClickEnable = true }, SEARCH_RES_CLICK_DEBOUNCE_DELAY)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(SEARCH_RES_CLICK_DEBOUNCE_DELAY)
+                isSearchResultClickEnable = true
+            }
         }
         return current
     }
@@ -176,22 +180,13 @@ class SearchFragment: Fragment() {
         }
     }
 
-   /* override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val query = savedInstanceState.getString(SEARCH_QUERY)
-        binding.editTextSearch.setText(query)
-        this.query = query
-    }*/
-
-    /*override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_QUERY, query)
-    }*/
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 
     companion object {
         private const val TRACK = "track"
-        //private const val SEARCH_QUERY = "SEARCH_QUERY"
         private const val SEARCH_RES_CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
