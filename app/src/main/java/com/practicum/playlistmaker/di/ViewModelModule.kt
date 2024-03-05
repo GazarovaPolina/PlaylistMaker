@@ -18,7 +18,7 @@ val viewModelModule = module {
     }
 
     viewModel { (track: Track) ->
-        MediaPlayerViewModel(get(), track)
+        MediaPlayerViewModel(track, get(), get())
     }
 
     viewModel {
@@ -30,7 +30,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        MediaLibFavoritesViewModel()
+        MediaLibFavoritesViewModel(get())
     }
 
     viewModel {

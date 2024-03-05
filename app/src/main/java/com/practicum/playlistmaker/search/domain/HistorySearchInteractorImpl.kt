@@ -5,11 +5,11 @@ import com.practicum.playlistmaker.search.domain.models.Track
 
 class HistorySearchInteractorImpl(private val historySearchRepository: HistorySearchRepository): HistorySearchInteractor {
 
-    override fun addTrackToHistory(track: Track) {
+    override suspend fun addTrackToHistory(track: Track) {
         historySearchRepository.addTrackToHistory(track)
     }
 
-    override fun getTracksFromHistory(): List<Track> {
+    override suspend fun getTracksFromHistory(): List<Track> {
         return historySearchRepository.getTracksFromHistory()
     }
 

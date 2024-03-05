@@ -1,14 +1,16 @@
 package com.practicum.playlistmaker.search.data
 
-import com.practicum.playlistmaker.search.domain.SearchResult
+import com.practicum.playlistmaker.mediaLibrary.data.db.AppDatabase
 import com.practicum.playlistmaker.search.data.dto.TracksSearchRequest
 import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
+import com.practicum.playlistmaker.search.domain.SearchResult
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+class TracksRepositoryImpl(private val networkClient: NetworkClient
+) : TracksRepository {
 
     override fun searchTracks(expression: String): Flow<SearchResult<List<Track>>> = flow {
 

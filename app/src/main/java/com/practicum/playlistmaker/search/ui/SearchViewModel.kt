@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
-    val historySearchInteractor: HistorySearchInteractor,
+    val historySearchInteractor: HistorySearchInteractor
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -24,7 +24,10 @@ class SearchViewModel(
     private var searchJob: Job? = null
 
     init {
-        makeState(SearchState.HistoryState(historySearchInteractor.getTracksFromHistory()))
+        viewModelScope.launch {
+            makeState(SearchState.HistoryState(historySearchInteractor.getTracksFromHistory()))
+        }
+
     }
 
     fun onItemClearSearchQueryClick() {
@@ -45,11 +48,15 @@ class SearchViewModel(
     }
 
     private fun updateStateWithTracksFromHistory() {
-        makeState(SearchState.HistoryState(historySearchInteractor.getTracksFromHistory()))
+        viewModelScope.launch {
+            makeState(SearchState.HistoryState(historySearchInteractor.getTracksFromHistory()))
+        }
     }
 
     private fun addTrackToHistory(track: Track) {
-        historySearchInteractor.addTrackToHistory(track)
+        viewModelScope.launch {
+            historySearchInteractor.addTrackToHistory(track)
+        }
     }
 
     fun clearSearchHistory() {
