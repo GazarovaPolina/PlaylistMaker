@@ -1,9 +1,9 @@
-package com.practicum.playlistmaker.mediaLibrary.domain.db
+package com.practicum.playlistmaker.mediaLibrary.domain
 
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
-interface FavoritesInteractor {
+interface FavoritesRepository {
 
     fun getFavoriteTracks(): Flow<List<Track>>
     suspend fun getTrackIds(): List<Long>

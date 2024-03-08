@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.mediaLibrary.domain.db.FavoritesInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.FavoritesInteractor
 import com.practicum.playlistmaker.player.domain.MediaPlayerActivityState
 import com.practicum.playlistmaker.player.domain.MediaPlayerInteractor
 import com.practicum.playlistmaker.player.domain.MediaPlayerState
@@ -20,11 +20,11 @@ class MediaPlayerViewModel(
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
 
-    private val mediaPlayerState = MutableLiveData<MediaPlayerActivityState>()
-    val playerState: LiveData<MediaPlayerActivityState> = mediaPlayerState
+    private val _mediaPlayerState = MutableLiveData<MediaPlayerActivityState>()
+    val mediaPlayerState: LiveData<MediaPlayerActivityState> = _mediaPlayerState
 
-    private val favoritesState = MutableLiveData<Boolean>()
-    val favoriteTrackState: LiveData<Boolean> = favoritesState
+    private val _favoritesState = MutableLiveData<Boolean>()
+    val favoritesState: LiveData<Boolean> = _favoritesState
 
     private val updateTimerDelayTimeMillis = 300L
 
@@ -34,23 +34,23 @@ class MediaPlayerViewModel(
     init {
         viewModelScope.launch {
             val ids = favoritesInteractor.getTrackIds()
-            favoritesState.value = track.trackId in ids
+            _favoritesState.value = track.trackId in ids
             Log.d("timestamp1", ids.joinToString { " " })
         }
         mediaPlayer.setOnCompletionListener {
             timerJob?.cancel()
-            mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPreparedState(track))
+            _mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPreparedState(track))
         }
     }
 
     fun preparePlayer() {
-        mediaPlayerState.value = MediaPlayerActivityState.PlayerPreparedState(track)
+        _mediaPlayerState.value = MediaPlayerActivityState.PlayerPreparedState(track)
         track.previewUrl?.let { mediaPlayer.prepareMediaPlayer(it) }
     }
 
     private fun startPlayer() {
         mediaPlayer.startMediaPlayer()
-        mediaPlayerState.postValue(mediaPlayer.let {
+        _mediaPlayerState.postValue(mediaPlayer.let {
             MediaPlayerActivityState.PlayerPlayState(it.currentPosition())
         })
     }
@@ -58,7 +58,7 @@ class MediaPlayerViewModel(
     fun pausePlayer() {
         mediaPlayer.pauseMediaPlayer()
         timerJob?.cancel()
-        mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPauseState(mediaPlayer.currentPosition()))
+        _mediaPlayerState.postValue(MediaPlayerActivityState.PlayerPauseState(mediaPlayer.currentPosition()))
     }
 
     fun playerStop() {
@@ -88,7 +88,7 @@ class MediaPlayerViewModel(
         timerJob = viewModelScope.launch {
             while (mediaPlayer.getPlayerState() == MediaPlayerState.STATE_PLAYING) {
                 val time = mediaPlayer.currentPosition()
-                mediaPlayerState.value = MediaPlayerActivityState.PlayerPlayState(time)
+                _mediaPlayerState.value = MediaPlayerActivityState.PlayerPlayState(time)
                 delay(updateTimerDelayTimeMillis)
             }
         }
@@ -96,12 +96,12 @@ class MediaPlayerViewModel(
 
     fun onFavoriteClicked(track: Track) {
         viewModelScope.launch {
-            if (favoritesState.value == true) {
+            if (_favoritesState.value == true) {
                 favoritesInteractor.deleteTrackFromFavorites(track)
             } else {
                 favoritesInteractor.addTrackToFavorites(track)
             }
-            favoritesState.value = favoritesState.value != true
+            _favoritesState.value = _favoritesState.value != true
         }
     }
 }

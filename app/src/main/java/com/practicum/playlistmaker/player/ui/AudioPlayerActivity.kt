@@ -27,11 +27,11 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.playerState.observe(this) {
+        viewModel.mediaPlayerState.observe(this) {
             render(it)
         }
 
-        viewModel.favoriteTrackState.observe(this) {
+        viewModel.favoritesState.observe(this) {
             renderFavoriteTrackState(it)
         }
 
