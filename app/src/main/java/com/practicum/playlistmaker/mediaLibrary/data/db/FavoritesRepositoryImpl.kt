@@ -7,6 +7,7 @@ import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -21,6 +22,7 @@ class FavoritesRepositoryImpl(
         .map {
             convertFromTrackEntity(it)
         }
+        .flowOn(Dispatchers.IO)
 
     override suspend fun getTrackIds(): List<Long> {
         var trackIds: List<Long>
@@ -32,11 +34,15 @@ class FavoritesRepositoryImpl(
     }
 
     override suspend fun addTrackToFavorites(track: Track) {
-        appDatabase.trackDao().insertTrack(trackDbConverter.map(track))
+        withContext(Dispatchers.IO) {
+            appDatabase.trackDao().insertTrack(trackDbConverter.map(track))
+        }
     }
 
     override suspend fun deleteTrackFromFavorites(track: Track) {
-        appDatabase.trackDao().deleteTrack(trackDbConverter.map(track))
+        withContext(Dispatchers.IO) {
+            appDatabase.trackDao().deleteTrack(trackDbConverter.map(track))
+        }
     }
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
