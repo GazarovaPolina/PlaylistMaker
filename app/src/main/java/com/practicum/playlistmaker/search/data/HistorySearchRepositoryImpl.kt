@@ -3,13 +3,18 @@ package com.practicum.playlistmaker.search.data
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
+import com.practicum.playlistmaker.mediaLibrary.data.db.AppDatabase
 import com.practicum.playlistmaker.search.domain.HistorySearchRepository
+import com.practicum.playlistmaker.search.domain.SearchResult
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 
-class HistorySearchRepositoryImpl(private val sharedPrefs: SharedPreferences, private val gson: Gson) : HistorySearchRepository {
+class HistorySearchRepositoryImpl(private val sharedPrefs: SharedPreferences, private val gson: Gson
+) : HistorySearchRepository {
 
-    override fun addTrackToHistory(track: Track) {
+    override fun addTrackToHistory(track: Track)  {
         val searchHistoryTracks = ArrayList<Track>()
 
         if (sharedPrefs.contains(SEARCH_HISTORY_KEY)) {

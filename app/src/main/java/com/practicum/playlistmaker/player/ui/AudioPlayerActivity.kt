@@ -27,9 +27,14 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.playerState.observe(this) {
+        viewModel.mediaPlayerState.observe(this) {
             render(it)
         }
+
+        viewModel.favoritesState.observe(this) {
+            renderFavoriteTrackState(it)
+        }
+
 
         binding.toolbarAudioPlayer.setNavigationOnClickListener {
             viewModel.playerStop()
@@ -42,6 +47,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         binding.playPauseBtn.setOnClickListener {
             viewModel.playPauseControl()
+        }
+
+        binding.addToFavoritesBtn.setOnClickListener {
+            viewModel.onFavoriteClicked(track)
         }
     }
 
@@ -95,6 +104,14 @@ class AudioPlayerActivity : AppCompatActivity() {
             is MediaPlayerActivityState.PlayerPreparedState -> preparePlayer()
             is MediaPlayerActivityState.PlayerPlayState -> setPauseBtn()
             is MediaPlayerActivityState.PlayerPauseState -> setPlayBtn()
+        }
+    }
+
+    private fun renderFavoriteTrackState(trackFavoriteState: Boolean) {
+        if (trackFavoriteState) {
+            binding.addToFavoritesBtn.setBackgroundResource(R.drawable.ic_delete_from_favorites)
+        } else {
+            binding.addToFavoritesBtn.setBackgroundResource(R.drawable.ic_add_to_favorites)
         }
     }
 
