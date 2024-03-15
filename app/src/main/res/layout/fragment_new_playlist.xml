@@ -38,42 +38,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbarNewPlaylistAndBackButton" />
 
-        <EditText
-            android:id="@+id/newPlaylistName"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutNewPlaylistName"
+            style="@style/newPlaylistHintStyle"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/edit_text_rectangle"
+            android:autofillHints="@string/new_playlist_name"
             android:fontFamily="@font/ys_display_regular"
-            android:hint="@string/new_track_name"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingHorizontal="16dp"
-            android:textColor="@color/dark_blue_white"
-            android:textColorHint="@color/dark_blue_white"
+            android:hint="@string/new_playlist_name"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addImage" />
+            app:layout_constraintTop_toBottomOf="@id/addImage">
 
-        <EditText
-            android:id="@+id/newPlaylistDescription"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/newPlaylistName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/ys_display_regular"
+                android:maxLines="1"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutNewPlaylistDescription"
+            style="@style/newPlaylistHintStyle"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/edit_text_rectangle"
+            android:autofillHints="@string/new_playlist_description"
             android:fontFamily="@font/ys_display_regular"
-            android:hint="@string/new_track_description"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingHorizontal="16dp"
-            android:textColor="@color/dark_blue_white"
-            android:textColorHint="@color/dark_blue_white"
+            android:hint="@string/new_playlist_description"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/newPlaylistName"
-            app:layout_constraintStart_toStartOf="@id/newPlaylistName"
-            app:layout_constraintTop_toBottomOf="@id/newPlaylistName" />
+            app:layout_constraintEnd_toEndOf="@id/textInputLayoutNewPlaylistName"
+            app:layout_constraintStart_toStartOf="@id/textInputLayoutNewPlaylistName"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayoutNewPlaylistName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/newPlaylistDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/ys_display_regular"
+                android:maxLines="1"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:id="@+id/createNewPlaylistButton"
@@ -92,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPlaylistDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutNewPlaylistDescription" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,6 +27,7 @@
     <dimen name="edit_text_search_layout_height">36dp</dimen>
     <dimen name="edit_text_search_paddingStart">36dp</dimen>
     <dimen name="track_additional_info_size">13sp</dimen>
+    <dimen name="playlist_hint_outline_size">12sp</dimen>
     <dimen name="top_margin">46dp</dimen>
     <dimen name="text_size_bottom_nav_view">12sp</dimen>
 

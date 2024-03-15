@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.fragments
 
 import android.content.Context.MODE_PRIVATE
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -18,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.NewPlaylistCreationModel
@@ -88,10 +90,10 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun createConfimDialog(): MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
-        .setTitle("Завершить создание плейлиста?")
-        .setMessage("Все несохраненные данные будут потеряны.")
-        .setNeutralButton("Отмена") { dialog, which -> }
-        .setPositiveButton("Завершить") { dialog, which ->
+        .setTitle(getString(R.string.playlist_confim_dialog_title))
+        .setMessage(getString(R.string.playlist_confim_dialog_message))
+        .setNeutralButton(getString(R.string.playlist_confim_dialog_neutral_button_message)) { dialog, which -> }
+        .setPositiveButton(getString(R.string.playlist_confim_dialog_positive_button_message)) { dialog, which ->
             findNavController().navigateUp()
         }
 
@@ -103,16 +105,28 @@ class NewPlaylistFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) {
                 binding.createNewPlaylistButton.isEnabled = p0?.isNotEmpty()!!
+//                if (p0.isNotEmpty()) {
+//                    binding.textInputLayoutNewPlaylistName.boxStrokeColor = context?.getColor(R.color.dark_blue)!!
+//                }
+//                else {
+//                    binding.textInputLayoutNewPlaylistName.boxStrokeColor = context?.getColor(R.color.dark_grey)!!
+//                }
+
             }
         })
     }
 
     private fun returnBack() {
-        if (binding.newPlaylistName.text.isNotEmpty() ||
-            binding.newPlaylistDescription.text.isNotEmpty() ||
+        if (binding.newPlaylistName.text?.isNotEmpty()!! ||
+            binding.newPlaylistDescription.text?.isNotEmpty()!! ||
             isPlaylistImageSelected
         ) {
-            confimDialog.show()
+            confimDialog.show().apply {
+                getButton(DialogInterface.BUTTON_POSITIVE)
+                    .setTextColor(resources.getColor(R.color.blue, null))
+                getButton(DialogInterface.BUTTON_NEUTRAL)
+                    .setTextColor(resources.getColor(R.color.blue, null))
+            }
         } else {
             findNavController().navigateUp()
         }
@@ -120,11 +134,11 @@ class NewPlaylistFragment : Fragment() {
 
     private fun savePlaylistImageToPrivateStorage(uri: Uri) {
         val playlistName = binding.newPlaylistName.text.toString()
-        val filePath = File(requireContext().getDir(playlistName, MODE_PRIVATE), "myalbums")
+        val filePath = File(requireContext().getDir(playlistName, MODE_PRIVATE), getString(R.string.playlists_storage_name))
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
-        val file = File(filePath, "$playlistName.jpg")
+        val file = File(filePath, getString(R.string.playlist_image, playlistName))
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         BitmapFactory
@@ -142,7 +156,8 @@ class NewPlaylistFragment : Fragment() {
             countTracks = 0
         )
         viewModel.createNewPlaylist(newPlaylist)
-        Toast.makeText(requireContext(), "Плейлист ${binding.newPlaylistName.text} создан", Toast.LENGTH_SHORT).show()
+        val playlistCreatedMessage = getString(R.string.playlist_created, binding.newPlaylistName.text)
+        Toast.makeText(requireContext(), playlistCreatedMessage, Toast.LENGTH_SHORT).show()
         findNavController().navigateUp()
     }
 
