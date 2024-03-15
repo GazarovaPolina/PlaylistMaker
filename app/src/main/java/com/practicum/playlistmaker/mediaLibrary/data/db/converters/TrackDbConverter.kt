@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.mediaLibrary.data.db.converters
 
 import android.util.Log
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackEntity
+import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackInPlaylistEntity
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.data.dto.TrackDto
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -40,4 +41,5 @@ class TrackDbConverter {
             previewUrl = trackEntity.previewUrl
         )
     }
+
 }

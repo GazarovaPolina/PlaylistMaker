@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".playlist.ui.NewPlaylistFragment">
+    tools:context=".mediaLibrary.ui.fragments.NewPlaylistFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarNewPlaylist"
+            android:id="@+id/toolbarNewPlaylistAndBackButton"
             style="@style/newPlaylistToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -22,7 +22,7 @@
             app:title="@string/new_playlist" />
 
         <ImageButton
-            android:id="@+id/addPhoto"
+            android:id="@+id/addImage"
             android:layout_width="312dp"
             android:layout_height="312dp"
             android:layout_marginStart="24dp"
@@ -33,13 +33,13 @@
             android:clickable="true"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_add_photo"
+            android:src="@drawable/ic_add_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarNewPlaylist" />
+            app:layout_constraintTop_toBottomOf="@id/toolbarNewPlaylistAndBackButton" />
 
         <EditText
-            android:id="@+id/newTrackName"
+            android:id="@+id/newPlaylistName"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginHorizontal="16dp"
@@ -55,10 +55,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addPhoto" />
+            app:layout_constraintTop_toBottomOf="@id/addImage" />
 
         <EditText
-            android:id="@+id/newTrackDescription"
+            android:id="@+id/newPlaylistDescription"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
@@ -71,11 +71,12 @@
             android:textColor="@color/dark_blue_white"
             android:textColorHint="@color/dark_blue_white"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/newTrackName"
-            app:layout_constraintStart_toStartOf="@id/newTrackName"
-            app:layout_constraintTop_toBottomOf="@id/newTrackName" />
+            app:layout_constraintEnd_toEndOf="@id/newPlaylistName"
+            app:layout_constraintStart_toStartOf="@id/newPlaylistName"
+            app:layout_constraintTop_toBottomOf="@id/newPlaylistName" />
 
         <TextView
+            android:id="@+id/createNewPlaylistButton"
             android:layout_width="0dp"
             android:layout_height="44dp"
             android:layout_marginHorizontal="16dp"
@@ -91,7 +92,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newTrackDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/newPlaylistDescription" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
