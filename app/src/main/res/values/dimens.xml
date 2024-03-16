@@ -31,5 +31,6 @@
     <dimen name="playlist_hint_outline_size">12sp</dimen>
     <dimen name="top_margin">46dp</dimen>
     <dimen name="text_size_bottom_nav_view">12sp</dimen>
+    <dimen name="bottom_sheet_padding">16dp</dimen>
 
 </resources>
