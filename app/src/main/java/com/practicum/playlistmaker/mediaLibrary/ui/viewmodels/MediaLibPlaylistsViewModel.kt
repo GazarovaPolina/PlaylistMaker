@@ -1,6 +1,47 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
+import com.practicum.playlistmaker.mediaLibrary.domain.playlists.PlaylistsInteractor
+import com.practicum.playlistmaker.mediaLibrary.ui.PlaylistsState
+import kotlinx.coroutines.launch
 
-class MediaLibPlaylistsViewModel : ViewModel() {
+class MediaLibPlaylistsViewModel(private val playlistsInteractor: PlaylistsInteractor) : ViewModel() {
+
+    private val _playlistsState = MutableLiveData<PlaylistsState>()
+    fun observeState(): LiveData<PlaylistsState> = _playlistsState
+
+    init {
+        getPlaylists()
+    }
+
+    private fun getPlaylists() {
+        viewModelScope.launch {
+            playlistsInteractor.getListOfPlaylists().collect() { playlists ->
+                processResult(playlists)
+            }
+        }
+    }
+
+    private fun processResult(playlists: List<Playlist>) {
+        Log.d("playlists", playlists.isEmpty().toString())
+        if (playlists.isEmpty()) {
+            renderState(PlaylistsState.Empty)
+        } else {
+            renderState(PlaylistsState.Content(playlists))
+            Log.d("playlists", playlists[0].playlistName)
+        }
+    }
+
+    private fun renderState(state: PlaylistsState) {
+        _playlistsState.postValue(state)
+    }
+
+    fun refreshPlaylists() {
+        getPlaylists()
+    }
 }
