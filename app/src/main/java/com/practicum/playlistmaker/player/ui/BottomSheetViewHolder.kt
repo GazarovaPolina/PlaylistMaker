@@ -11,20 +11,20 @@ import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 
 class BottomSheetViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-//    private val playlistName: TextView = itemView.findViewById(R.id.audioPlayerPlaylistName)
-//    private val playlistImage: ImageView = itemView.findViewById(R.id.audioPlayerTrackImage)
-//    private val playlistTracksCount: TextView = itemView.findViewById(R.id.bottomSheetTracksCount)
+    private val playlistName: TextView = itemView.findViewById(R.id.trackName)
+    private val playlistImage: ImageView = itemView.findViewById(R.id.trackImage)
+    private val playlistTracksCount: TextView = itemView.findViewById(R.id.bottomSheetCountPlaylistTracks)
 
-//    fun bind(model: Playlist) {
-//
-//        Glide.with(itemView.context)
-//            .load(model.imageUrl)
-//            .centerCrop()
-//            .placeholder(R.drawable.ic_playlist_placeholder)
-//            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_image_corner_radius)))
-//            .into(playlistImage)
-//
-//        playlistName.text = model.playlistName
-//        playlistTracksCount.text = model.countTracks.toString()
-//    }
+    fun bind(model: Playlist) {
+
+        Glide.with(itemView.context)
+            .load(model.imageUrl)
+            .centerCrop()
+            .placeholder(R.drawable.ic_playlist_placeholder)
+            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_image_corner_radius)))
+            .into(playlistImage)
+
+        playlistName.text = model.playlistName
+        playlistTracksCount.text =  TracksCountMessageEndingChanger().getTracksCountMessageEnding(model.countTracks)
+    }
 }

@@ -1,12 +1,18 @@
 package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.player.domain.MediaPlayerActivityState
 import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +28,9 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private val viewModel: MediaPlayerViewModel by viewModel { parametersOf(track) }
 
+    private val bottomSheetAdapter = BottomSheetAdapter()
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
@@ -35,7 +44,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             renderFavoriteTrackState(it)
         }
 
-
         binding.toolbarAudioPlayer.setNavigationOnClickListener {
             viewModel.playerStop()
             finish()
@@ -45,12 +53,79 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         displayTrackInfo(track)
 
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.linearLayoutBottomSheet).apply {
+
+                state = BottomSheetBehavior.STATE_HIDDEN
+
+        }
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+//        bottomSheetBehavior = BottomSheetBehavior.from(binding.linearLayoutBottomSheet).apply {
+//            state = BottomSheetBehavior.STATE_HIDDEN
+//        }
+
         binding.playPauseBtn.setOnClickListener {
             viewModel.playPauseControl()
         }
 
         binding.addToFavoritesBtn.setOnClickListener {
             viewModel.onFavoriteClicked(track)
+        }
+
+        binding.addToPlaylistBtn.setOnClickListener {
+//         binding.overlay.visibility = View.VISIBLE
+//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+////            viewModel.getPlayLists()
+////            viewModel.playlistState.observe(this) { list ->
+////               // bottomSheetAdapter.
+////                binding.recyclerViewBottomSheet.adapter = bottomSheetAdapter
+////            }
+//
+//
+//
+//            viewModel.refreshBottomSheet()
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            Log.d("aaaaa", bottomSheetBehavior.state.toString())
+        }
+
+//        binding.buttonCreateNewPlaylistBottomSheet.setOnClickListener {
+//            supportFragmentManager.beginTransaction()
+//                .add(R.id.fragment_container_view, CreatePlaylistFragment())
+//                .addToBackStack("playerActivity")
+//                .commit()
+//
+//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+//        }
+
+        bottomSheetAdapter.onItemClick = {
+            viewModel.addTrackToPlaylist(it, track.trackId)
+            //Toast.makeText(this, "Добавлено в плейлист ${it.playlistName}.", Toast.LENGTH_SHORT)
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+        viewModel.playlistState.observe(this) {
+            if (it != null) {
+                updateBottomSheetAdapter(it)
+            }
+        }
+
+        viewModel.trackState.observe(this) {
+            updatePlaylistMessage(it)
         }
     }
 
@@ -113,6 +188,16 @@ class AudioPlayerActivity : AppCompatActivity() {
         } else {
             binding.addToFavoritesBtn.setBackgroundResource(R.drawable.ic_add_to_favorites)
         }
+    }
+
+    private fun updateBottomSheetAdapter(playlists: List<Playlist>) {
+        bottomSheetAdapter.playlists.clear()
+        bottomSheetAdapter.playlists.addAll(playlists)
+        bottomSheetAdapter.notifyDataSetChanged()
+    }
+
+    private fun updatePlaylistMessage(trackInPlaylistState: String) {
+        Toast.makeText(this, trackInPlaylistState, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

@@ -247,14 +247,14 @@
     </ScrollView>
 
     <View
-        android:id="@+id/dimOverlay"
+        android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0"
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/llBottomSheet"
+        android:id="@+id/linearLayoutBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="505dp"
         android:orientation="vertical"
@@ -265,14 +265,14 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
-            style="@style/handler_bottom_sheet"
+            style="@style/handlerBottomSheet"
             android:layout_width="50dp"
             android:layout_height="4dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp" />
 
         <TextView
-            style="@style/header_bottom_sheet"
+            style="@style/headerBottomSheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
