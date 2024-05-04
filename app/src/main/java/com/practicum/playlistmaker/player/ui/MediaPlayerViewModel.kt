@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.player.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +11,7 @@ import com.practicum.playlistmaker.mediaLibrary.domain.playlists.PlaylistsIntera
 import com.practicum.playlistmaker.player.domain.MediaPlayerActivityState
 import com.practicum.playlistmaker.player.domain.MediaPlayerInteractor
 import com.practicum.playlistmaker.player.domain.MediaPlayerState
+import com.practicum.playlistmaker.player.domain.TrackInPlaylistState
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -33,8 +33,8 @@ class MediaPlayerViewModel(
     private val _playlistState = MutableLiveData<List<Playlist>?>()
     val playlistState: MutableLiveData<List<Playlist>?> = _playlistState
 
-    private val _trackState = MutableLiveData<String>()
-    val trackState: MutableLiveData<String> = _trackState
+    private val _trackState = MutableLiveData<TrackInPlaylistState>()
+    val trackState: MutableLiveData<TrackInPlaylistState> = _trackState
 
     private val updateTimerDelayTimeMillis = 300L
 
@@ -45,7 +45,6 @@ class MediaPlayerViewModel(
         viewModelScope.launch {
             val ids = favoritesInteractor.getTrackIds()
             _favoritesState.value = track.trackId in ids
-            Log.d("timestamp1", ids.joinToString { " " })
         }
         mediaPlayer.setOnCompletionListener {
             timerJob?.cancel()
@@ -118,7 +117,7 @@ class MediaPlayerViewModel(
     fun addTrackToPlaylist(playlist: Playlist, trackId: Long) {
         val tracksIdsList = Gson().fromJson(playlist.tracksIds, Array<Long>::class.java) ?: emptyArray()
         if (tracksIdsList.contains(trackId)) {
-            _trackState.postValue("Трек уже добавлен в плейлист ${playlist.playlistName}")
+            _trackState.postValue(TrackInPlaylistState.TrackInPlaylist("Трек уже добавлен в плейлист ${playlist.playlistName}"))
         } else {
             val updatedTracksIdsList = tracksIdsList.plus(trackId)
             val tracksList = Gson().toJson(updatedTracksIdsList)
@@ -137,7 +136,7 @@ class MediaPlayerViewModel(
                 getPlayLists()
             }
 
-            _trackState.postValue("Добавлено в плейлист ${playlist.playlistName}")
+            _trackState.postValue(TrackInPlaylistState.TrackNotInPlaylist("Добавлено в плейлист ${playlist.playlistName}"))
         }
     }
 
@@ -148,9 +147,5 @@ class MediaPlayerViewModel(
                     _playlistState.postValue(playlists)
                 }
         }
-    }
-
-    fun refreshBottomSheet() {
-        getPlayLists()
     }
 }

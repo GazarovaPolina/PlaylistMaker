@@ -13,7 +13,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentMediaLibPlaylistsBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.PlaylistsState
 import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.MediaLibPlaylistsViewModel
-import com.practicum.playlistmaker.search.ui.PlaylistAdapter
+import com.practicum.playlistmaker.mediaLibrary.ui.PlaylistAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaLibFragmentPlaylists : Fragment() {

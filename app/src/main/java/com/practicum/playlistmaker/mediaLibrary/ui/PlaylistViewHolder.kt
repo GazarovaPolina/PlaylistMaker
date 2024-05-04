@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search.ui
+package com.practicum.playlistmaker.mediaLibrary.ui
 
 import android.view.View
 import android.widget.ImageView
@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
+import com.practicum.playlistmaker.player.ui.TracksCountMessageEndingChanger
 
 class PlaylistViewHolder(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
@@ -26,6 +27,6 @@ class PlaylistViewHolder(itemView: View) :
             .into(playlistImage)
 
         playlistName.text = model.playlistName
-        playlistTracksCount.text = model.countTracks.toString()
+        playlistTracksCount.text =  TracksCountMessageEndingChanger().getTracksCountMessageEnding(model.countTracks)
     }
 }

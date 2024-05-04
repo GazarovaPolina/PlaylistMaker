@@ -12,12 +12,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
@@ -55,21 +55,14 @@ class NewPlaylistFragment : Fragment() {
         createTextChangeListener()
 
         binding.toolbarNewPlaylistAndBackButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            returnBack()
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                returnBack()
-            }
-        })
 
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
                 binding.addImage.setImageURI(uri)
-                savePlaylistImageToPrivateStorage(uri)
-                imageUri = uri
-
+                binding.addImage.scaleType = ImageView.ScaleType.CENTER_CROP
+                imageUri = savePlaylistImageToPrivateStorage(uri)
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
@@ -94,7 +87,7 @@ class NewPlaylistFragment : Fragment() {
         .setMessage(getString(R.string.playlist_confim_dialog_message))
         .setNeutralButton(getString(R.string.playlist_confim_dialog_neutral_button_message)) { dialog, which -> }
         .setPositiveButton(getString(R.string.playlist_confim_dialog_positive_button_message)) { dialog, which ->
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
     private fun createTextChangeListener() {
@@ -105,13 +98,6 @@ class NewPlaylistFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) {
                 binding.createNewPlaylistButton.isEnabled = p0?.isNotEmpty()!!
-//                if (p0.isNotEmpty()) {
-//                    binding.textInputLayoutNewPlaylistName.boxStrokeColor = context?.getColor(R.color.dark_blue)!!
-//                }
-//                else {
-//                    binding.textInputLayoutNewPlaylistName.boxStrokeColor = context?.getColor(R.color.dark_grey)!!
-//                }
-
             }
         })
     }
@@ -128,22 +114,27 @@ class NewPlaylistFragment : Fragment() {
                     .setTextColor(resources.getColor(R.color.blue, null))
             }
         } else {
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
-    private fun savePlaylistImageToPrivateStorage(uri: Uri) {
+    private fun savePlaylistImageToPrivateStorage(uri: Uri): Uri {
         val playlistName = binding.newPlaylistName.text.toString()
         val filePath = File(requireContext().getDir(playlistName, MODE_PRIVATE), getString(R.string.playlists_storage_name))
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
         val file = File(filePath, getString(R.string.playlist_image, playlistName))
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+
+        requireActivity().contentResolver.openInputStream(uri)!!.use { inputStream ->
+            FileOutputStream(file).use { outputStream ->
+                BitmapFactory
+                    .decodeStream(inputStream)
+                    .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+            }
+        }
+
+        return file.toUri()
     }
 
     private fun createPlaylist() {
@@ -158,7 +149,7 @@ class NewPlaylistFragment : Fragment() {
         viewModel.createNewPlaylist(newPlaylist)
         val playlistCreatedMessage = getString(R.string.playlist_created, binding.newPlaylistName.text)
         Toast.makeText(requireContext(), playlistCreatedMessage, Toast.LENGTH_SHORT).show()
-        findNavController().navigateUp()
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     override fun onDestroyView() {

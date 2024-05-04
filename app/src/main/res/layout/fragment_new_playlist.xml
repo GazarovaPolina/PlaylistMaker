@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white_dark_blue">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarNewPlaylistAndBackButton"
@@ -37,7 +38,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbarNewPlaylistAndBackButton" />
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutNewPlaylistName"
@@ -88,7 +88,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <TextView
             android:id="@+id/createNewPlaylistButton"
             android:layout_width="0dp"
@@ -108,8 +107,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayoutNewPlaylistDescription" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </ScrollView>

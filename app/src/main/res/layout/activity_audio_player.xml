@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/trackAudioPlayer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".player.ui.AudioPlayerActivity">
@@ -247,51 +248,51 @@
     </ScrollView>
 
     <View
-        android:id="@+id/overlay"
+        android:id="@+id/shading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0"
+        android:background="#99000000"
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutBottomSheet"
+        android:id="@+id/addToPlaylistBottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="505dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_theme"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:visibility="gone"
         app:behavior_hideable="true"
         app:behavior_peekHeight="505dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+
         <View
-            style="@style/handlerBottomSheet"
             android:layout_width="50dp"
             android:layout_height="4dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/add_to_playlist_bottom_sheet" />
 
         <TextView
-            style="@style/headerBottomSheet"
+            style="@style/headerBottomSheetStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="Добавить в плейлист" />
+            android:paddingTop="18dp"
+            android:paddingBottom="12dp"
+            android:text="@string/add_to_playlist" />
 
         <Button
             android:id="@+id/buttonCreateNewPlaylistBottomSheet"
-            style="@style/button_create_new_playlist"
+            style="@style/buttonCreateNewPlaylistStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
             android:clickable="true"
-            android:fontFamily="@font/ys_display_medium"
             android:gravity="center"
-            android:text="Создать плейлист"
+            android:text="@string/new_playlist"
             android:textAllCaps="false"
             app:cornerRadius="54dp" />
 
@@ -303,5 +304,12 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/newPlaylistFragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/trackAudioPlayer" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

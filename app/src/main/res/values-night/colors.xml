@@ -24,4 +24,5 @@
     <color name="dark_blue_white">@color/white</color>
     <color name="white_dark_blue">@color/dark_blue</color>
     <color name="dark_grey_white">@color/white</color>
+    <color name="light_grey_white">@color/white</color>
 </resources>
