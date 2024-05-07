@@ -62,7 +62,7 @@ class NewPlaylistFragment : Fragment() {
             if (uri != null) {
                 binding.addImage.setImageURI(uri)
                 binding.addImage.scaleType = ImageView.ScaleType.CENTER_CROP
-                imageUri = savePlaylistImageToPrivateStorage(uri)
+                imageUri = uri
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
@@ -74,6 +74,7 @@ class NewPlaylistFragment : Fragment() {
         }
 
         binding.createNewPlaylistButton.setOnClickListener {
+            imageUri?.let { uri -> savePlaylistImageToPrivateStorage(uri) }
             createPlaylist()
         }
     }
@@ -97,7 +98,7 @@ class NewPlaylistFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun afterTextChanged(p0: Editable?) {
-                binding.createNewPlaylistButton.isEnabled = p0?.isNotEmpty()!!
+                binding.createNewPlaylistButton.isEnabled = p0?.trim()?.isNotEmpty() ?: false
             }
         })
     }

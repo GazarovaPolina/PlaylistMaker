@@ -28,12 +28,10 @@ class MediaLibPlaylistsViewModel(private val playlistsInteractor: PlaylistsInter
     }
 
     private fun processResult(playlists: List<Playlist>) {
-        Log.d("playlists", playlists.isEmpty().toString())
         if (playlists.isEmpty()) {
             renderState(PlaylistsState.Empty)
         } else {
             renderState(PlaylistsState.Content(playlists))
-            Log.d("playlists", playlists[0].playlistName)
         }
     }
 

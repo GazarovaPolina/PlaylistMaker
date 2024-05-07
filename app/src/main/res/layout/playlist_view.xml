@@ -18,6 +18,7 @@
             android:id="@+id/playlistImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white_dark_blue"
             android:backgroundTint="@null"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_playlist_placeholder" />

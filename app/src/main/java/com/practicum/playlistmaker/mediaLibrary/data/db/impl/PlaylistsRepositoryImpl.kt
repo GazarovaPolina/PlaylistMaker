@@ -32,13 +32,11 @@ class PlaylistsRepositoryImpl(
         appDatabase.trackInPlaylistDao().insertTrackToPlaylist(playlistDbConverter.map(track))
     }
 
-    override suspend fun getTracksIds(id: Long): String {
-        var ids: String
+    override suspend fun getTracksIds(id: Long): String =
         withContext(Dispatchers.IO) {
-            ids = appDatabase.playlistDao().getTracksIds(id)
+            appDatabase.playlistDao().getTracksIds(id)
         }
-        return ids
-    }
+
 
     override fun getListOfPlaylists(): Flow<List<Playlist>> = appDatabase
         .playlistDao()

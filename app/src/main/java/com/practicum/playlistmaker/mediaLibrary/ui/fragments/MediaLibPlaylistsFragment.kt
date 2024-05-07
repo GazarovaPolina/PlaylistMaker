@@ -16,7 +16,7 @@ import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.MediaLibPlaylistsV
 import com.practicum.playlistmaker.mediaLibrary.ui.PlaylistAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaLibFragmentPlaylists : Fragment() {
+class MediaLibPlaylistsFragment : Fragment() {
 
     private var _binding: FragmentMediaLibPlaylistsBinding? = null
     private val binding get() = _binding!!
@@ -49,14 +49,14 @@ class MediaLibFragmentPlaylists : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     override fun onResume() {
         viewModel.refreshPlaylists()
         super.onResume()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun executeAction(state: PlaylistsState) {
@@ -75,7 +75,7 @@ class MediaLibFragmentPlaylists : Fragment() {
     companion object {
         private const val PLACEHOLDER_TEXT = "placeholderText"
 
-        fun newInstance(placeholderText: String) = MediaLibFragmentPlaylists().apply {
+        fun newInstance(placeholderText: String) = MediaLibPlaylistsFragment().apply {
             arguments = Bundle().apply {
                 putString(PLACEHOLDER_TEXT, placeholderText)
             }

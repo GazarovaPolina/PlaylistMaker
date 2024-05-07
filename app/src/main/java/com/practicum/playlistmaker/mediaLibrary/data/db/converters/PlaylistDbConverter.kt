@@ -7,27 +7,25 @@ import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class PlaylistDbConverter {
-    fun map(playlist: Playlist): PlaylistEntity {
-        return PlaylistEntity(
-            playlistId = playlist.id,
-            playlistName = playlist.playlistName,
-            playlistDescription = playlist.playlistDescription,
-            playlistImageUrl = playlist.imageUrl,
-            playlistTracksIds = playlist.tracksIds,
-            countPlaylistTracks = playlist.countTracks
-        )
-    }
+    fun map(playlist: Playlist): PlaylistEntity = PlaylistEntity(
+        playlistId = playlist.id,
+        playlistName = playlist.playlistName,
+        playlistDescription = playlist.playlistDescription,
+        playlistImageUrl = playlist.imageUrl,
+        playlistTracksIds = playlist.tracksIds,
+        countPlaylistTracks = playlist.countTracks
+    )
 
-    fun map(playlist: PlaylistEntity): Playlist {
-        return Playlist(
-            id = playlist.playlistId,
-            playlistName = playlist.playlistName,
-            playlistDescription = playlist.playlistDescription,
-            imageUrl = playlist.playlistImageUrl,
-            tracksIds = playlist.playlistTracksIds,
-            countTracks = playlist.countPlaylistTracks
-        )
-    }
+
+    fun map(playlist: PlaylistEntity): Playlist = Playlist(
+        id = playlist.playlistId,
+        playlistName = playlist.playlistName,
+        playlistDescription = playlist.playlistDescription,
+        imageUrl = playlist.playlistImageUrl,
+        tracksIds = playlist.playlistTracksIds,
+        countTracks = playlist.countPlaylistTracks
+    )
+
 
     fun map(track: Track): TrackInPlaylistEntity {
         val currentTimestamp: Long = java.util.Date().time

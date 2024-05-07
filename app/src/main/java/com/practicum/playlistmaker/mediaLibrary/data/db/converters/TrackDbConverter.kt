@@ -27,19 +27,16 @@ class TrackDbConverter {
         )
     }
 
-    fun map(trackEntity: TrackEntity): Track {
-        return Track(
-            trackId = trackEntity.trackId,
-            trackName = trackEntity.trackName,
-            artistName = trackEntity.artistName,
-            trackTime = trackEntity.trackTime,
-            artworkUrl100 = trackEntity.artworkUrl100,
-            collectionName = trackEntity.collectionName,
-            releaseDate = trackEntity.releaseDate,
-            primaryGenreName = trackEntity.primaryGenreName,
-            country = trackEntity.country,
-            previewUrl = trackEntity.previewUrl
-        )
-    }
-
+    fun map(trackEntity: TrackEntity): Track = Track(
+        trackId = trackEntity.trackId,
+        trackName = trackEntity.trackName,
+        artistName = trackEntity.artistName,
+        trackTime = trackEntity.trackTime,
+        artworkUrl100 = trackEntity.artworkUrl100,
+        collectionName = trackEntity.collectionName,
+        releaseDate = trackEntity.releaseDate,
+        primaryGenreName = trackEntity.primaryGenreName,
+        country = trackEntity.country,
+        previewUrl = trackEntity.previewUrl
+    )
 }

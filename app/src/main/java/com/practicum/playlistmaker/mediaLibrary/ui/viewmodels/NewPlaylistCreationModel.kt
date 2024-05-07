@@ -10,12 +10,9 @@ import kotlinx.coroutines.launch
 
 class NewPlaylistCreationModel(private val playlistsInteractor: PlaylistsInteractor): ViewModel() {
 
-    private val _newPlaylistState = MutableLiveData<Boolean>()
-    fun observeState(): LiveData<Boolean> = _newPlaylistState
+    private val _newPlaylistState = MutableLiveData(false)
 
-    init {
-        _newPlaylistState.postValue(false)
-    }
+    fun observeState(): LiveData<Boolean> = _newPlaylistState
 
     fun createNewPlaylist(playlist: Playlist) {
         viewModelScope.launch {

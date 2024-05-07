@@ -24,14 +24,11 @@ class FavoritesRepositoryImpl(
         }
         .flowOn(Dispatchers.IO)
 
-    override suspend fun getTrackIds(): List<Long> {
-        var trackIds: List<Long>
+    override suspend fun getTrackIds(): List<Long> =
         withContext(Dispatchers.IO) {
-            trackIds = appDatabase.trackDao().getTracksIds()
+            appDatabase.trackDao().getTracksIds()
         }
-        return trackIds
 
-    }
 
     override suspend fun addTrackToFavorites(track: Track) {
         withContext(Dispatchers.IO) {

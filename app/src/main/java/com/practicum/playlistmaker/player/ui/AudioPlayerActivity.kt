@@ -67,7 +67,6 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         bottomSheetBehavior!!.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                // newState — новое состояние BottomSheet
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         binding.shading.isVisible = false
@@ -85,10 +84,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         binding.recyclerViewBottomSheet.adapter = bottomSheetAdapter
 
-        viewModel.playlistState.observe(this) {
-            if (it != null) {
+        viewModel.playlistState.observe(this) { playlistList ->
+            if (playlistList != null) {
                 bottomSheetAdapter.playlists.clear()
-                bottomSheetAdapter.playlists.addAll(it.toList())
+                bottomSheetAdapter.playlists.addAll(playlistList.toList())
                 bottomSheetAdapter.notifyDataSetChanged()
             }
         }
@@ -112,9 +111,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
 
-        viewModel.playlistState.observe(this) {
-            if (it != null) {
-                updateBottomSheetAdapter(it)
+        viewModel.playlistState.observe(this) { playlistList ->
+            if (playlistList != null) {
+                updateBottomSheetAdapter(playlistList)
             }
         }
 
