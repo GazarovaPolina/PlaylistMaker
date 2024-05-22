@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.mediaLibrary.data.db.converters
 
 import android.util.Log
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackEntity
+import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackInPlaylistEntity
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.data.dto.TrackDto
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -26,18 +27,16 @@ class TrackDbConverter {
         )
     }
 
-    fun map(trackEntity: TrackEntity): Track {
-        return Track(
-            trackId = trackEntity.trackId,
-            trackName = trackEntity.trackName,
-            artistName = trackEntity.artistName,
-            trackTime = trackEntity.trackTime,
-            artworkUrl100 = trackEntity.artworkUrl100,
-            collectionName = trackEntity.collectionName,
-            releaseDate = trackEntity.releaseDate,
-            primaryGenreName = trackEntity.primaryGenreName,
-            country = trackEntity.country,
-            previewUrl = trackEntity.previewUrl
-        )
-    }
+    fun map(trackEntity: TrackEntity): Track = Track(
+        trackId = trackEntity.trackId,
+        trackName = trackEntity.trackName,
+        artistName = trackEntity.artistName,
+        trackTime = trackEntity.trackTime,
+        artworkUrl100 = trackEntity.artworkUrl100,
+        collectionName = trackEntity.collectionName,
+        releaseDate = trackEntity.releaseDate,
+        primaryGenreName = trackEntity.primaryGenreName,
+        country = trackEntity.country,
+        previewUrl = trackEntity.previewUrl
+    )
 }

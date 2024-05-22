@@ -14,7 +14,7 @@ import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaLibFragmentFavorites : Fragment() {
+class MediaLibFavoritesFragment : Fragment() {
 
     private var _binding: FragmentMediaLibFavoritesBinding? = null
     private val binding get() = _binding!!
@@ -44,14 +44,14 @@ class MediaLibFragmentFavorites : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     override fun onResume() {
         viewModel.refreshFavorites()
         super.onResume()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun executeAction(state: MediaLibFavoritesState) {
@@ -72,7 +72,7 @@ class MediaLibFragmentFavorites : Fragment() {
         private const val PLACEHOLDER_TEXT = "placeholderText"
         private const val TRACK = "track"
 
-        fun newInstance(placeholderText: String) = MediaLibFragmentFavorites().apply {
+        fun newInstance(placeholderText: String) = MediaLibFavoritesFragment().apply {
             arguments = Bundle().apply {
                 putString(PLACEHOLDER_TEXT, placeholderText)
             }
