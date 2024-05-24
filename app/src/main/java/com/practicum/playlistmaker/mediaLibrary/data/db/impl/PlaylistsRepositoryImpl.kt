@@ -8,6 +8,7 @@ import com.practicum.playlistmaker.mediaLibrary.domain.playlists.PlaylistsReposi
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -42,6 +43,18 @@ class PlaylistsRepositoryImpl(
         .playlistDao()
         .getListOfPlaylists()
         .map { convertFromPlaylistEntity(it) }
+
+    override suspend fun getPlaylistDetailsById(id: Long): Playlist {
+        val playlistEntity = appDatabase.playlistDao().getPlaylistDetailsById(id)
+        return playlistDbConverter.map(playlistEntity)
+    }
+
+    override fun getPlaylistTracksList(tracksIdsList: List<Int>): Flow<List<Track>> = flow {
+        val tracksInPlaylistEntities = appDatabase.trackInPlaylistDao().getPlaylistTracksList(tracksIdsList)
+        val sortedTracksInPlaylistEntities = tracksInPlaylistEntities.sortedByDescending { it.timestamp }
+        val tracksInPlaylist = sortedTracksInPlaylistEntities.map { track -> playlistDbConverter.map(track) }
+        emit(tracksInPlaylist)
+    }
 
     private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
         return playlists.map { playlist -> playlistDbConverter.map(playlist) }

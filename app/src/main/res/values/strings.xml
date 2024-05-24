@@ -54,4 +54,11 @@
     <string name="playlist_confim_dialog_neutral_button_message">Отмена</string>
     <string name="playlist_confim_dialog_positive_button_message">Завершить</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="playlist_image_content_description">Обложка альбома</string>
+    <string name="playlist_share_btn_content_description">Поделиться плейлистом</string>
+    <string name="playlist_more_actions_btn_content_description">Больше действий с плейлистом</string>
+    <string name="track_ending_11_14">"%d" треков</string>
+    <string name="track_ending_1">"%d" трек</string>
+    <string name="track_ending_2_4">"%d" трека</string>
+    <string name="track_ending_other">"%d" треков</string>
 </resources>

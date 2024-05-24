@@ -43,4 +43,19 @@ class PlaylistDbConverter {
             timestamp = currentTimestamp
         )
     }
+
+    fun map(track: TrackInPlaylistEntity): Track {
+        return Track(
+            trackId = track.trackId,
+            trackName = track.trackName,
+            artistName = track.artistName,
+            trackTime = track.trackTime,
+            artworkUrl100 = track.artworkUrl100,
+            collectionName = track.collectionName,
+            releaseDate = track.releaseDate,
+            primaryGenreName = track.primaryGenreName,
+            country = track.country,
+            previewUrl = track.artworkUrl100
+        )
+    }
 }

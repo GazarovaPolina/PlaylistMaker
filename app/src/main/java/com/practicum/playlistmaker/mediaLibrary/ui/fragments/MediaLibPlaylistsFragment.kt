@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentMediaLibPlaylistsBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.PlaylistsState
@@ -28,6 +30,10 @@ class MediaLibPlaylistsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMediaLibPlaylistsBinding.inflate(inflater, container, false)
+
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
+
         return binding.root
     }
 
@@ -46,6 +52,11 @@ class MediaLibPlaylistsFragment : Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             executeAction(it)
+        }
+
+        playlistsAdapter.onPlaylistItemClick = {
+            Log.d("aaa", "aaa")
+            findNavController().navigate(R.id.playlistDetailsFragment, PlaylistDetailsFragment.createArgs(it.id.toString()))
         }
     }
 
@@ -71,6 +82,7 @@ class MediaLibPlaylistsFragment : Fragment() {
             playlistsAdapter.notifyDataSetChanged()
         }
     }
+
 
     companion object {
         private const val PLACEHOLDER_TEXT = "placeholderText"
