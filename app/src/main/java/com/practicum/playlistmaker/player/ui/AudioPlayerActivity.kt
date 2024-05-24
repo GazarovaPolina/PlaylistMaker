@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -94,6 +95,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         binding.playPauseBtn.setOnClickListener {
             viewModel.playPauseControl()
+            Log.d("buttonwork", "buttonwork")
         }
 
         binding.addToFavoritesBtn.setOnClickListener {

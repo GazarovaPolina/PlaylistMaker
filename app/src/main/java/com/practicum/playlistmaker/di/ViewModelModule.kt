@@ -43,6 +43,6 @@ val viewModelModule = module {
         MediaLibPlaylistsViewModel(get())
     }
     viewModel<PlaylistDetailsViewModel> {(id: String) ->
-        PlaylistDetailsViewModel(id, get())
+        PlaylistDetailsViewModel(id, get(), get())
     }
 }

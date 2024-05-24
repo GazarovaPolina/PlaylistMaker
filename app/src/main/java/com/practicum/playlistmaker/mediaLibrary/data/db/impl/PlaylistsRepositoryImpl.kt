@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.data.db.impl
 
+import com.google.gson.Gson
 import com.practicum.playlistmaker.mediaLibrary.data.db.AppDatabase
 import com.practicum.playlistmaker.mediaLibrary.data.db.converters.PlaylistDbConverter
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.PlaylistEntity
@@ -54,6 +55,29 @@ class PlaylistsRepositoryImpl(
         val sortedTracksInPlaylistEntities = tracksInPlaylistEntities.sortedByDescending { it.timestamp }
         val tracksInPlaylist = sortedTracksInPlaylistEntities.map { track -> playlistDbConverter.map(track) }
         emit(tracksInPlaylist)
+    }
+
+    override suspend fun isTrackInAnyPlaylist(trackId: Long): Boolean {
+        val allTracks = getListOfPlaylists()
+        var isTrackInPlaylist = false
+
+//        listOf(1, 2, 0, 3).any { it == 0 }
+
+        allTracks.collect { playlistList ->
+            for (playlist in playlistList) {
+                val tracksInPlaylist = Gson().fromJson(playlist.tracksIds, Array<Long>::class.java)?: emptyArray()
+                if (trackId in tracksInPlaylist) {
+                    isTrackInPlaylist = true
+                    break
+                }
+            }
+        }
+        return isTrackInPlaylist
+    }
+
+    override suspend fun deleteTrack(track: Track) {
+        val trackEntity = playlistDbConverter.map(track)
+        appDatabase.trackInPlaylistDao().deleteTrack(trackEntity)
     }
 
     private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {

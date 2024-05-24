@@ -47,7 +47,11 @@
         android:id="@+id/playlistDetailsFragment"
         android:name="com.practicum.playlistmaker.mediaLibrary.ui.fragments.PlaylistDetailsFragment"
         android:label="fragment_playlist_details"
-        tools:layout="@layout/fragment_playlist_details" />
+        tools:layout="@layout/fragment_playlist_details" >
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_audioPlayerActivity"
+            app:destination="@id/audioPlayerActivity" />
+    </fragment>
     <fragment
         android:id="@+id/mediaLibPlaylistsFragment"
         android:name="com.practicum.playlistmaker.mediaLibrary.ui.fragments.MediaLibPlaylistsFragment"

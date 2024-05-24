@@ -61,4 +61,5 @@
     <string name="track_ending_1">"%d" трек</string>
     <string name="track_ending_2_4">"%d" трека</string>
     <string name="track_ending_other">"%d" треков</string>
+    <string name ="tracks_count_in_playlist_message">В этом плейлисте пока нет треков</string>
 </resources>

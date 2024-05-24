@@ -1,19 +1,28 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
+import com.practicum.playlistmaker.mediaLibrary.ui.TrackInPlaylistAdapter
 import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.PlaylistDetailsViewModel
+import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.player.ui.BottomSheetAdapter
 import com.practicum.playlistmaker.player.ui.CountMessageEndingChanger
+import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -22,6 +31,9 @@ class PlaylistDetailsFragment : Fragment() {
     private var _binding: FragmentPlaylistDetailsBinding? = null
     private val binding get() = _binding!!
 
+    private val bottomSheetTrackAdapter = TrackInPlaylistAdapter()
+    private var bottomSheetTracksBehavior: BottomSheetBehavior<LinearLayout>? = null
+
     val viewModel: PlaylistDetailsViewModel by viewModel {
         parametersOf(
             requireArguments().getString(
@@ -29,6 +41,8 @@ class PlaylistDetailsFragment : Fragment() {
             )
         )
     }
+
+    private var tracksInPlaylist: List<Track>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentPlaylistDetailsBinding.inflate(inflater, container, false)
@@ -53,6 +67,22 @@ class PlaylistDetailsFragment : Fragment() {
         binding.toolbarBackButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
+        bottomSheetTracksBehavior = BottomSheetBehavior.from(binding.playlistTracksBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        binding.recyclerViewPlaylistTracksBottomSheet.adapter = bottomSheetTrackAdapter
+
+        viewModel.playlistTracks.observe(viewLifecycleOwner) {
+            renderTrackListBottomSheet(it)
+        }
+
+        bottomSheetTrackAdapter.onTrackItemClick = {
+            val intent = Intent(requireContext(), AudioPlayerActivity::class.java)
+            intent.putExtra(TRACK, it)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
@@ -71,9 +101,21 @@ class PlaylistDetailsFragment : Fragment() {
             .into(binding.playlistDetailsCover)
     }
 
+    private fun renderTrackListBottomSheet(tracksList: List<Track>) {
+        if (tracksList.isNotEmpty()) {
+            binding.playlistTracksBottomSheet.isVisible = true
+            bottomSheetTrackAdapter.tracks.clear()
+            bottomSheetTrackAdapter.tracks.addAll(tracksList)
+            bottomSheetTrackAdapter.notifyDataSetChanged()
+        } else {
+            binding.playlistTracksBottomSheet.isVisible = false
+            Toast.makeText(requireContext(), getString(R.string.tracks_count_in_playlist_message), Toast.LENGTH_SHORT).show()
+        }
+    }
 
     companion object {
         private const val ARGS_ID = "id"
+        private const val TRACK = "track"
         fun createArgs(id: String): Bundle =
             bundleOf(ARGS_ID to id)
 
