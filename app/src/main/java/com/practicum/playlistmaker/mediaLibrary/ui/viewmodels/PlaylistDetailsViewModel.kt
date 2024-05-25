@@ -6,16 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.practicum.playlistmaker.mediaLibrary.domain.favorites.FavoritesInteractor
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.PlaylistsInteractor
-import com.practicum.playlistmaker.player.ui.CountMessageEndingChanger
 import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.sharing.domain.SharingInteractor
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Locale
 
-class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteractor: PlaylistsInteractor, private val favoritesInteractor: FavoritesInteractor,): ViewModel() {
+class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteractor: PlaylistsInteractor, private val sharingInteractor: SharingInteractor): ViewModel() {
 
     private val _playlistDetails = MutableLiveData<Playlist>()
     val playlistDetails: LiveData<Playlist> get() = _playlistDetails
@@ -76,6 +73,9 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
                 playlistsInteractor.deleteTrack(track)
             }
         }
+    }
 
+    fun sharePlaylist(playlistDetails: String) {
+        sharingInteractor.share(playlistDetails)
     }
 }

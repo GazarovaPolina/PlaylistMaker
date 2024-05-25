@@ -38,7 +38,7 @@ class SettingsFragment : Fragment() {
         }
 
         binding.textViewShare.setOnClickListener {
-            viewModel.onShareAppLinkClicked()
+            viewModel.onShareAppLinkClicked(requireContext().getString(R.string.share_link))
         }
 
         binding.textViewSupport.setOnClickListener {

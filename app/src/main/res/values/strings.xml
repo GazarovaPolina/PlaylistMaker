@@ -66,4 +66,5 @@
     <string name="confirm_delete">Вы уверены, что хотите удалить трек из плейлиста?</string>
     <string name="delete_track_confirm_dialog_neutral_button_message">Отмена</string>
     <string name="delete_track_confirm_dialog_positive_button_message">Удалить</string>
+    <string name="playlist_without_tracks_message">В этом плейлисте нет списка треков, которым можно поделиться</string>
 </resources>

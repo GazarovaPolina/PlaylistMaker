@@ -3,7 +3,6 @@ package com.practicum.playlistmaker.mediaLibrary.ui.fragments
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +21,12 @@ import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.mediaLibrary.ui.TrackInPlaylistAdapter
 import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.PlaylistDetailsViewModel
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
-import com.practicum.playlistmaker.player.ui.BottomSheetAdapter
 import com.practicum.playlistmaker.player.ui.CountMessageEndingChanger
 import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PlaylistDetailsFragment : Fragment() {
 
@@ -89,6 +89,16 @@ class PlaylistDetailsFragment : Fragment() {
         bottomSheetTrackAdapter.onLongTrackItemClick = {
             deleteTrackFromPlaylist(it)
         }
+
+        binding.sharePlaylist.setOnClickListener {
+            val tracks = bottomSheetTrackAdapter.tracks.toMutableList()
+            if (tracks.isEmpty()) {
+                Toast.makeText(requireContext(), requireContext().getString(R.string.playlist_without_tracks_message), Toast.LENGTH_SHORT).show()
+            }
+            else {
+                viewModel.sharePlaylist(getPlaylistDetails())
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -100,10 +110,7 @@ class PlaylistDetailsFragment : Fragment() {
         binding.playlistDetailsName.text = playlist.playlistName
         binding.playlistDetailsDescription.text = playlist.playlistDescription
         binding.playlistDetailsTracksCount.text = CountMessageEndingChanger().getTracksCountMessageEnding(playlist.countTracks)
-        Glide.with(requireContext())
-            .load(playlist.imageUrl)
-            .placeholder(R.drawable.ic_playlist_cover_placeholder)
-            .centerCrop()
+        Glide.with(requireContext()).load(playlist.imageUrl).placeholder(R.drawable.ic_playlist_cover_placeholder).centerCrop()
             .into(binding.playlistDetailsCover)
     }
 
@@ -121,29 +128,42 @@ class PlaylistDetailsFragment : Fragment() {
 
 
     private fun deleteTrackFromPlaylist(trackToDelete: Track) {
-        confirmDeleteTrackDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.delete_track))
-            .setMessage(getString(R.string.confirm_delete))
-            .setNeutralButton(getString(R.string.delete_track_confirm_dialog_neutral_button_message)) { dialog, which -> }
-            .setPositiveButton(getString(R.string.delete_track_confirm_dialog_positive_button_message)) { dialog, which ->
-                viewModel.removeTrackFromPlaylist(
-                    trackToDelete
-                )
-            }
+        confirmDeleteTrackDialog =
+            MaterialAlertDialogBuilder(requireContext()).setTitle(getString(R.string.delete_track)).setMessage(getString(R.string.confirm_delete))
+                .setNeutralButton(getString(R.string.delete_track_confirm_dialog_neutral_button_message)) { dialog, which -> }
+                .setPositiveButton(getString(R.string.delete_track_confirm_dialog_positive_button_message)) { dialog, which ->
+                    viewModel.removeTrackFromPlaylist(
+                        trackToDelete
+                    )
+                }
         confirmDeleteTrackDialog!!.show().apply {
-            getButton(DialogInterface.BUTTON_POSITIVE)
-                .setTextColor(resources.getColor(R.color.blue, null))
-            getButton(DialogInterface.BUTTON_NEUTRAL)
-                .setTextColor(resources.getColor(R.color.blue, null))
+            getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.blue, null))
+            getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(resources.getColor(R.color.blue, null))
         }
+    }
+
+    private fun getPlaylistDetails(): String {
+        val tracks = bottomSheetTrackAdapter.tracks.toMutableList()
+        var playlistDescription = "${binding.playlistDetailsName.text}"
+
+        if (binding.playlistDetailsDescription.text.isNotEmpty()) {
+            playlistDescription += "\n${binding.playlistDetailsDescription.text}"
+        }
+        playlistDescription += "\n${binding.playlistDetailsTracksCount.text}"
+        var tracksNumber = 1
+        for (track in tracks) {
+            playlistDescription += "\n$tracksNumber.${track.artistName}-${track.trackName}" +
+                    "(${SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)})"
+            tracksNumber += 1
+
+        }
+        return playlistDescription
     }
 
     companion object {
         private const val ARGS_ID = "id"
         private const val TRACK = "track"
-        fun createArgs(id: String): Bundle =
-            bundleOf(ARGS_ID to id)
-
+        fun createArgs(id: String): Bundle = bundleOf(ARGS_ID to id)
     }
 
 }
