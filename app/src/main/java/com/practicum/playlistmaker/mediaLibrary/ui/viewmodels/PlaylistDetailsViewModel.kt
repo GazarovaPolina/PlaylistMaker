@@ -56,10 +56,11 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
 
     fun removeTrackFromPlaylist(track: Track) {
         viewModelScope.launch {
-             val playlist = playlistsInteractor.getPlaylistDetailsById(playlistIdentifier)
+            val playlist = playlistsInteractor.getPlaylistDetailsById(playlistIdentifier)
             val playlistIdsTracks = Gson().fromJson(playlist.tracksIds, Array<Long>::class.java).toMutableList()
             playlistIdsTracks.remove(track.trackId)
-            val updatedTrackIdsList = Gson().toJson(playlistTracks)
+            val updatedTrackIdsList = Gson().toJson(playlistIdsTracks)
+            Log.d("here", "here")
             val updatedPlaylist = Playlist(
                 id = playlist.id,
                 playlistName = playlist.playlistName,
@@ -77,7 +78,4 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
         }
 
     }
-
-
-    
 }

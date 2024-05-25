@@ -62,4 +62,8 @@
     <string name="track_ending_2_4">"%d" трека</string>
     <string name="track_ending_other">"%d" треков</string>
     <string name ="tracks_count_in_playlist_message">В этом плейлисте пока нет треков</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="confirm_delete">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete_track_confirm_dialog_neutral_button_message">Отмена</string>
+    <string name="delete_track_confirm_dialog_positive_button_message">Удалить</string>
 </resources>

@@ -34,7 +34,7 @@ class NewPlaylistFragment : Fragment() {
 
     private val viewModel: NewPlaylistCreationModel by viewModel()
 
-    private lateinit var confimDialog: MaterialAlertDialogBuilder
+    private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private var isPlaylistImageSelected = false
     private var imageUri: Uri? = null
 
@@ -50,7 +50,7 @@ class NewPlaylistFragment : Fragment() {
             executeAction(it)
         }
 
-        confimDialog = createConfimDialog()
+        confirmDialog = createConfirmDialog()
 
         createTextChangeListener()
 
@@ -83,7 +83,7 @@ class NewPlaylistFragment : Fragment() {
         binding.createNewPlaylistButton.isEnabled = isButtonEnabled
     }
 
-    private fun createConfimDialog(): MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+    private fun createConfirmDialog(): MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         .setTitle(getString(R.string.playlist_confim_dialog_title))
         .setMessage(getString(R.string.playlist_confim_dialog_message))
         .setNeutralButton(getString(R.string.playlist_confim_dialog_neutral_button_message)) { dialog, which -> }
@@ -108,7 +108,7 @@ class NewPlaylistFragment : Fragment() {
             binding.newPlaylistDescription.text?.isNotEmpty()!! ||
             isPlaylistImageSelected
         ) {
-            confimDialog.show().apply {
+            confirmDialog.show().apply {
                 getButton(DialogInterface.BUTTON_POSITIVE)
                     .setTextColor(resources.getColor(R.color.blue, null))
                 getButton(DialogInterface.BUTTON_NEUTRAL)

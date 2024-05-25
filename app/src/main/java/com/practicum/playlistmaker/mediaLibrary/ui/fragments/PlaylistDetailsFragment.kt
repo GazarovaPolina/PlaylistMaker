@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.fragments
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
@@ -33,6 +35,7 @@ class PlaylistDetailsFragment : Fragment() {
 
     private val bottomSheetTrackAdapter = TrackInPlaylistAdapter()
     private var bottomSheetTracksBehavior: BottomSheetBehavior<LinearLayout>? = null
+    private var confirmDeleteTrackDialog: MaterialAlertDialogBuilder? = null
 
     val viewModel: PlaylistDetailsViewModel by viewModel {
         parametersOf(
@@ -42,7 +45,6 @@ class PlaylistDetailsFragment : Fragment() {
         )
     }
 
-    private var tracksInPlaylist: List<Track>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentPlaylistDetailsBinding.inflate(inflater, container, false)
@@ -83,6 +85,10 @@ class PlaylistDetailsFragment : Fragment() {
             intent.putExtra(TRACK, it)
             startActivity(intent)
         }
+
+        bottomSheetTrackAdapter.onLongTrackItemClick = {
+            deleteTrackFromPlaylist(it)
+        }
     }
 
     override fun onDestroyView() {
@@ -113,6 +119,25 @@ class PlaylistDetailsFragment : Fragment() {
         }
     }
 
+
+    private fun deleteTrackFromPlaylist(trackToDelete: Track) {
+        confirmDeleteTrackDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_track))
+            .setMessage(getString(R.string.confirm_delete))
+            .setNeutralButton(getString(R.string.delete_track_confirm_dialog_neutral_button_message)) { dialog, which -> }
+            .setPositiveButton(getString(R.string.delete_track_confirm_dialog_positive_button_message)) { dialog, which ->
+                viewModel.removeTrackFromPlaylist(
+                    trackToDelete
+                )
+            }
+        confirmDeleteTrackDialog!!.show().apply {
+            getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(resources.getColor(R.color.blue, null))
+            getButton(DialogInterface.BUTTON_NEUTRAL)
+                .setTextColor(resources.getColor(R.color.blue, null))
+        }
+    }
+
     companion object {
         private const val ARGS_ID = "id"
         private const val TRACK = "track"
@@ -120,4 +145,5 @@ class PlaylistDetailsFragment : Fragment() {
             bundleOf(ARGS_ID to id)
 
     }
+
 }

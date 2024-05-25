@@ -10,8 +10,9 @@ import com.practicum.playlistmaker.search.ui.TrackViewHolder
 class TrackInPlaylistAdapter: RecyclerView.Adapter<TrackViewHolder>()  {
 
     var tracks = ArrayList<Track>()
-
     var onTrackItemClick: ((Track) -> Unit)? = null
+    var onLongTrackItemClick: ((Track) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
 
         return TrackViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false))
@@ -25,9 +26,10 @@ class TrackInPlaylistAdapter: RecyclerView.Adapter<TrackViewHolder>()  {
             this.notifyDataSetChanged()
         }
 
-//        holder.itemView.setOnLongClickListener {
-//
-//        }
+        holder.itemView.setOnLongClickListener {
+            onLongTrackItemClick?.invoke(tracks[position])
+            return@setOnLongClickListener true
+        }
     }
 
     override fun getItemCount(): Int {
