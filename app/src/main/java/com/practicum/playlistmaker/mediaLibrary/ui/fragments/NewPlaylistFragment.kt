@@ -36,7 +36,7 @@ class NewPlaylistFragment : Fragment() {
 
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private var isPlaylistImageSelected = false
-    private var imageUri: Uri? = null
+    private var selectedImageUri: Uri? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
@@ -62,7 +62,7 @@ class NewPlaylistFragment : Fragment() {
             if (uri != null) {
                 binding.addImage.setImageURI(uri)
                 binding.addImage.scaleType = ImageView.ScaleType.CENTER_CROP
-                imageUri = uri
+                selectedImageUri = uri
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
@@ -74,8 +74,8 @@ class NewPlaylistFragment : Fragment() {
         }
 
         binding.createNewPlaylistButton.setOnClickListener {
-            imageUri?.let { uri -> savePlaylistImageToPrivateStorage(uri) }
-            createPlaylist()
+            val savedImageUri = selectedImageUri?.let { uri -> savePlaylistImageToPrivateStorage(uri) }
+            createPlaylist(savedImageUri)
         }
     }
 
@@ -120,12 +120,11 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun savePlaylistImageToPrivateStorage(uri: Uri): Uri {
+        val filePath = requireContext().getDir(getString(R.string.playlists_storage_name), MODE_PRIVATE)
+        if (!filePath.exists()) filePath.mkdirs()
+
         val playlistName = binding.newPlaylistName.text.toString()
-        val filePath = File(requireContext().getDir(playlistName, MODE_PRIVATE), getString(R.string.playlists_storage_name))
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-        val file = File(filePath, getString(R.string.playlist_image, playlistName))
+        val file = filePath.resolve(playlistName)
 
         requireActivity().contentResolver.openInputStream(uri)!!.use { inputStream ->
             FileOutputStream(file).use { outputStream ->
@@ -138,12 +137,12 @@ class NewPlaylistFragment : Fragment() {
         return file.toUri()
     }
 
-    private fun createPlaylist() {
+    private fun createPlaylist(savedImageUri: Uri?) {
         val newPlaylist = Playlist(
             id = null,
             playlistName = binding.newPlaylistName.text.toString(),
             playlistDescription = binding.newPlaylistDescription.text.toString(),
-            imageUrl = imageUri.toString(),
+            imageUrl = savedImageUri?.toString(),
             tracksIds = null,
             countTracks = 0
         )

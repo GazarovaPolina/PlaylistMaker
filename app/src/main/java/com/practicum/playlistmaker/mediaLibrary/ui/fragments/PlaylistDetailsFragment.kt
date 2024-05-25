@@ -2,7 +2,10 @@ package com.practicum.playlistmaker.mediaLibrary.ui.fragments
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +15,10 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,6 +43,7 @@ class PlaylistDetailsFragment : Fragment() {
     private val bottomSheetTrackAdapter = TrackInPlaylistAdapter()
     private var bottomSheetTracksBehavior: BottomSheetBehavior<LinearLayout>? = null
     private var confirmDeleteTrackDialog: MaterialAlertDialogBuilder? = null
+    private var bottomSheetMenuBehavior: BottomSheetBehavior<LinearLayout>? = null
 
     val viewModel: PlaylistDetailsViewModel by viewModel {
         parametersOf(
@@ -44,6 +52,8 @@ class PlaylistDetailsFragment : Fragment() {
             )
         )
     }
+
+    private var currentPlaylist :Playlist? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -74,6 +84,10 @@ class PlaylistDetailsFragment : Fragment() {
             state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
+        bottomSheetMenuBehavior = BottomSheetBehavior.from(binding.moreActionsWithPlaylistBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
         binding.recyclerViewPlaylistTracksBottomSheet.adapter = bottomSheetTrackAdapter
 
         viewModel.playlistTracks.observe(viewLifecycleOwner) {
@@ -99,6 +113,11 @@ class PlaylistDetailsFragment : Fragment() {
                 viewModel.sharePlaylist(getPlaylistDetails())
             }
         }
+
+        binding.moreActionsWithPlaylist.setOnClickListener {
+            renderBottomSheetMenu()
+            bottomSheetMenuBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
     }
 
     override fun onDestroyView() {
@@ -107,11 +126,25 @@ class PlaylistDetailsFragment : Fragment() {
     }
 
     private fun renderPlaylistNameAndDescription(playlist: Playlist) {
+        currentPlaylist = playlist
         binding.playlistDetailsName.text = playlist.playlistName
         binding.playlistDetailsDescription.text = playlist.playlistDescription
         binding.playlistDetailsTracksCount.text = CountMessageEndingChanger().getTracksCountMessageEnding(playlist.countTracks)
         Glide.with(requireContext()).load(playlist.imageUrl).placeholder(R.drawable.ic_playlist_cover_placeholder).centerCrop()
             .into(binding.playlistDetailsCover)
+        Log.d("imageUrl", playlist.imageUrl.toString())
+    }
+
+    private fun renderBottomSheetMenu() {
+        Log.d("imageUrl", currentPlaylist!!.imageUrl.toString())
+        binding.bottomSheetPlaylistName.text = currentPlaylist!!.playlistName
+        binding.bottomSheetCountPlaylistTracks.text = CountMessageEndingChanger().getTracksCountMessageEnding(currentPlaylist!!.countTracks)
+        Glide
+            .with(requireContext())
+            .load(currentPlaylist!!.imageUrl)
+            .placeholder(R.drawable.ic_playlist_cover_placeholder)
+            .centerCrop()
+            .into(binding.bottomSheetPlaylistImage)
     }
 
     private fun renderTrackListBottomSheet(tracksList: List<Track>) {
@@ -159,6 +192,7 @@ class PlaylistDetailsFragment : Fragment() {
         }
         return playlistDescription
     }
+
 
     companion object {
         private const val ARGS_ID = "id"
