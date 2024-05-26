@@ -105,24 +105,32 @@ class PlaylistDetailsFragment : Fragment() {
         }
 
         binding.sharePlaylist.setOnClickListener {
-            val tracks = bottomSheetTrackAdapter.tracks.toMutableList()
-            if (tracks.isEmpty()) {
-                Toast.makeText(requireContext(), requireContext().getString(R.string.playlist_without_tracks_message), Toast.LENGTH_SHORT).show()
-            }
-            else {
-                viewModel.sharePlaylist(getPlaylistDetails())
-            }
+            sharePlaylist()
         }
 
         binding.moreActionsWithPlaylist.setOnClickListener {
             renderBottomSheetMenu()
             bottomSheetMenuBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
+        binding.bottomSheetSharePlaylist.setOnClickListener {
+            sharePlaylist()
+        }
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    private fun sharePlaylist() {
+        val tracks = bottomSheetTrackAdapter.tracks.toMutableList()
+        if (tracks.isEmpty()) {
+            Toast.makeText(requireContext(), requireContext().getString(R.string.playlist_without_tracks_message), Toast.LENGTH_SHORT).show()
+        }
+        else {
+            viewModel.sharePlaylist(getPlaylistDetails())
+        }
     }
 
     private fun renderPlaylistNameAndDescription(playlist: Playlist) {
