@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker.sharing.domain
 
-interface ExternalActions {
+interface SharingInteractor {
 
-    fun shareAppLink()
+    fun share(text: String)
     fun openAgreement()
     fun writeToSupport()
 }

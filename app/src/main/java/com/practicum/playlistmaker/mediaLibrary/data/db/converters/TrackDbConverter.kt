@@ -1,17 +1,11 @@
 package com.practicum.playlistmaker.mediaLibrary.data.db.converters
 
-import android.util.Log
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackEntity
-import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackInPlaylistEntity
-import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
-import com.practicum.playlistmaker.search.data.dto.TrackDto
 import com.practicum.playlistmaker.search.domain.models.Track
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class TrackDbConverter {
     fun map(track: Track): TrackEntity {
-        val currentTimestamp: Long = java.util.Date().time
+        val currentTimestamp = System.currentTimeMillis()
         return TrackEntity(
             trackId = track.trackId,
             trackName = track.trackName,
@@ -22,7 +16,7 @@ class TrackDbConverter {
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.artworkUrl100,
+            previewUrl = track.previewUrl,
             timestamp = currentTimestamp
         )
     }

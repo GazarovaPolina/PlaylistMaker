@@ -16,7 +16,7 @@ class TrackViewHolder(itemView: View) :
 
     private val trackName: TextView = itemView.findViewById(R.id.trackName)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
-    private val trackTime: TextView = itemView.findViewById(R.id.bottomSheetCountPlaylistTracks)
+    private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val trackImage: ImageView = itemView.findViewById(R.id.trackImage)
 
     fun bind(model: Track) {

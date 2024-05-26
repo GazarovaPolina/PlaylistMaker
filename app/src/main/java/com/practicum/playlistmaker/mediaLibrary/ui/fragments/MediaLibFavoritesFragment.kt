@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentMediaLibFavoritesBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.MediaLibFavoritesState
 import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.MediaLibFavoritesViewModel
@@ -25,6 +27,10 @@ class MediaLibFavoritesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMediaLibFavoritesBinding.inflate(inflater, container, false)
+
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
+
         return binding.root
     }
 

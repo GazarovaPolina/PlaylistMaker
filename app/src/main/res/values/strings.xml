@@ -54,4 +54,25 @@
     <string name="playlist_confim_dialog_neutral_button_message">Отмена</string>
     <string name="playlist_confim_dialog_positive_button_message">Завершить</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="playlist_image_content_description">Обложка альбома</string>
+    <string name="playlist_share_btn_content_description">Поделиться плейлистом</string>
+    <string name="playlist_more_actions_btn_content_description">Больше действий с плейлистом</string>
+    <string name="track_ending_11_14">"%d" треков</string>
+    <string name="track_ending_1">"%d" трек</string>
+    <string name="track_ending_2_4">"%d" трека</string>
+    <string name="track_ending_other">"%d" треков</string>
+    <string name ="tracks_count_in_playlist_message">В этом плейлисте пока нет треков</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="confirm_delete">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete_track_confirm_dialog_neutral_button_message">Отмена</string>
+    <string name="delete_track_confirm_dialog_positive_button_message">Удалить</string>
+    <string name="playlist_without_tracks_message">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_playlist_confirm_message">Хотите удалить плейлист \"%s"\"?</string>
+    <string name="delete_playlist_confirm_dialog_neutral_button_message">Нет</string>
+    <string name="delete_playlist_confirm_dialog_positive_button_message">Да</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
 </resources>

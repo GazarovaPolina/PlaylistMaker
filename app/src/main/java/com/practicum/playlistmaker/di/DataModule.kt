@@ -7,8 +7,8 @@ import com.practicum.playlistmaker.mediaLibrary.data.db.AppDatabase
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.network.ITunesSearchApi
 import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.sharing.domain.ExternalActions
-import com.practicum.playlistmaker.sharing.ui.ExternalActionsImpl
+import com.practicum.playlistmaker.sharing.domain.SharingInteractor
+import com.practicum.playlistmaker.sharing.ui.SharingInteractorImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -35,8 +35,8 @@ val dataModule = module {
         RetrofitNetworkClient(get(), androidContext())
     }
 
-    single<ExternalActions> {
-        ExternalActionsImpl(androidContext())
+    single<SharingInteractor> {
+        SharingInteractorImpl(androidContext())
     }
 
     single {

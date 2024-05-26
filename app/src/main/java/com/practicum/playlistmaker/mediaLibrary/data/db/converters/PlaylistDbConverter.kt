@@ -16,7 +16,6 @@ class PlaylistDbConverter {
         countPlaylistTracks = playlist.countTracks
     )
 
-
     fun map(playlist: PlaylistEntity): Playlist = Playlist(
         id = playlist.playlistId,
         playlistName = playlist.playlistName,
@@ -39,8 +38,23 @@ class PlaylistDbConverter {
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.artworkUrl100,
+            previewUrl = track.previewUrl,
             timestamp = currentTimestamp
+        )
+    }
+
+    fun map(track: TrackInPlaylistEntity): Track {
+        return Track(
+            trackId = track.trackId,
+            trackName = track.trackName,
+            artistName = track.artistName,
+            trackTime = track.trackTime,
+            artworkUrl100 = track.artworkUrl100,
+            collectionName = track.collectionName,
+            releaseDate = track.releaseDate,
+            primaryGenreName = track.primaryGenreName,
+            country = track.country,
+            previewUrl = track.previewUrl
         )
     }
 }

@@ -17,6 +17,6 @@ class BottomSheetViewHolder(private val binding: PlaylistViewBottomSheetBinding)
             .into(binding.bottomSheetPlaylistImage)
 
         binding.bottomSheetPlaylistName.text = model.playlistName
-        binding.bottomSheetCountPlaylistTracks.text =  TracksCountMessageEndingChanger().getTracksCountMessageEnding(model.countTracks)
+        binding.bottomSheetCountPlaylistTracks.text =  CountMessageEndingChanger().getTracksCountMessageEnding(model.countTracks)
     }
 }

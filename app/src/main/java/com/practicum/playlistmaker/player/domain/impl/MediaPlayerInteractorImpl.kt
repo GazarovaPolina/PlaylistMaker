@@ -5,7 +5,6 @@ import com.practicum.playlistmaker.player.domain.MediaPlayerRepository
 import com.practicum.playlistmaker.player.domain.MediaPlayerState
 
 class MediaPlayerInteractorImpl(private val mediaPlayer: MediaPlayerRepository): MediaPlayerInteractor {
-
     override fun prepareMediaPlayer(trackPreviewUrl: String) {
         mediaPlayer.prepareMediaPlayer(trackPreviewUrl)
     }
@@ -21,7 +20,6 @@ class MediaPlayerInteractorImpl(private val mediaPlayer: MediaPlayerRepository):
     override fun stopMediaPlayer() {
         mediaPlayer.stopMediaPlayer()
     }
-
 
     override fun release() {
         mediaPlayer.release()

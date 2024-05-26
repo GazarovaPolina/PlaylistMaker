@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.AppThemeSwitcher
 import com.practicum.playlistmaker.settings.domain.AppTheme
 import com.practicum.playlistmaker.settings.domain.SettingsInteractor
-import com.practicum.playlistmaker.sharing.domain.ExternalActions
+import com.practicum.playlistmaker.sharing.domain.SharingInteractor
 
 class SettingsViewModel(
-    private val externalActions: ExternalActions,
+    private val externalActions: SharingInteractor,
     private val settingsInteractor: SettingsInteractor
 ) : ViewModel() {
 
@@ -32,8 +32,8 @@ class SettingsViewModel(
         externalActions.writeToSupport()
     }
 
-    fun onShareAppLinkClicked() {
-        externalActions.shareAppLink()
+    fun onShareAppLinkClicked(text: String) {
+        externalActions.share(text)
     }
 
     fun onAgreementClicked() {

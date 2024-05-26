@@ -4,16 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.sharing.domain.ExternalActions
+import com.practicum.playlistmaker.sharing.domain.SharingInteractor
 
 
-class ExternalActionsImpl(private val context: Context) : ExternalActions {
+class SharingInteractorImpl(private val context: Context) : SharingInteractor {
 
-    override fun shareAppLink() {
+    override fun share(text: String) {
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = context.getString(R.string.intent_type)
-            putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_link))
+            putExtra(Intent.EXTRA_TEXT, text)
         }
         context.startActivity(shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }

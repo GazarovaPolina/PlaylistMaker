@@ -132,7 +132,7 @@ class MediaPlayerViewModel(
 
             viewModelScope.launch {
                 playlistsInteractor.addTrackToPlaylist(track)
-                playlistsInteractor.updateListOfPlaylists(updatedPlaylist)
+                playlistsInteractor.updatePlaylist(updatedPlaylist)
                 getPlayLists()
             }
 

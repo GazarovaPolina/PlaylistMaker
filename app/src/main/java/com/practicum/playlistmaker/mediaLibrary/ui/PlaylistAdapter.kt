@@ -10,6 +10,8 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     val playlists = ArrayList<Playlist>()
 
+    var onPlaylistItemClick:((Playlist)->Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         return PlaylistViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.playlist_view, parent, false))
     }
@@ -20,5 +22,9 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistViewHolder>() {
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         holder.bind(playlists[position])
+        holder.itemView.setOnClickListener {
+            onPlaylistItemClick?.invoke(playlists[position])
+            this.notifyDataSetChanged()
+        }
     }
 }
