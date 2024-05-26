@@ -73,4 +73,6 @@
     <string name="delete_playlist_confirm_message">Хотите удалить плейлист \"%s"\"?</string>
     <string name="delete_playlist_confirm_dialog_neutral_button_message">Нет</string>
     <string name="delete_playlist_confirm_dialog_positive_button_message">Да</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
 </resources>

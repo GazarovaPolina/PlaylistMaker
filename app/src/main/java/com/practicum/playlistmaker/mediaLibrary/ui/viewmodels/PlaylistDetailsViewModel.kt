@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -67,7 +66,7 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
                 tracksIds = updatedTrackIdsList,
                 countTracks = playlistIdsTracks.size
             )
-            playlistsInteractor.updateListOfPlaylists(updatedPlaylist)
+            playlistsInteractor.updatePlaylist(updatedPlaylist)
             getPlaylistById(playlistIdentifier)
 
             if (!playlistsInteractor.isTrackInAnyPlaylist(track.trackId)) {
@@ -78,6 +77,10 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
 
     fun sharePlaylist(playlistDetails: String) {
         sharingInteractor.share(playlistDetails)
+    }
+
+    fun renderPlaylist() {
+        getPlaylistById(playlistIdentifier)
     }
 
 

@@ -25,7 +25,7 @@ class PlaylistsRepositoryImpl(
         }
     }
 
-    override suspend fun updateListOfPlaylists(playlist: Playlist) {
+    override suspend fun updatePlaylist(playlist: Playlist) {
         withContext(Dispatchers.IO) {
             appDatabase.playlistDao().updatePlaylist(playlistDbConverter.map(playlist))
         }

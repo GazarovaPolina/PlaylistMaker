@@ -2,10 +2,7 @@ package com.practicum.playlistmaker.mediaLibrary.ui.fragments
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +13,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -75,7 +68,9 @@ class PlaylistDetailsFragment : Fragment() {
         viewModel.playlistDetails.observe(viewLifecycleOwner) {
             renderPlaylistNameAndDescription(it)
             playlist = it
+            renderBottomSheetMenu()
         }
+
 
         viewModel.tracksDuration.observe(viewLifecycleOwner) {
             binding.playlistDetailsTracksDuration.text = CountMessageEndingChanger().getMinutesMessageEnding(it)
@@ -114,7 +109,6 @@ class PlaylistDetailsFragment : Fragment() {
         }
 
         binding.moreActionsWithPlaylist.setOnClickListener {
-            renderBottomSheetMenu()
             bottomSheetMenuBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
@@ -126,12 +120,24 @@ class PlaylistDetailsFragment : Fragment() {
             bottomSheetMenuBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
             playlist?.let { deletePlaylist(it) }
         }
+
+        binding.bottomSheetEditPlaylist.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_playlistDetailsFragment_to_editPlaylistFragment,
+                requireArguments().getString(ARGS_ID)?.let { EditPlaylistFragment.createArgs(it) })
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.renderPlaylist()
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
     }
+
 
     private fun sharePlaylist() {
         val tracks = bottomSheetTrackAdapter.tracks.toMutableList()
@@ -164,13 +170,15 @@ class PlaylistDetailsFragment : Fragment() {
 
     private fun renderTrackListBottomSheet(tracksList: List<Track>) {
         if (tracksList.isNotEmpty()) {
-            binding.playlistTracksBottomSheet.isVisible = true
             bottomSheetTrackAdapter.tracks.clear()
             bottomSheetTrackAdapter.tracks.addAll(tracksList)
             bottomSheetTrackAdapter.notifyDataSetChanged()
+            binding.tracksCountMessage.isVisible = false
+            binding.recyclerViewPlaylistTracksBottomSheet.isVisible = true
         } else {
-            binding.playlistTracksBottomSheet.isVisible = false
-            Toast.makeText(requireContext(), getString(R.string.tracks_count_in_playlist_message), Toast.LENGTH_SHORT).show()
+            binding.tracksCountMessage.isVisible = true
+            binding.recyclerViewPlaylistTracksBottomSheet.isVisible = false
+
         }
     }
 
@@ -179,7 +187,7 @@ class PlaylistDetailsFragment : Fragment() {
         confirmDeleteTrackDialog =
             MaterialAlertDialogBuilder(requireContext()).setTitle(getString(R.string.delete_track))
                 .setMessage(getString(R.string.confirm_delete))
-                .setNegativeButton(getString(R.string.delete_track_confirm_dialog_neutral_button_message)) { dialog, which -> dialog.dismiss()}
+                .setNegativeButton(getString(R.string.delete_track_confirm_dialog_neutral_button_message)) { dialog, which -> dialog.dismiss() }
                 .setPositiveButton(getString(R.string.delete_track_confirm_dialog_positive_button_message)) { dialog, which ->
                     viewModel.removeTrackFromPlaylist(trackToDelete)
                 }
@@ -194,7 +202,7 @@ class PlaylistDetailsFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.delete_playlist))
                 .setMessage(getString(R.string.delete_playlist_confirm_message, playlistToDelete.playlistName))
-                .setNegativeButton(getString(R.string.delete_playlist_confirm_dialog_neutral_button_message)) { dialog, which -> dialog.dismiss()}
+                .setNegativeButton(getString(R.string.delete_playlist_confirm_dialog_neutral_button_message)) { dialog, which -> dialog.dismiss() }
                 .setPositiveButton(getString(R.string.delete_playlist_confirm_dialog_positive_button_message)) { dialog, which ->
                     runBlocking {
                         viewModel.removePlaylist(playlistToDelete)

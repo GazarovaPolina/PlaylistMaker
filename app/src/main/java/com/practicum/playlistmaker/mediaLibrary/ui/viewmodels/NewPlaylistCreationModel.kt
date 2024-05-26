@@ -8,7 +8,7 @@ import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.PlaylistsInteractor
 import kotlinx.coroutines.launch
 
-class NewPlaylistCreationModel(private val playlistsInteractor: PlaylistsInteractor): ViewModel() {
+open class NewPlaylistCreationModel(private val playlistsInteractor: PlaylistsInteractor): ViewModel() {
 
     private val _newPlaylistState = MutableLiveData(false)
 

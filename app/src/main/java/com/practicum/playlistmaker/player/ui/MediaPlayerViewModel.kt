@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.player.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -133,7 +132,7 @@ class MediaPlayerViewModel(
 
             viewModelScope.launch {
                 playlistsInteractor.addTrackToPlaylist(track)
-                playlistsInteractor.updateListOfPlaylists(updatedPlaylist)
+                playlistsInteractor.updatePlaylist(updatedPlaylist)
                 getPlayLists()
             }
 

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -24,27 +25,28 @@ import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.NewPlaylistCreationModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
 import java.io.FileOutputStream
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
-    private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding get() = _binding!!
+    lateinit var binding: FragmentNewPlaylistBinding
+    val handler = android.os.Handler(Looper.getMainLooper())
 
     private val viewModel: NewPlaylistCreationModel by viewModel()
 
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
-    private var isPlaylistImageSelected = false
-    private var selectedImageUri: Uri? = null
+    var isPlaylistImageSelected = false
+    var selectedImageUri: Uri? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
+        binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setTextToSaveButtonAnToolbar()
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             executeAction(it)
@@ -79,7 +81,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun executeAction(isButtonEnabled: Boolean) {
+    fun executeAction(isButtonEnabled: Boolean) {
         binding.createNewPlaylistButton.isEnabled = isButtonEnabled
     }
 
@@ -91,7 +93,7 @@ class NewPlaylistFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-    private fun createTextChangeListener() {
+    fun createTextChangeListener() {
         binding.newPlaylistName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
@@ -103,7 +105,7 @@ class NewPlaylistFragment : Fragment() {
         })
     }
 
-    private fun returnBack() {
+    open fun returnBack() {
         if (binding.newPlaylistName.text?.isNotEmpty()!! ||
             binding.newPlaylistDescription.text?.isNotEmpty()!! ||
             isPlaylistImageSelected
@@ -119,7 +121,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun savePlaylistImageToPrivateStorage(uri: Uri): Uri {
+    fun savePlaylistImageToPrivateStorage(uri: Uri): Uri {
         val filePath = requireContext().getDir(getString(R.string.playlists_storage_name), MODE_PRIVATE)
         if (!filePath.exists()) filePath.mkdirs()
 
@@ -137,7 +139,7 @@ class NewPlaylistFragment : Fragment() {
         return file.toUri()
     }
 
-    private fun createPlaylist(savedImageUri: Uri?) {
+    open fun createPlaylist(savedImageUri: Uri?) {
         val newPlaylist = Playlist(
             id = null,
             playlistName = binding.newPlaylistName.text.toString(),
@@ -152,8 +154,13 @@ class NewPlaylistFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
+    open fun setTextToSaveButtonAnToolbar() {
+        binding.toolbarNewPlaylistAndBackButton.title = getString(R.string.new_playlist)
+        binding.createNewPlaylistButton.text = getString(R.string.create)
+    }
+
     override fun onDestroyView() {
-        _binding = null
+        handler.removeCallbacksAndMessages(null)
         super.onDestroyView()
     }
 }

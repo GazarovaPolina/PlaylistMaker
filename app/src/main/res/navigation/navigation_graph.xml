@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_playlistDetailsFragment_to_audioPlayerActivity"
             app:destination="@id/audioPlayerActivity" />
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment" />
     </fragment>
     <fragment
         android:id="@+id/mediaLibPlaylistsFragment"
@@ -66,4 +69,8 @@
         android:name="com.practicum.playlistmaker.mediaLibrary.ui.fragments.MediaLibFavoritesFragment"
         android:label="fragment_media_lib_favorites"
         tools:layout="@layout/fragment_media_lib_favorites" />
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.practicum.playlistmaker.mediaLibrary.ui.fragments.EditPlaylistFragment"
+        android:label="EditPlaylistFragment" />
 </navigation>
