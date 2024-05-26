@@ -55,7 +55,6 @@ class MediaLibPlaylistsFragment : Fragment() {
         }
 
         playlistsAdapter.onPlaylistItemClick = {
-            Log.d("aaa", "aaa")
             findNavController().navigate(R.id.playlistDetailsFragment, PlaylistDetailsFragment.createArgs(it.id.toString()))
         }
     }
@@ -80,6 +79,9 @@ class MediaLibPlaylistsFragment : Fragment() {
             playlistsAdapter.playlists.clear()
             playlistsAdapter.playlists.addAll(state.playlists)
             playlistsAdapter.notifyDataSetChanged()
+        }
+        else {
+            binding.recyclerViewPlaylists.isVisible = false
         }
     }
 

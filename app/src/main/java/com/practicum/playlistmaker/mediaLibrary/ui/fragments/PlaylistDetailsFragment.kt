@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -30,6 +31,7 @@ import com.practicum.playlistmaker.mediaLibrary.ui.viewmodels.PlaylistDetailsVie
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.player.ui.CountMessageEndingChanger
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -44,6 +46,8 @@ class PlaylistDetailsFragment : Fragment() {
     private var bottomSheetTracksBehavior: BottomSheetBehavior<LinearLayout>? = null
     private var confirmDeleteTrackDialog: MaterialAlertDialogBuilder? = null
     private var bottomSheetMenuBehavior: BottomSheetBehavior<LinearLayout>? = null
+    private var confirmDeletePlaylistDialog: MaterialAlertDialogBuilder? = null
+    private var playlist: Playlist? = null
 
     val viewModel: PlaylistDetailsViewModel by viewModel {
         parametersOf(
@@ -53,7 +57,7 @@ class PlaylistDetailsFragment : Fragment() {
         )
     }
 
-    private var currentPlaylist :Playlist? = null
+    private var currentPlaylist: Playlist? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,6 +74,7 @@ class PlaylistDetailsFragment : Fragment() {
 
         viewModel.playlistDetails.observe(viewLifecycleOwner) {
             renderPlaylistNameAndDescription(it)
+            playlist = it
         }
 
         viewModel.tracksDuration.observe(viewLifecycleOwner) {
@@ -116,6 +121,11 @@ class PlaylistDetailsFragment : Fragment() {
         binding.bottomSheetSharePlaylist.setOnClickListener {
             sharePlaylist()
         }
+
+        binding.bottomSheetDeletePlaylist.setOnClickListener {
+            bottomSheetMenuBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
+            playlist?.let { deletePlaylist(it) }
+        }
     }
 
     override fun onDestroyView() {
@@ -127,8 +137,7 @@ class PlaylistDetailsFragment : Fragment() {
         val tracks = bottomSheetTrackAdapter.tracks.toMutableList()
         if (tracks.isEmpty()) {
             Toast.makeText(requireContext(), requireContext().getString(R.string.playlist_without_tracks_message), Toast.LENGTH_SHORT).show()
-        }
-        else {
+        } else {
             viewModel.sharePlaylist(getPlaylistDetails())
         }
     }
@@ -140,11 +149,9 @@ class PlaylistDetailsFragment : Fragment() {
         binding.playlistDetailsTracksCount.text = CountMessageEndingChanger().getTracksCountMessageEnding(playlist.countTracks)
         Glide.with(requireContext()).load(playlist.imageUrl).placeholder(R.drawable.ic_playlist_cover_placeholder).centerCrop()
             .into(binding.playlistDetailsCover)
-        Log.d("imageUrl", playlist.imageUrl.toString())
     }
 
     private fun renderBottomSheetMenu() {
-        Log.d("imageUrl", currentPlaylist!!.imageUrl.toString())
         binding.bottomSheetPlaylistName.text = currentPlaylist!!.playlistName
         binding.bottomSheetCountPlaylistTracks.text = CountMessageEndingChanger().getTracksCountMessageEnding(currentPlaylist!!.countTracks)
         Glide
@@ -170,17 +177,38 @@ class PlaylistDetailsFragment : Fragment() {
 
     private fun deleteTrackFromPlaylist(trackToDelete: Track) {
         confirmDeleteTrackDialog =
-            MaterialAlertDialogBuilder(requireContext()).setTitle(getString(R.string.delete_track)).setMessage(getString(R.string.confirm_delete))
-                .setNeutralButton(getString(R.string.delete_track_confirm_dialog_neutral_button_message)) { dialog, which -> }
+            MaterialAlertDialogBuilder(requireContext()).setTitle(getString(R.string.delete_track))
+                .setMessage(getString(R.string.confirm_delete))
+                .setNegativeButton(getString(R.string.delete_track_confirm_dialog_neutral_button_message)) { dialog, which -> dialog.dismiss()}
                 .setPositiveButton(getString(R.string.delete_track_confirm_dialog_positive_button_message)) { dialog, which ->
-                    viewModel.removeTrackFromPlaylist(
-                        trackToDelete
-                    )
+                    viewModel.removeTrackFromPlaylist(trackToDelete)
                 }
         confirmDeleteTrackDialog!!.show().apply {
             getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.blue, null))
-            getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(resources.getColor(R.color.blue, null))
+            getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.blue, null))
         }
+    }
+
+    private fun deletePlaylist(playlistToDelete: Playlist) {
+        confirmDeletePlaylistDialog =
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_playlist))
+                .setMessage(getString(R.string.delete_playlist_confirm_message, playlistToDelete.playlistName))
+                .setNegativeButton(getString(R.string.delete_playlist_confirm_dialog_neutral_button_message)) { dialog, which -> dialog.dismiss()}
+                .setPositiveButton(getString(R.string.delete_playlist_confirm_dialog_positive_button_message)) { dialog, which ->
+                    runBlocking {
+                        viewModel.removePlaylist(playlistToDelete)
+                        findNavController().popBackStack()
+                    }
+
+                }
+
+        confirmDeletePlaylistDialog!!.show().apply {
+            getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.blue, null))
+            getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.blue, null))
+        }
+
+
     }
 
     private fun getPlaylistDetails(): String {

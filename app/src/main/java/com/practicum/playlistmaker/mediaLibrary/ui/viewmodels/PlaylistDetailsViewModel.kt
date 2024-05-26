@@ -10,9 +10,11 @@ import com.practicum.playlistmaker.mediaLibrary.domain.playlists.Playlist
 import com.practicum.playlistmaker.mediaLibrary.domain.playlists.PlaylistsInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.sharing.domain.SharingInteractor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteractor: PlaylistsInteractor, private val sharingInteractor: SharingInteractor): ViewModel() {
+class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteractor: PlaylistsInteractor, private val sharingInteractor: SharingInteractor) :
+    ViewModel() {
 
     private val _playlistDetails = MutableLiveData<Playlist>()
     val playlistDetails: LiveData<Playlist> get() = _playlistDetails
@@ -25,7 +27,7 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
 
     val playlistIdentifier: Long = playlistId.toLong()
 
-        init {
+    init {
         getPlaylistById(playlistId.toLong())
     }
 
@@ -34,8 +36,8 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
             val playlist = playlistsInteractor.getPlaylistDetailsById(playlistId)
             _playlistDetails.postValue(playlist)
             val tracksIds = Gson().fromJson(playlist.tracksIds, Array<Int>::class.java) ?: emptyArray()
-            playlistsInteractor.getPlaylistTracksList(tracksIds.toMutableList()).collect {
-                tracks -> calculateAllTracksDuration(tracks)
+            playlistsInteractor.getPlaylistTracksList(tracksIds.toMutableList()).collect { tracks ->
+                calculateAllTracksDuration(tracks)
                 _playlistTracksLiveData.postValue(tracks)
             }
         }
@@ -57,7 +59,6 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
             val playlistIdsTracks = Gson().fromJson(playlist.tracksIds, Array<Long>::class.java).toMutableList()
             playlistIdsTracks.remove(track.trackId)
             val updatedTrackIdsList = Gson().toJson(playlistIdsTracks)
-            Log.d("here", "here")
             val updatedPlaylist = Playlist(
                 id = playlist.id,
                 playlistName = playlist.playlistName,
@@ -77,5 +78,22 @@ class PlaylistDetailsViewModel(playlistId: String, private val playlistsInteract
 
     fun sharePlaylist(playlistDetails: String) {
         sharingInteractor.share(playlistDetails)
+    }
+
+
+    fun removePlaylist(playlist: Playlist) {
+        viewModelScope.launch(context = Dispatchers.Default) {
+            val tracksIds = Gson().fromJson(playlist.tracksIds, Array<Int>::class.java) ?: emptyArray()
+            playlistsInteractor.deletePlaylist(playlist)
+
+            playlistsInteractor.getPlaylistTracksList(tracksIds.toMutableList()).collect { tracks ->
+                for (track in tracks) {
+                    if (!playlistsInteractor.isTrackInAnyPlaylist(track.trackId)) {
+                        playlistsInteractor.deleteTrack(track)
+                    }
+                }
+            }
+
+        }
     }
 }

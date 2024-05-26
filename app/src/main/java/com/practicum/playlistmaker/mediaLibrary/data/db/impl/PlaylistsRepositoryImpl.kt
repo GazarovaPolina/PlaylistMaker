@@ -83,6 +83,12 @@ class PlaylistsRepositoryImpl(
         return allPlaylists.map { playlist -> playlistDbConverter.map(playlist) }
     }
 
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        val playlistEntity = playlistDbConverter.map(playlist)
+        Log.d("removePlaylist", "!!")
+        appDatabase.playlistDao().deletePlaylist(playlistEntity)
+    }
+
     private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
         return playlists.map { playlist -> playlistDbConverter.map(playlist) }
     }

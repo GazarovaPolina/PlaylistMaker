@@ -70,4 +70,7 @@
     <string name="share_playlist">Поделиться</string>
     <string name="edit_playlist">Редактировать информацию</string>
     <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_playlist_confirm_message">Хотите удалить плейлист \"%s"\"?</string>
+    <string name="delete_playlist_confirm_dialog_neutral_button_message">Нет</string>
+    <string name="delete_playlist_confirm_dialog_positive_button_message">Да</string>
 </resources>
